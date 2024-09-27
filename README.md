@@ -1,15 +1,22 @@
 # Aptos TS sdk Case
 
-# 一、快速开始
+## 资源
+
+https://aptos.dev/en/build/guides/build-e2e-dapp
+
+# 一、本地运行 / 开发
 
 ```bash
 cd ts-case
+pnpm i
 pnpm run dev
 ```
 
-# 二、准备工作
+# 二、使用教程
 
-## A. 集成钱包 (aptos adapter)
+## （一）准备工作
+
+### A. 集成钱包 (aptos adapter)
 
 1. 创建用于布局 `layout.tsx` 的钱包 Provider 组件 `WalletProvider.tsx`
 
@@ -115,16 +122,31 @@ export default function Home() {
 
 ![alt text](doc/wallet_button.png)
 
-## 获取链上数据
+# 二、获取链上数据
 
-```ts
-const fetchList = async () => {
-  if (!account) retrun [];
+1. 查合约 event 的 rpc
 
-}
-```
+2. 查询
+
+---
 
 # 附录
+
+## 资源
+
+```bash
+# create next app
+npx create-next-app@latest
+# create react app
+pnpm create vite@latest
+# install headless ui
+pnpm install @headlessui/react@latest
+# math lib
+pnpm install bignumber.js
+#
+pnpm install @aptos-labs/aptos-faucet-client
+
+```
 
 基础合约
 

@@ -9,12 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aptos-labs/aptos-faucet-client": "^0.2.0",
     "@aptos-labs/ts-sdk": "^1.28.0",
     "@aptos-labs/wallet-adapter-ant-design": "^3.0.14",
     "@aptos-labs/wallet-adapter-react": "^3.7.0",
+    "@headlessui/react": "^2.1.8",
+    "bignumber.js": "^9.1.2",
     "next": "14.2.13",
+    "next-mdx-remote": "^5.0.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "styled-components": "^6.1.13",
+    "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

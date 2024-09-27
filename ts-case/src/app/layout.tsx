@@ -1,5 +1,24 @@
+import type { Metadata } from 'next'
+import localFont from 'next/font/local'
 import { WalletProvider } from '@/components/WalletProvider'
-import '../globals.css'
+import '../styles/globals.css'
+
+const geistSans = localFont({
+  src: './fonts/GeistVF.woff',
+
+  variable: '--font-geist-sans',
+  weight: '100 900',
+})
+const geistMono = localFont({
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
+  weight: '100 900',
+})
+
+export const metadata: Metadata = {
+  title: 'Science',
+  description: 'Science',
+}
 
 export default function RootLayout({
   children,
@@ -10,9 +29,11 @@ export default function RootLayout({
     <>
       <html lang="en">
         <head>
-          <meta name="" content="ao" />
+          <meta name="sort-cat" content="cat" />
         </head>
-        <body>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
           <WalletProvider>{children}</WalletProvider>
         </body>
       </html>

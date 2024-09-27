@@ -1,0 +1,153 @@
+/* styles.css */
+
+/* 全局样式 */
+.body {
+  font-family: 'Arial', sans-serif; /* 字体 */
+  line-height: 1.6; /* 行高 */
+  color: #333; /* 字体颜色 */
+  background-color: #f7f7f7; /* 背景颜色 */
+  padding: 20px; /* 内边距 */
+}
+
+/* 标题样式 */
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  color: #4a4a4a; /* 标题颜色 */
+  border-bottom: 2px solid #6200ea; /* 底部边框 */
+  padding-bottom: 10px; /* 底部内边距 */
+}
+
+/* 段落样式 */
+.p {
+  color: #000;
+  margin: 15px 0; /* 段落间距 */
+}
+
+/* 列表样式 */
+.ul,
+.ol {
+  margin-left: 20px; /* 列表缩进 */
+}
+
+.li {
+  margin-bottom: 5px; /* 列表项间距 */
+}
+/* 引用样式 */
+.blockquote {
+  border-left: 4px solid #6200ea; /* 左边框 */
+  padding-left: 15px; /* 内边距 */
+  color: #555; /* 引用颜色 */
+  background-color: #e8f0fe; /* 背景颜色 */
+  margin: 15px 0; /* 外边距 */
+}
+
+/* 链接样式 */
+.a {
+  color: #6200ea; /* 链接颜色 */
+  text-decoration: none; /* 去掉下划线 */
+  transition: color 0.3s; /* 动画效果 */
+}
+
+.a:hover {
+  color: #3700b3; /* 悬停颜色 */
+}
+
+/* 代码块样式 */
+.pre {
+  background-color: #282c34; /* 背景颜色 */
+  color: #f8f8f2; /* 文字颜色 */
+  padding: 15px; /* 内边距 */
+  border-radius: 8px; /* 圆角 */
+  overflow: auto; /* 溢出处理 */
+}
+
+/* 行内代码样式 */
+.code {
+  background-color: #f8f8f2; /* 背景颜色 */
+  color: #282c34; /* 文字颜色 */
+  padding: 2px 4px; /* 内边距 */
+  border-radius: 4px; /* 圆角 */
+}
+
+/* 按钮样式 */
+.button {
+  background-color: #6200ea; /* 主色调 */
+  color: white; /* 文字颜色 */
+  padding: 10px 15px; /* 内边距 */
+  border: none; /* 去掉边框 */
+  border-radius: 5px; /* 圆角 */
+  cursor: pointer; /* 鼠标指针 */
+  transition: background-color 0.3s; /* 动画效果 */
+}
+
+.button:hover {
+  background-color: #3700b3; /* 悬停颜色 */
+}
+
+/* 图片样式 */
+.img {
+  max-width: 100%; /* 自适应宽度 */
+  height: auto; /* 自适应高度 */
+  border-radius: 8px; /* 圆角 */
+  margin: 10px 0; /* 外边距 */
+}
+
+/* 表格样式 */
+.table {
+  width: 100%; /* 表格宽度 */
+  border-collapse: collapse; /* 合并边框 */
+  margin: 20px 0; /* 外边距 */
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd; /* 边框 */
+  padding: 8px; /* 内边距 */
+  text-align: left; /* 左对齐 */
+}
+
+.table th {
+  background-color: #6200ea; /* 表头背景 */
+  color: white; /* 表头文字颜色 */
+}
+
+/* 分隔线样式 */
+.hr {
+  border: none;
+  border-top: 1px solid #ddd; /* 分隔线颜色 */
+  margin: 20px 0; /* 分隔线间距 */
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-block;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 3px;
+  padding: 3px 8px;
+  margin-right: 5px;
+  font-size: 0.9em;
+}
+
+/* 弹出框样式 */
+.popup {
+  background-color: #fff;
+  border: 1px solid #6200ea;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 代码行高 */
+.pre code {
+  line-height: 1.5; /* 提高代码行高 */
+}
+
+/* 表格悬停效果 */
+.table tr:hover {
+  background-color: #f5f5f5; /* 行悬停背景色 */
+}
