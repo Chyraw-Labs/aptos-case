@@ -111,6 +111,10 @@ export default function Home() {
 
 > 如果出现错误，可以排查是否没有使用 `use client`，因为 adapter 的组件渲染过程全部在客户端，如果没有此标记，则会报错
 
+**创建成功:**
+
+![alt text](doc/wallet_button.png)
+
 ## 获取链上数据
 
 ```ts
