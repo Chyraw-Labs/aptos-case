@@ -32,7 +32,7 @@ export default function RootLayout({
           <meta name="sort-cat" content="cat" />
         </head>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
         >
           <WalletProvider>{children}</WalletProvider>
         </body>

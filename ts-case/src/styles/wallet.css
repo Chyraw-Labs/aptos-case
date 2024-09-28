@@ -12,6 +12,7 @@
   font-size: 16px;
   background-color: rgba(0, 0, 0, 0);
   color: white;
+  backdrop-filter: blur(4px); /* 小的模糊效果，可以根据需要调整 */
 }
 .wallet-button:hover {
   color: rgb(192, 196, 255) !important;

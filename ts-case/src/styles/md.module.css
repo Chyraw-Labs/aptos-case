@@ -1,29 +1,56 @@
 /* styles.css */
-
-/* 全局样式 */
-.body {
-  font-family: 'Arial', sans-serif; /* 字体 */
-  line-height: 1.6; /* 行高 */
-  color: #333; /* 字体颜色 */
-  background-color: #f7f7f7; /* 背景颜色 */
-  padding: 20px; /* 内边距 */
+.root {
+  --background: #000;
+  --foreground: #fff;
+  --title-font-color: #fff;
+  --p-font-color: #e6e6e6;
+  --a-font-color: #0000ff;
 }
 
-/* 标题样式 */
 .h1,
 .h2,
 .h3,
 .h4,
 .h5,
 .h6 {
-  color: #4a4a4a; /* 标题颜色 */
-  border-bottom: 2px solid #6200ea; /* 底部边框 */
+  color: var(--title-font-color) !important;
+}
+/* 标题样式 */
+.h1 {
+  font-size: 4rem;
+  font-weight: 800;
+
+  border-bottom: 2px solid #0017ea; /* 底部边框 */
   padding-bottom: 10px; /* 底部内边距 */
+}
+
+.h2 {
+  font-size: 3rem;
+  font-weight: 700;
+
+  border-bottom: 2px solid #0017ea; /* 底部边框 */
+  padding-bottom: 10px; /* 底部内边距 */
+}
+.h3 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+.h4 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.h5 {
+  font-size: 0.5rem;
+  font-weight: 400;
+}
+.h6 {
+  font-size: 0.1rem;
+  font-weight: 300;
 }
 
 /* 段落样式 */
 .p {
-  color: #000;
+  color: var(--p-font-color) !important;
   margin: 15px 0; /* 段落间距 */
 }
 
@@ -38,8 +65,10 @@
 }
 /* 引用样式 */
 .blockquote {
-  border-left: 4px solid #6200ea; /* 左边框 */
+  border-radius: 5px;
+  border-left: 4px solid #0f7ed4; /* 左边框 */
   padding-left: 15px; /* 内边距 */
+  padding-right: 15px; /* 内边距 */
   color: #555; /* 引用颜色 */
   background-color: #e8f0fe; /* 背景颜色 */
   margin: 15px 0; /* 外边距 */
@@ -47,7 +76,7 @@
 
 /* 链接样式 */
 .a {
-  color: #6200ea; /* 链接颜色 */
+  color: var(--a-font-color); /* 链接颜色 */
   text-decoration: none; /* 去掉下划线 */
   transition: color 0.3s; /* 动画效果 */
 }

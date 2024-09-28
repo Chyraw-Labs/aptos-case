@@ -3,9 +3,16 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { twMerge } from 'tailwind-merge'
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
-import { X, Maximize2, Minimize2 } from 'lucide-react'
+import {
+  X,
+  Maximize2,
+  Minimize2,
+  LayoutGrid,
+  ArrowLeftRight,
+} from 'lucide-react'
 import styles from '@/styles/md.module.css'
-import Editor from '@monaco-editor/react'
+import Editor, { OnMount, OnChange } from '@monaco-editor/react'
+import * as monaco from 'monaco-editor'
 
 interface CardProps {
   mdPath: string
@@ -34,7 +41,7 @@ const Card: React.FC<CardProps> = ({
   const [output, setOutput] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const splitPaneRef = useRef<HTMLDivElement>(null)
-  const editorRef = useRef(null)
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
   const sizeClasses = {
     sm: 'w-64 h-40',
@@ -101,15 +108,14 @@ const Card: React.FC<CardProps> = ({
       document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [isDragging])
-
-  const handleEditorDidMount = (editor, monaco) => {
+  const handleEditorDidMount: OnMount = (editor) => {
     editorRef.current = editor
-    console.log(monaco)
   }
 
-  const handleEditorChange = (value, event) => {
-    setCode(value)
-    console.log(event)
+  const handleEditorChange: OnChange = (value) => {
+    if (value !== undefined) {
+      setCode(value)
+    }
   }
 
   const handleRunCode = () => {
@@ -170,98 +176,126 @@ const Card: React.FC<CardProps> = ({
           )}
 
           <PopoverPanel className="fixed inset-0 z-50 overflow-hidden">
-            <div className="flex h-full">
-              <div ref={splitPaneRef} className="flex-1 flex">
+            <div className="flex h-screen w-screen">
+              <div ref={splitPaneRef} className="flex-1 flex overflow-hidden">
+                {/* Left pane */}
                 <div
-                  className="overflow-y-auto p-6"
+                  className="overflow-auto"
                   style={{ width: `${splitRatio}%` }}
                 >
-                  {isLoading && <p>Loading...</p>}
-                  {error && <p className="text-red-500">{error}</p>}
-                  {mdxSource && (
-                    <MDXRemote
-                      {...mdxSource}
-                      components={{
-                        h1: (props) => <h1 className={styles.h1} {...props} />,
-                        h2: (props) => <h2 className={styles.h2} {...props} />,
-                        h3: (props) => <h3 className={styles.h3} {...props} />,
-                        h4: (props) => <h4 className={styles.h4} {...props} />,
-                        h5: (props) => <h5 className={styles.h5} {...props} />,
-                        h6: (props) => <h6 className={styles.h6} {...props} />,
-                        p: (props) => <p className={styles.p} {...props} />,
-                        code: (props) => (
-                          <code className={styles.code} {...props} />
-                        ),
-                        pre: (props) => (
-                          <pre className={styles.pre} {...props} />
-                        ),
-                        blockquote: (props) => (
-                          <blockquote
-                            className={styles.blockquote}
-                            {...props}
-                          />
-                        ),
-                        ul: (props) => <ul className={styles.ul} {...props} />,
-                        li: (props) => <li className={styles.li} {...props} />,
-                        ol: (props) => <ol className={styles.ol} {...props} />,
-                      }}
-                    />
-                  )}
-                </div>
-                <div
-                  className="w-1 bg-gray-300 cursor-col-resize hover:bg-gray-400 relative"
-                  onMouseDown={handleDragStart}
-                >
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-12 bg-gray-400 rounded-full flex items-center justify-center">
-                    {/* <LayoutSplit size={16} className="text-white" /> */}
+                  <div className="p-4">
+                    {isLoading && <p>Loading...</p>}
+                    {error && <p className="text-red-500">{error}</p>}
+                    {mdxSource && (
+                      <MDXRemote
+                        {...mdxSource}
+                        components={{
+                          h1: (props) => (
+                            <h1 className={styles.h1} {...props} />
+                          ),
+                          h2: (props) => (
+                            <h2 className={styles.h2} {...props} />
+                          ),
+                          h3: (props) => (
+                            <h3 className={styles.h3} {...props} />
+                          ),
+                          h4: (props) => (
+                            <h4 className={styles.h4} {...props} />
+                          ),
+                          h5: (props) => (
+                            <h5 className={styles.h5} {...props} />
+                          ),
+                          h6: (props) => (
+                            <h6 className={styles.h6} {...props} />
+                          ),
+                          p: (props) => <p className={styles.p} {...props} />,
+                          code: (props) => (
+                            <code className={styles.code} {...props} />
+                          ),
+                          pre: (props) => (
+                            <pre className={styles.pre} {...props} />
+                          ),
+                          blockquote: (props) => (
+                            <blockquote
+                              className={styles.blockquote}
+                              {...props}
+                            />
+                          ),
+                          ul: (props) => (
+                            <ul className={styles.ul} {...props} />
+                          ),
+                          li: (props) => (
+                            <li className={styles.li} {...props} />
+                          ),
+                          ol: (props) => (
+                            <ol className={styles.ol} {...props} />
+                          ),
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
-                {/* 右侧 */}
+
+                {/* Divider */}
                 <div
-                  className="flex flex-col bg-gray-100"
+                  className="w-1 bg-gray-300 cursor-col-resize hover:bg-gray-400 relative flex-shrink-0"
+                  onMouseDown={handleDragStart}
+                >
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-12 bg-gray-400 rounded-full flex items-center justify-center z-50">
+                    {/* <LayoutGrid size={16} className="text-white" /> */}
+                    <ArrowLeftRight size={16} className="text-white" />
+                  </div>
+                </div>
+
+                {/* Right pane */}
+                <div
+                  className="flex flex-col bg-gray-100 overflow-hidden"
                   style={{ width: `${100 - splitRatio}%` }}
                 >
-                  <div className="flex-1 p-4">
-                    <div className="flex justify-between items-center mb-2">
+                  {/* Code Editor */}
+                  <div className="flex-1 overflow-hidden flex flex-col">
+                    <div className="flex justify-between items-center p-4">
                       <h2 className="text-xl font-bold text-black">
                         Code Editor
                       </h2>
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-2 pr-16">
                         <button
                           onClick={() => handleLayoutChange('left')}
                           className="p-1 rounded hover:bg-gray-200"
                         >
-                          <Minimize2 size={16} />
+                          <Maximize2 size={16} className="text-black" />
                         </button>
                         <button
                           onClick={() => handleLayoutChange('center')}
-                          className="p-1 rounded hover:bg-gray-200"
+                          className="p-1 rounded hover:bg-gray-200 text-black"
                         >
-                          {/* <LayoutSplit size={16} /> */}
+                          <LayoutGrid size={16} className="text-black" />
                         </button>
                         <button
                           onClick={() => handleLayoutChange('right')}
                           className="p-1 rounded hover:bg-gray-200"
                         >
-                          <Maximize2 size={16} />
+                          <Minimize2 size={16} className="text-black" />
                         </button>
                       </div>
                     </div>
-                    <Editor
-                      height="300px"
-                      width="300px"
-                      defaultLanguage="rust"
-                      defaultValue={code}
-                      onMount={handleEditorDidMount}
-                      onChange={handleEditorChange}
-                      options={{
-                        minimap: { enabled: false },
-                        fontSize: 14,
-                      }}
-                    />
+                    <div className="flex-1 overflow-hidden">
+                      <Editor
+                        height="100%"
+                        defaultLanguage="rust"
+                        defaultValue={code}
+                        onMount={handleEditorDidMount}
+                        onChange={handleEditorChange}
+                        options={{
+                          minimap: { enabled: false },
+                          fontSize: 14,
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="flex-1 p-4 bg-black text-white">
-                    <div className="flex justify-between items-center mb-2">
+                  {/* Command Line */}
+                  <div className="h-1/3 bg-black text-white flex flex-col overflow-hidden">
+                    <div className="flex justify-between items-center p-4">
                       <h2 className="text-xl font-bold">Command Line</h2>
                       <button
                         onClick={handleRunCode}
@@ -270,13 +304,13 @@ const Card: React.FC<CardProps> = ({
                         Run
                       </button>
                     </div>
-                    <pre className="h-64 overflow-y-auto p-2 bg-gray-800 rounded">
+                    <pre className="flex-1 overflow-y-auto p-2 bg-gray-800 rounded m-4">
                       {output}
                     </pre>
                   </div>
                 </div>
               </div>
-              {/* 关闭按钮 */}
+              {/* Close button */}
               <button
                 onClick={close}
                 className="absolute top-4 right-4 p-2 rounded-full bg-red-300 shadow-md hover:bg-red-500"

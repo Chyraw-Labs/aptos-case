@@ -10,8 +10,10 @@ import '@/styles/wallet.css'
 function Header() {
   const [isOpenAbout, setIsOpenAbout] = useState(false)
   const [isOpenTips, setIsOpenTips] = useState(false)
+  const [isOpenTools, setIsOpenTools] = useState(false)
   const timeoutRefAbout = useRef<number | null>(null)
   const timeoutRefTips = useRef<number | null>(null)
+  const timeoutRefTools = useRef<number | null>(null)
 
   const handleMouseEnter = (popover: string) => {
     if (popover === 'about') {
@@ -24,6 +26,11 @@ function Header() {
         clearTimeout(timeoutRefTips.current)
       }
       setIsOpenTips(true)
+    } else if (popover === 'tools') {
+      if (timeoutRefTools.current !== null) {
+        clearTimeout(timeoutRefTools.current)
+      }
+      setIsOpenTools(true)
     }
   }
 
@@ -36,6 +43,10 @@ function Header() {
       timeoutRefTips.current = window.setTimeout(() => {
         setIsOpenTips(false)
       }, 100)
+    } else if (popover === 'tools') {
+      timeoutRefTools.current = window.setTimeout(() => {
+        setIsOpenTools(false)
+      }, 100)
     }
   }
 
@@ -46,6 +57,9 @@ function Header() {
       }
       if (timeoutRefTips.current !== null) {
         clearTimeout(timeoutRefTips.current)
+      }
+      if (timeoutRefTools.current !== null) {
+        clearTimeout(timeoutRefTools.current)
       }
     }
   }, [])
@@ -79,8 +93,8 @@ function Header() {
                     onMouseEnter={() => handleMouseEnter('tips')}
                     onMouseLeave={() => handleMouseLeave('tips')}
                   >
-                    <PopoverButton className="block text-lg/6 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
-                      <span>Tips</span>
+                    <PopoverButton className="block text-lg/12 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
+                      <span>教程</span>
                     </PopoverButton>
                     {isOpenTips && (
                       <PopoverPanel
@@ -129,8 +143,8 @@ function Header() {
                     onMouseEnter={() => handleMouseEnter('about')}
                     onMouseLeave={() => handleMouseLeave('about')}
                   >
-                    <PopoverButton className="block text-lg/6 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
-                      <span>About</span>
+                    <PopoverButton className="block text-lg/12 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
+                      <span>关于</span>
                     </PopoverButton>
                     {isOpenAbout && (
                       <PopoverPanel
@@ -175,21 +189,50 @@ function Header() {
                   </div>
                 </Popover>
               </div>
-              {/* <div className="flex-1 justify-center">
-                <a href="https://x.com/caoyang2002">
-                  <Image
-                    src="/assets/twitter-x.svg"
-                    alt="logo"
-                    width={32}
-                    height={32}
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      objectFit: 'contain',
-                    }}
-                  />
-                </a>
-              </div> */}
+              <div className="flex-1 justify-center">
+                <Popover className="relative">
+                  <div
+                    onMouseEnter={() => handleMouseEnter('tools')}
+                    onMouseLeave={() => handleMouseLeave('tools')}
+                  >
+                    <PopoverButton className="block text-lg/12 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
+                      <span>工具</span>
+                    </PopoverButton>
+                    {isOpenTools && (
+                      <PopoverPanel
+                        transition
+                        anchor="bottom"
+                        static
+                        className="absolute z-10 mt-1 w-48 p-1 bg-white border rounded shadow-md divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition  ease-in-out  bg-opacity-20 backdrop-blur-sm"
+                      >
+                        <div className="p-3">
+                          <div>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              href="/playground"
+                            >
+                              <p className="font-semibold text-white ">
+                                在线编译器
+                              </p>
+                              <p className="text-white/50">Move</p>
+                              <p className="text-white/50">TS sdk</p>
+                            </a>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              href="/indexer"
+                            >
+                              <p className="font-semibold text-white ">
+                                Indexer
+                              </p>
+                              <p className="text-white/50">在线</p>
+                            </a>
+                          </div>
+                        </div>
+                      </PopoverPanel>
+                    )}
+                  </div>
+                </Popover>
+              </div>
               <div className="flex-1 justify-center">
                 <a href="https://github.com/caoyang2002">
                   <Image
@@ -209,12 +252,7 @@ function Header() {
           </div>
 
           <div className="flex-none justify-end">
-            {/* //TODO */}
             <WalletMenu />
-            {/* <WalletSelector
-              isModalOpen={isModalOpen}
-              setModalOpen={setIsModalOpen}
-            /> */}
           </div>
         </div>
       </div>

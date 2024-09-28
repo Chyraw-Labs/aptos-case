@@ -257,7 +257,8 @@ const WalletMenu = () => {
                     disabled={isOpenFetchBalance}
                   >
                     <div className="flex items-center justify-between w-full">
-                      <p>Balance</p>
+                      <p>余额</p>
+
                       <div className="flex items-center">
                         <p className="text-gray-100 mr-2">{balance}</p>
                         {isOpenFetchBalance && (
@@ -274,7 +275,7 @@ const WalletMenu = () => {
                         getHistory()
                       }}
                     >
-                      History
+                      历史记录
                     </button>
 
                     <Dialog
@@ -293,7 +294,7 @@ const WalletMenu = () => {
                         {/* The actual dialog panel  */}
                         <DialogPanel className="mx-auto max-w-sm rounded bg-white p-6">
                           <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
-                            History
+                            历史记录
                           </DialogTitle>
                           <div className="mt-2">
                             <p className="text-sm text-gray-500">
@@ -305,7 +306,7 @@ const WalletMenu = () => {
                             className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                             onClick={() => setIsOpenHistory(false)}
                           >
-                            Close
+                            关闭
                           </button>
                         </DialogPanel>
                       </div>
@@ -316,7 +317,7 @@ const WalletMenu = () => {
                       className="w-full h-full text-left" // Changed to text-left
                       onClick={() => setIsOpenRanking(true)}
                     >
-                      Ranking
+                      排名
                     </button>
 
                     <Dialog
@@ -335,7 +336,7 @@ const WalletMenu = () => {
                         {/* The actual dialog panel  */}
                         <DialogPanel className="mx-auto max-w-sm rounded bg-white p-6">
                           <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
-                            Ranking
+                            排名
                           </DialogTitle>
                           <div className="mt-2">
                             <p className="text-sm text-gray-500">
