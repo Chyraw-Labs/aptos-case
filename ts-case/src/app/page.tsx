@@ -1,10 +1,10 @@
 'use client'
 import { AllCase } from '@/components/AllCase'
 import BackgroundSVG from '@/components/BackgroundSVG'
-import Card from '@/components/Card'
+import Case from '@/components/Case'
 import { GettingStarted } from '@/components/GettingStarted'
 import Header from '@/components/Header'
-import Playground from '@/components/Playground'
+// import Playground from '@/components/Playground'
 // import WalletButton from '@/components/WalletButton'
 
 export default function Home() {
@@ -23,43 +23,43 @@ export default function Home() {
 
       <AllCase />
       <div className="py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <Card mdPath="/Docs/test.mdx" size="md" description="测试" tag="test">
+        <Case mdPath="/Docs/test.mdx" size="md" description="测试" tag="test">
           <p className="text-blue-500">测试ttttttttttttttttttttttttt</p>
-        </Card>
-        <Card
+        </Case>
+        <Case
           mdPath="/Docs/hello_world.mdx"
           size="md"
           description="Hello World"
           tag="ts-sdk"
         >
           <p className="text-blue-500">hello</p>
-        </Card>
-        <Card
+        </Case>
+        <Case
           mdPath="/Docs/module_script.mdx"
           size="md"
           description="模块脚本"
           tag="ts-sdk"
         >
           <p className="text-blue-500">模块和脚本......</p>
-        </Card>
-        <Card
+        </Case>
+        <Case
           mdPath="/Docs/primitive_types.mdx"
           size="md"
           description="原始类型"
           tag="ts-sdk"
         >
           <p className="text-blue-500">Move 的类型系统...</p>
-        </Card>
+        </Case>
 
-        <Card
+        <Case
           mdPath="/Docs/local_variables_scope.mdx"
           size="md"
           description="局部变量和作用域"
           tag="ts-sdk"
         >
           <p className="text-blue-500">Move 语法...</p>
-        </Card>
-        {/* 添加更多 Card 组件 */}
+        </Case>
+        {/* 添加更多 Case 组件 */}
       </div>
 
       {/* <WalletButton /> */}

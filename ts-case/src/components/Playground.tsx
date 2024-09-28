@@ -1,29 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
-import { twMerge } from 'tailwind-merge'
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { serialize } from 'next-mdx-remote/serialize'
+// import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
+// import { twMerge } from 'tailwind-merge'
+// import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
+// import { serialize } from 'next-mdx-remote/serialize'
 import {
-  X,
+  // X,
   Maximize2,
   Minimize2,
   LayoutGrid,
   ArrowLeftRight,
 } from 'lucide-react'
-import styles from '@/styles/md.module.css'
+// import styles from '@/styles/md.module.css'
 import Editor, { OnMount, OnChange } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
 import WalletButton from './WalletButton'
 import Image from 'next/image'
 import '@aptos-labs/wallet-adapter-ant-design/dist/index.css'
 import '@/styles/wallet.css'
+import MoveEditorWrapper from './MoveEditorWrapper'
+import { HELLO } from '@/code-case/move'
 
 const Playground: React.FC = () => {
-  const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(
-    null
-  )
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  // const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(
+  //   null
+  // )
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [error, setError] = useState<string | null>(null)
   const [splitRatio, setSplitRatio] = useState(50)
   const [code, setCode] = useState('// Write your code here')
   const [output, setOutput] = useState('')
@@ -31,10 +33,10 @@ const Playground: React.FC = () => {
   const splitPaneRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
-  const fetchMdxContent = async () => {
-    setIsLoading(true)
-    setError(null)
-  }
+  // const fetchMdxContent = async () => {
+  //   setIsLoading(true)
+  //   setError(null)
+  // }
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return
@@ -118,8 +120,8 @@ const Playground: React.FC = () => {
               <div className="flex justify-between">
                 <WalletButton />
               </div>
-              {isLoading && <p>Loading...</p>}
-              {error && <p className="text-red-500">{error}</p>}
+              {/* {isLoading && <p>Loading...</p>}
+              {error && <p className="text-red-500">{error}</p>} */}
               {/* {mdxSource && (
                 <MDXRemote
                   {...mdxSource}
@@ -189,7 +191,10 @@ const Playground: React.FC = () => {
                 </div>
               </div>
               <div className="flex-1 overflow-hidden">
-                <Editor
+                <div style={{ height: '100vh', width: '100%' }}>
+                  <MoveEditorWrapper initialCode={HELLO} />
+                </div>
+                {/* <Editor
                   height="100%"
                   defaultLanguage="rust"
                   defaultValue={code}
@@ -199,7 +204,7 @@ const Playground: React.FC = () => {
                     minimap: { enabled: false },
                     fontSize: 14,
                   }}
-                />
+                /> */}
               </div>
             </div>
             {/* Command Line */}

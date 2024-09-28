@@ -1,80 +1,196 @@
-// import * as monaco from 'monaco-editor'
+import { useCallback, useRef } from 'react'
+import dynamic from 'next/dynamic'
+import { EditorProps, OnMount, OnChange } from '@monaco-editor/react'
+import type * as Monaco from 'monaco-editor/esm/vs/editor/editor.api'
+import { NFT, TYPE } from '@/code-case/move'
 
-// // 1. Define custom language
-// monaco.languages.register({ id: 'customLang' })
+const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
+  ssr: false,
+})
 
-// // 2. Define custom tokens and colors
-// monaco.languages.setMonarchTokensProvider('customLang', {
-//   tokenizer: {
-//     root: [
-//       [/\[error.*/, 'custom-error'],
-//       [/\[notice.*/, 'custom-notice'],
-//       [/\[info.*/, 'custom-info'],
-//       [/\b(if|else|for|while)\b/, 'custom-control-flow'],
-//       [/\b\d+\b/, 'custom-number'],
-//       [/".*?"/, 'custom-string'],
-//     ],
-//   },
-// })
+interface MoveEditorProps extends Partial<EditorProps> {
+  initialCode: string
+  onCodeChange: (code: string) => void
+}
 
-// // 3. Define custom theme
-// monaco.editor.defineTheme('customTheme', {
-//   base: 'vs-dark',
-//   inherit: true,
-//   rules: [
-//     { token: 'custom-error', foreground: 'ff0000', fontStyle: 'bold' },
-//     { token: 'custom-notice', foreground: 'FFA500' },
-//     { token: 'custom-info', foreground: '808080' },
-//     { token: 'custom-control-flow', foreground: 'C586C0', fontStyle: 'italic' },
-//     { token: 'custom-number', foreground: 'B5CEA8' },
-//     { token: 'custom-string', foreground: 'CE9178' },
-//   ],
-//   colors: {
-//     'editor.background': '#1E1E1E',
-//   },
-// })
+interface CodeSnippet {
+  label: string
+  insertText: string
+  documentation: string
+}
 
-// // 4. Configure custom completion
-// monaco.languages.registerCompletionItemProvider('customLang', {
-//   provideCompletionItems: () => {
-//     const suggestions = [
-//       {
-//         label: 'ifstatement',
-//         kind: monaco.languages.CompletionItemKind.Snippet,
-//         insertText: 'if (${1:condition}) {\n\t$0\n}',
-//         insertTextRules:
-//           monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-//         documentation: 'If statement',
-//       },
-//       {
-//         label: 'forloop',
-//         kind: monaco.languages.CompletionItemKind.Snippet,
-//         insertText:
-//           'for (let ${1:i} = 0; ${1:i} < ${2:length}; ${1:i}++) {\n\t$0\n}',
-//         insertTextRules:
-//           monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-//         documentation: 'For loop',
-//       },
-//     ]
-//     return { suggestions: suggestions }
-//   },
-// })
+const moveSnippets: CodeSnippet[] = [
+  // https://uutool.cn/list-ln/
+  {
+    label: 'case-nft',
+    insertText: NFT,
+    documentation: '创建 NFT',
+  },
+  {
+    label: 'case-type',
+    insertText: TYPE,
+    documentation: '创建 type',
+  },
+  {
+    label: 'module-snip',
+    insertText: 'module ${1:address}::${2:moduleName} {\n\t${0}\n}',
+    documentation: '模块定义',
+  },
+  {
+    label: 'fun',
+    insertText:
+      'public fun ${1:name}(${2:params}) ${3:return_type} {\n\t${0}\n}',
+    documentation: '函数定义',
+  },
+  {
+    label: 'struct',
+    insertText: 'struct ${1:Name} {\n\t${2:field}: ${3:type},\n\t${0}\n}',
+    documentation: '结构体定义',
+  },
+  {
+    label: 'if',
+    insertText: 'if (${1:condition}) {\n\t${0}\n}',
+    documentation: 'if 语句',
+  },
+  {
+    label: 'while',
+    insertText: 'while (${1:condition}) {\n\t${0}\n}',
+    documentation: 'while 循环',
+  },
+]
 
-// // 5. Update your Editor component
-// ;<Editor
-//   height="100%"
-//   defaultLanguage="customLang"
-//   defaultValue={code}
-//   theme="customTheme"
-//   onMount={(editor, monaco) => {
-//     handleEditorDidMount(editor, monaco)
-//     // Additional setup if needed
-//   }}
-//   onChange={handleEditorChange}
-//   options={{
-//     minimap: { enabled: false },
-//     fontSize: 14,
-//     // Add more options as needed
-//   }}
-// />
-export {}
+const moveKeywords = [
+  'module',
+  'struct',
+  'public',
+  'fun',
+  'let',
+  'mut',
+  'if',
+  'else',
+  'while',
+  'loop',
+  'return',
+  'move',
+  'copy',
+  'resource',
+  'acquires',
+  'use',
+  'as',
+  'native',
+  'abort',
+  'break',
+  'continue',
+  'const',
+  'true',
+  'false',
+  'address',
+]
+
+const MoveEditor: React.FC<MoveEditorProps> = ({
+  initialCode,
+  onCodeChange,
+  ...props
+}) => {
+  const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null)
+
+  const handleEditorChange: OnChange = useCallback(
+    (value, event) => {
+      if (value !== undefined) {
+        onCodeChange(value)
+      }
+    },
+    [onCodeChange]
+  )
+
+  const handleEditorDidMount: OnMount = useCallback((editor, monaco) => {
+    editorRef.current = editor
+
+    // 注册 Move 语言
+    monaco.languages.register({ id: 'move' })
+
+    // 设置 Move 语法高亮
+    monaco.languages.setMonarchTokensProvider('move', {
+      tokenizer: {
+        root: [
+          [
+            /[a-z_$][\w$]*/,
+            {
+              cases: {
+                '@moveKeywords': 'keyword',
+                '@default': 'variable',
+              },
+            },
+          ],
+          [/".*?"/, 'string'],
+          [/\/\/.*/, 'comment'],
+          [/[0-9]+/, 'number'],
+          [/0x[0-9a-fA-F]+/, 'number.hex'],
+        ],
+      },
+      moveKeywords: moveKeywords,
+    })
+
+    // 设置 Move 代码补全
+    monaco.languages.registerCompletionItemProvider('move', {
+      provideCompletionItems: (model, position) => {
+        const word = model.getWordUntilPosition(position)
+        const range = {
+          startLineNumber: position.lineNumber,
+          endLineNumber: position.lineNumber,
+          startColumn: word.startColumn,
+          endColumn: word.endColumn,
+        }
+
+        const createCompletionItem = (
+          snippet: CodeSnippet
+        ): Monaco.languages.CompletionItem => ({
+          label: snippet.label,
+          kind: monaco.languages.CompletionItemKind.Snippet,
+          insertText: snippet.insertText,
+          insertTextRules:
+            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          documentation: snippet.documentation,
+          range: range,
+        })
+
+        const createKeywordItem = (
+          keyword: string
+        ): Monaco.languages.CompletionItem => ({
+          label: keyword,
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: keyword,
+          range: range,
+        })
+
+        const snippetSuggestions: Monaco.languages.CompletionItem[] =
+          moveSnippets.map(createCompletionItem)
+
+        const keywordSuggestions: Monaco.languages.CompletionItem[] =
+          moveKeywords.map(createKeywordItem)
+
+        return {
+          suggestions: [...snippetSuggestions, ...keywordSuggestions],
+        }
+      },
+    })
+  }, [])
+
+  return (
+    <MonacoEditor
+      height="100%"
+      theme="vs-dark"
+      defaultLanguage="move"
+      value={initialCode}
+      onChange={handleEditorChange}
+      onMount={handleEditorDidMount}
+      options={{
+        minimap: { enabled: false },
+        fontSize: 14,
+      }}
+      {...props}
+    />
+  )
+}
+
+export default MoveEditor

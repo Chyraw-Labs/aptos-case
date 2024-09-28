@@ -201,7 +201,12 @@ const WalletMenu = () => {
         <>
           <PopoverButton
             className={`
-            ${open ? 'text-white bg-gray-700' : 'text-white bg-gray-500'}
+            ${
+              open
+                ? 'text-white bg-white/10 bg-opacity-20 outline outline-1'
+                : 'text-white bg-opacity-100 outline outline-1'
+            }
+            
             inline-flex items-center px-4 py-2 text-sm font-medium rounded-md hover:bg-white hover:text-black text-white focus-visible:text-gray-700 focus-visible:bg-gray-100`}
             onClick={() => setIsOpen(!isOpen)}
           >
