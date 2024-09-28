@@ -23,14 +23,14 @@ export const Card: React.FC<CardProps> = ({
             <Image
               src={imagePath}
               alt="case"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }} // 使用 style 来设置 objectFit
               className="rounded-t-md"
             />
           </div>
           <div className="h-1/4 p-2">
-            <p>{description}</p>
-            <p>{children}</p>
+            <div>{description}</div>
+            <div>{children}</div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-export const HELLO = `module creator::hello {
+export const HELLO = `module case::hello {
     #[test_only]
     use std::string;
     #[test_only]
@@ -10,7 +10,7 @@ export const HELLO = `module creator::hello {
         print(&hello);
     }
 }`
-export const TYPE = `module base::test{
+export const TYPE = `module case::test{
 
     #[test_only]
     use std::string;

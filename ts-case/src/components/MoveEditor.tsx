@@ -1,8 +1,9 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { EditorProps, OnMount, OnChange } from '@monaco-editor/react'
 import type * as Monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { NFT, TYPE } from '@/code-case/move'
+import { useMoveEditor } from './MoveEditorProvider'
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -92,12 +93,16 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
   onCodeChange,
   ...props
 }) => {
+  const { setCode } = useMoveEditor() // 使用 Context
+  const [code] = useState(initialCode)
   const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null)
 
   const handleEditorChange: OnChange = useCallback(
-    (value, event) => {
+    (value) => {
       if (value !== undefined) {
         onCodeChange(value)
+        setCode(value)
+        console.log('code: ', value)
       }
     },
     [onCodeChange]
@@ -181,7 +186,7 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
       height="100%"
       theme="vs-dark"
       defaultLanguage="move"
-      value={initialCode}
+      value={code}
       onChange={handleEditorChange}
       onMount={handleEditorDidMount}
       options={{

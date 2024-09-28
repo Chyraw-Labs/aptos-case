@@ -3,9 +3,9 @@ import { HELLO } from '@/code-case/move'
 import MoveEditorWrapper from '@/components/MoveEditorWrapper'
 
 export default function Home() {
-  const handleCodeChange = (newCode: string) => {
-    console.log('New code:', newCode)
-  }
+  // const handleCodeChange = (newCode: string) => {
+  //   console.log('New code:', newCode)
+  // }
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>

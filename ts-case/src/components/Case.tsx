@@ -11,8 +11,17 @@ import {
   ArrowLeftRight,
 } from 'lucide-react'
 import styles from '@/styles/md.module.css'
-import Editor, { OnMount, OnChange } from '@monaco-editor/react'
-import * as monaco from 'monaco-editor'
+// import { OnMount, OnChange } from '@monaco-editor/react'
+// import * as monaco from 'monaco-editor'
+import MoveEditorWrapper from './MoveEditorWrapper'
+import { HELLO } from '@/code-case/move'
+// import { MoveEditorProvider } from './MoveEditorProvider'
+import { useMoveEditor } from './MoveEditorProvider'
+import DocsTable from './DocsTable'
+import useCompileMove from '@/move-wasm/CompileMove'
+
+import { useWallet } from '@aptos-labs/wallet-adapter-react'
+import { MoveWasm } from '@/move-wasm/MoveWasm'
 
 interface CaseProps {
   mdPath: string
@@ -21,6 +30,11 @@ interface CaseProps {
   description?: string
   tag?: string
   children?: React.ReactNode
+}
+
+interface CompileMoveResult {
+  response: string
+  // 其他属性
 }
 
 const Case: React.FC<CaseProps> = ({
@@ -41,7 +55,8 @@ const Case: React.FC<CaseProps> = ({
   const [output, setOutput] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const splitPaneRef = useRef<HTMLDivElement>(null)
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
+  const { account } = useWallet()
+  // const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
   const sizeClasses = {
     sm: 'w-64 h-40',
@@ -83,7 +98,15 @@ const Case: React.FC<CaseProps> = ({
     }
   }
 
+  const { exportCode } = useMoveEditor()
+  const editorCode = exportCode()
   useEffect(() => {
+    setCode(editorCode)
+  }, [editorCode])
+  // console.log(exportCode())
+  useEffect(() => {
+    setCode(HELLO)
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return
       if (splitPaneRef.current) {
@@ -108,19 +131,29 @@ const Case: React.FC<CaseProps> = ({
       document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [isDragging])
-  const handleEditorDidMount: OnMount = (editor) => {
-    editorRef.current = editor
-  }
+  // const handleEditorDidMount: OnMount = (editor) => {
+  //   editorRef.current = editor
+  // }
 
-  const handleEditorChange: OnChange = (value) => {
-    if (value !== undefined) {
-      setCode(value)
-    }
-  }
-
+  // const handleEditorChange: OnChange = (value) => {
+  //   if (value !== undefined) {
+  //     setCode(value)
+  //   }
+  // }
+  const result = useCompileMove() as CompileMoveResult | null
   const handleRunCode = () => {
-    // This is a placeholder. In a real application, you'd send the code to a backend for execution.
-    setOutput(`Executing code:\n\n${code}\n\nOutput would appear here.`)
+    console.log(result)
+    if (result) {
+      console.log('address: ', account?.address, 'result: ', result.response)
+      if (result.response) {
+        setOutput(`Address: ${account?.address} \n\n${result.response}\n[END]`)
+      } else {
+        setOutput(`Address: ${account?.address} \n\nSUCCESS\n\n[END]`)
+      }
+    } else {
+      setOutput(`Address: ${account?.address} \n\nUndefined\n\n[END]`)
+      console.log('Result is null or undefined')
+    }
   }
 
   const handleDragStart = () => {
@@ -255,9 +288,8 @@ const Case: React.FC<CaseProps> = ({
                   {/* Code Editor */}
                   <div className="flex-1 overflow-hidden flex flex-col">
                     <div className="flex justify-between items-center p-4">
-                      <h2 className="text-xl font-bold text-black">
-                        Code Editor
-                      </h2>
+                      <h2 className="text-xl font-bold text-black">编辑器</h2>
+                      <DocsTable />
                       <div className="flex space-x-2 pr-16">
                         <button
                           onClick={() => handleLayoutChange('left')}
@@ -280,28 +312,21 @@ const Case: React.FC<CaseProps> = ({
                       </div>
                     </div>
                     <div className="flex-1 overflow-hidden">
-                      <Editor
-                        height="100%"
-                        defaultLanguage="rust"
-                        defaultValue={code}
-                        onMount={handleEditorDidMount}
-                        onChange={handleEditorChange}
-                        options={{
-                          minimap: { enabled: false },
-                          fontSize: 14,
-                        }}
-                      />
+                      <div style={{ height: '100vh', width: '100%' }}>
+                        <MoveEditorWrapper initialCode={code} />
+                      </div>
                     </div>
                   </div>
                   {/* Command Line */}
                   <div className="h-1/3 bg-black text-white flex flex-col overflow-hidden">
                     <div className="flex justify-between items-center p-4">
-                      <h2 className="text-xl font-bold">Command Line</h2>
+                      <h2 className="text-xl font-bold">输出</h2>
+                      <MoveWasm />
                       <button
                         onClick={handleRunCode}
                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                       >
-                        Run
+                        运行
                       </button>
                     </div>
                     <pre className="flex-1 overflow-y-auto p-2 bg-gray-800 rounded m-4">

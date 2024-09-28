@@ -11,8 +11,8 @@ import {
   ArrowLeftRight,
 } from 'lucide-react'
 // import styles from '@/styles/md.module.css'
-import Editor, { OnMount, OnChange } from '@monaco-editor/react'
-import * as monaco from 'monaco-editor'
+// import { OnMount } from '@monaco-editor/react'
+// import * as monaco from 'monaco-editor'
 import WalletButton from './WalletButton'
 import Image from 'next/image'
 import '@aptos-labs/wallet-adapter-ant-design/dist/index.css'
@@ -27,11 +27,11 @@ const Playground: React.FC = () => {
   // const [isLoading, setIsLoading] = useState(false)
   // const [error, setError] = useState<string | null>(null)
   const [splitRatio, setSplitRatio] = useState(50)
-  const [code, setCode] = useState('// Write your code here')
+  const [code] = useState('// Write your code here')
   const [output, setOutput] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const splitPaneRef = useRef<HTMLDivElement>(null)
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
+  // const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
   // const fetchMdxContent = async () => {
   //   setIsLoading(true)
@@ -62,15 +62,16 @@ const Playground: React.FC = () => {
       document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [isDragging])
-  const handleEditorDidMount: OnMount = (editor) => {
-    editorRef.current = editor
-  }
 
-  const handleEditorChange: OnChange = (value) => {
-    if (value !== undefined) {
-      setCode(value)
-    }
-  }
+  // const handleEditorDidMount: OnMount = (editor) => {
+  //   editorRef.current = editor
+  // }
+
+  // const handleEditorChange: OnChange = (value) => {
+  //   if (value !== undefined) {
+  //     setCode(value)
+  //   }
+  // }
 
   const handleRunCode = () => {
     // This is a placeholder. In a real application, you'd send the code to a backend for execution.
