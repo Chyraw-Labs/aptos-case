@@ -1,15 +1,19 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
 import { useMoveEditor } from '@/components/MoveEditorProvider'
 import init, { check_build_module } from './hello_wasm'
 import { vector } from './lib/vector'
 import { option } from './lib/option'
+import { string } from './lib/string'
+import { signer } from './lib/signer'
+
+// import dynamic from 'next/dynamic'
 
 // Initialize WASM
-init('./move-1.wasm').then(() => {
-  console.log('wasm loaded')
-})
+// init('/move-1.wasm').then(() => {
+//   console.log('wasm loaded')
+// })
 
 export function MoveWasm() {
   const { signAndSubmitTransaction, account } = useWallet()
@@ -20,32 +24,45 @@ export function MoveWasm() {
     metadata: []
     units: [[]]
   } | null>(null)
-  const editorCode = exportCode()
-  useEffect(() => {
-    if (!editorCode) return
+  const [wasmLoaded, setWasmLoaded] = useState(false)
 
+  useEffect(() => {
+    const loadWasm = async () => {
+      try {
+        // 使用相对路径或绝对路径，取决于你的项目结构
+        await init(new URL('./move-1.wasm', import.meta.url))
+        console.log('WASM loaded successfully')
+        setWasmLoaded(true)
+      } catch (error) {
+        console.error('Failed to load WASM:', error)
+      }
+    }
+
+    loadWasm()
+    console.log(wasmLoaded)
+  }, [wasmLoaded])
+
+  useEffect(() => {
+    const editorCode = exportCode()
     setCode(editorCode)
-    console.log('[INFO] useEffect: ', editorCode)
+    console.log(editorCode)
   }, [exportCode])
 
-  useEffect(() => {
-    compileMove()
-  }, [code, account])
-
-  // Compile
-  async function compileMove() {
-    if (!code || !account?.address) return
+  const compileMove = useCallback(async () => {
+    if (!code || !account?.address || !wasmLoaded) return
 
     console.log('[INFO] compile: ', code)
     try {
       const result = (await check_build_module({
-        package_name: 'test_package', // 包名
-        target_symbols: ['source.move'], // 目标符号
-        target_source: [`${code}`], // 目标源代码
-        target_named_address_symbol: ['case', 'std'], // 命名地址符号
-        target_named_address: [account.address, '0x1'], // 命名地址
-        deps_symbols: [['option.move', 'vector.move']], // 依赖符号
-        deps_source: [[option, vector]], // 依赖源
+        package_name: 'test_package',
+        target_symbols: ['source.move'],
+        target_source: [`${code}`],
+        target_named_address_symbol: ['test_module', 'std'],
+        target_named_address: [account.address, '0x1'],
+        deps_symbols: [
+          ['option.move', 'vector.move', 'string.move', 'signer.move'],
+        ],
+        deps_source: [[option, vector, string, signer]],
       })) as { response: string; metadata: []; units: [[]] }
       setCompileResult(result)
       console.log(result)
@@ -54,10 +71,16 @@ export function MoveWasm() {
       console.error('Compilation error:', error)
       setCompileResult(null)
     }
-  }
+  }, [code, account?.address, wasmLoaded])
+
+  useEffect(() => {
+    if (wasmLoaded && code && account?.address) {
+      compileMove()
+    }
+  }, [compileMove, wasmLoaded, code, account?.address])
 
   // Submit transaction
-  async function submitTransaction() {
+  const submitTransaction = useCallback(async () => {
     if (!account?.address || !compileResult) return
     console.log('[INFO] submit transaction: ', code)
     try {
@@ -72,64 +95,19 @@ export function MoveWasm() {
     } catch (error) {
       console.error('Transaction submission error:', error)
     }
-  }
-
-  const handleSubmit = () => {
-    submitTransaction()
-  }
-
-  const handleCompile = () => {
-    compileMove()
-  }
+  }, [account?.address, compileResult, code, signAndSubmitTransaction])
 
   return (
     <>
-      <button
-        onClick={handleCompile}
-        disabled={!account?.address}
-        className="hover:text-red-300"
-      >
+      <button onClick={compileMove} disabled={!account?.address}>
         编译
       </button>
       <button
-        onClick={handleSubmit}
+        onClick={submitTransaction}
         disabled={!account?.address || !compileResult}
       >
-        <p className="text-red-100 hover:text-red-300">发布</p>
+        提交
       </button>
     </>
   )
-}
-
-export async function MoveCompile() {
-  const { account } = useWallet()
-  const [code, setCode] = useState('')
-  const { exportCode } = useMoveEditor()
-  const [result, setResult] = useState<{
-    response: string
-    metadata: []
-    units: [[]]
-  } | null>(null)
-  setCode(exportCode())
-  if (!code || !account?.address) return
-
-  console.log('[INFO] compile: ', code)
-  try {
-    const response = (await check_build_module({
-      package_name: 'test_package', // 包名
-      target_symbols: ['source.move'], // 目标符号
-      target_source: [`${code}`], // 目标源代码
-      target_named_address_symbol: ['case', 'std'], // 命名地址符号
-      target_named_address: [account.address, '0x1'], // 命名地址
-      deps_symbols: [['option.move', 'vector.move']], // 依赖符号
-      deps_source: [[option, vector]], // 依赖源
-    })) as { response: string; metadata: []; units: [[]] }
-    setResult(response)
-    console.log(response)
-  } catch (error) {
-    console.error('Compilation error:', error)
-    setResult(null)
-  }
-  console.log(result)
-  return result
 }

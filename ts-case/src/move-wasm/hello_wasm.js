@@ -198,7 +198,7 @@ function debugString(val) {
     // easier than looping through ownProperties of `val`.
     try {
       return 'Object(' + JSON.stringify(val) + ')'
-    } catch (_) {
+    } catch {
       return 'Object'
     }
   }
@@ -345,7 +345,7 @@ function __wbg_get_imports() {
     return ret
   }
   imports.wbg.__wbg_new_16b304a2cfa7ff4a = function () {
-    const ret = new Array()
+    const ret = []
     return addHeapObject(ret)
   }
   imports.wbg.__wbg_next_40fc327bfc8770e6 = function (arg0) {
@@ -397,7 +397,7 @@ function __wbg_get_imports() {
     let result
     try {
       result = getObject(arg0) instanceof ArrayBuffer
-    } catch (_) {
+    } catch {
       result = false
     }
     const ret = result
@@ -422,7 +422,7 @@ function __wbg_get_imports() {
     let result
     try {
       result = getObject(arg0) instanceof Uint8Array
-    } catch (_) {
+    } catch {
       result = false
     }
     const ret = result
@@ -450,7 +450,7 @@ function __wbg_get_imports() {
   return imports
 }
 
-function __wbg_init_memory(imports, maybe_memory) {}
+function __wbg_init_memory() {}
 
 function __wbg_finalize_init(instance, module) {
   wasm = instance.exports

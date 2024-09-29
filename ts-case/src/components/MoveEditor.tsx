@@ -105,7 +105,7 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
         console.log('code: ', value)
       }
     },
-    [onCodeChange]
+    [onCodeChange, setCode]
   )
 
   const handleEditorDidMount: OnMount = useCallback((editor, monaco) => {

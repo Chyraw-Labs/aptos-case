@@ -18,8 +18,8 @@ export default function DocsTable() {
                 className="block rounded-lg py-2 px-3 transition hover:bg-white/5"
                 href="#"
               >
-                <p className="font-semibold text-white">Insights</p>
-                <p className="text-white/50">Measure actions your users take</p>
+                <p className="font-semibold text-white">提示</p>
+                <p className="text-white/50">debug 库不可用</p>
               </a>
               <a
                 className="block rounded-lg py-2 px-3 transition hover:bg-white/5"

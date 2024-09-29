@@ -1,0 +1,196 @@
+/* 基础代码块样式 */
+@font-face {
+  font-family: 'Hack';
+  src: url('https://cdn.jsdelivr.net/gh/source-foundry/Hack@latest/build/ttf/Hack-Regular.ttf')
+    format('truetype');
+}
+pre {
+  background-color: #282c34;
+  color: #abb2bf;
+  padding: 1em;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+code {
+  font-family: 'Hack', monospace;
+}
+
+/* 'pass' 语言样式 */
+.language-pass,
+.hljs-pass {
+  color: #98c379; /* 浅绿色 */
+}
+
+.language-pass .hljs-keyword,
+.hljs-pass .hljs-keyword {
+  color: #61afef; /* 浅蓝色 */
+  font-weight: bold;
+}
+
+.language-pass .hljs-string,
+.hljs-pass .hljs-string {
+  color: #e5c07b; /* 浅黄色 */
+}
+
+/* 'error' 语言样式 */
+.language-error,
+.hljs-error {
+  color: #e06c75; /* 浅红色 */
+}
+
+.language-error .hljs-keyword,
+.hljs-error .hljs-keyword {
+  color: #c678dd; /* 紫色 */
+  font-weight: bold;
+}
+
+.language-error .hljs-string,
+.hljs-error .hljs-string {
+  color: #d19a66; /* 橙色 */
+}
+
+/* 'aptos' 语言样式 */
+.language-aptos,
+.hljs-aptos {
+  color: #56b6c2; /* 青色 */
+}
+
+.language-aptos .hljs-keyword,
+.hljs-aptos .hljs-keyword {
+  color: #c678dd; /* 紫色 */
+  font-weight: bold;
+}
+
+.language-aptos .hljs-string,
+.hljs-aptos .hljs-string {
+  color: #98c379; /* 浅绿色 */
+}
+
+/* 通用高亮样式 */
+.hljs-comment,
+.hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: #c678dd;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e06c75;
+}
+
+.hljs-literal {
+  color: #56b6c2;
+}
+
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string,
+.hljs-regexp,
+.hljs-string {
+  color: #98c379;
+}
+
+/* Move language syntax highlighting */
+.hljs-keyword {
+  color: #569cd6;
+  font-weight: bold;
+}
+
+.hljs-type {
+  color: #4ec9b0;
+}
+
+.hljs-literal {
+  color: #569cd6;
+  font-weight: bold;
+}
+
+.hljs-title {
+  color: #dcdcaa;
+}
+
+.hljs-string {
+  color: #ce9178;
+}
+
+.hljs-comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.hljs-number {
+  color: #b5cea8;
+}
+
+.hljs-symbol {
+  color: #4fc1ff;
+}
+
+.hljs-class .hljs-title {
+  color: #4ec9b0;
+}
+
+.hljs-function .hljs-title {
+  color: #dcdcaa;
+}
+
+.hljs-built_in {
+  color: #4ec9b0;
+  font-weight: bold;
+}
+
+.hljs-operator {
+  color: #d4d4d4;
+}
+
+.hljs-punctuation {
+  color: #d4d4d4;
+}
+
+.hljs-meta {
+  color: #569cd6;
+}
+
+/* 为特定关键字添加样式 */
+.language-move .keyword {
+  color: #c586c0;
+}
+
+.language-move .keyword.module,
+.language-move .keyword.struct,
+.language-move .keyword.fun,
+.language-move .keyword.public {
+  color: #569cd6;
+}
+
+.language-move .keyword.let,
+.language-move .keyword.mut {
+  color: #9cdcfe;
+}
+
+.language-move .keyword.if,
+.language-move .keyword.else,
+.language-move .keyword.loop,
+.language-move .keyword.while,
+.language-move .keyword.break,
+.language-move .keyword.continue {
+  color: #c586c0;
+}
+
+.language-move .keyword.return {
+  color: #569cd6;
+}
+
+.language-move .keyword.acquires {
+  color: #4fc1ff;
+}

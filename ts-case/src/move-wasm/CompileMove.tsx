@@ -4,6 +4,8 @@ import { useMoveEditor } from '@/components/MoveEditorProvider'
 import init, { check_build_module } from './hello_wasm'
 import { vector } from './lib/vector'
 import { option } from './lib/option'
+import { string } from './lib/string'
+import { signer } from './lib/signer'
 
 const useCompileMove = () => {
   const { account } = useWallet()
@@ -30,8 +32,10 @@ const useCompileMove = () => {
           target_source: [`${exportedCode}`],
           target_named_address_symbol: ['case', 'std'],
           target_named_address: [account.address, '0x1'],
-          deps_symbols: [['option.move', 'vector.move']],
-          deps_source: [[option, vector]],
+          deps_symbols: [
+            ['option.move', 'vector.move', 'string.move', 'signer.move'],
+          ],
+          deps_source: [[option, vector, string, signer]],
         })
         setResult(response)
         console.log(response)

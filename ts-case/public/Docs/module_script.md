@@ -7,6 +7,7 @@ Move 有两种不同类型的程序：**模块**和**脚本**。
 要学习如何发布和执行 Move 脚本，请按照 Move 脚本章节的示例进行操作。
 
 # 1. 脚本
+
 脚本具有以下结构：
 
 ```rust
@@ -17,16 +18,15 @@ script {
 }
 ```
 
-
 脚本必须以 `use` 声明开头，然后是常量，最后是 `main` 函数声明。`main` 函数的名称并不必须是 “main”名称，它是脚本中唯一的函数，可以有任意数量的参数，并且不能有返回值。这里有一个包含这些规则的示例：
 
 ```rust
 script {
     // 导入在名为std的账户地址下发布的调试模块。
     use std::debug;
-   
+
     const ONE: u64 = 1;
-   
+
     fun main(x: u64) {
         let sum = x + ONE;
         debug::print(&sum)
@@ -53,12 +53,12 @@ module <address>::<identifier> { // 这里的 <address> 是一个有效的地址
 ```rust
 module 0x42::example { // 字面量地址
     struct Example has copy, drop { i: u64 }
-   
+
     use std::debug;
     friend 0x42::another_example;
-   
+
     const ONE: u64 = 1;
-   
+
     public fun print(x: u64) {
         let sum = x + ONE;
         let example = Example { i: sum };
@@ -74,10 +74,10 @@ module 0x42::example { // 字面量地址
 ```rust
 module example_addr::example {
     struct Example has copy, drop { a: address }
-   
+
     use std::debug;
     friend example_addr::another_example;
-   
+
     public fun print() {
         let example = Example { a: @example_addr };
         debug::print(&example)
@@ -105,8 +105,8 @@ script {
 }
 ```
 
->[!TIP] 提示
->然而，在源代码级别，这些并不等价 —— 函数 `m::foo` 必须通过 `my_addr` 命名地址访问，而不是通过分配给该地址的数值。
+> [!TIP] 提示
+> 然而，在源代码级别，这些并不等价 —— 函数 `m::foo` 必须通过 `my_addr` 命名地址访问，而不是通过分配给该地址的数值。
 
 模块名称只能以字母 `a` 到 `z` 或 `A` 到 `Z` 作为开头。在第一个字符之后，模块名称可以包含下划线 `_`、字母 `a` 到 `z` 、字母 `A` 到 `Z` 或数字 `0` 到 `9`
 
