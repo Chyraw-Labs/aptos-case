@@ -25,3 +25,63 @@ body {
     text-wrap: balance;
   }
 }
+
+/* 列表通用样式 */
+.ul,
+.ol {
+  padding-left: 0; /* 移除默认的左内边距 */
+  list-style-type: none; /* 移除默认的列表样式 */
+}
+
+.li {
+  margin-bottom: 5px; /* 列表项间距 */
+  padding-left: 1.2em; /* 为列表项标记留出空间 */
+  position: relative; /* 为绝对定位的伪元素创建参考 */
+}
+
+/* 有序列表样式 */
+.ol {
+  counter-reset: item; /* 重置计数器 */
+}
+
+.ol > .li::before {
+  content: counter(item) '. '; /* 使用计数器值加点和空格 */
+  counter-increment: item; /* 增加计数器 */
+  position: absolute;
+  left: 0;
+}
+
+.ol .ol > .li::before {
+  content: counter(item, lower-alpha) ') '; /* 使用小写字母加括号和空格 */
+}
+
+.ol .ol .ol > .li::before {
+  content: counter(item, lower-roman) '. '; /* 使用小写罗马数字加点和空格 */
+}
+
+/* 无序列表样式 */
+.ul > .li::before {
+  content: '\2022'; /* 使用实心圆点 Unicode 字符 */
+  color: #3498db; /* 一级无序列表圆点颜色 */
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.ul .ul > .li::before {
+  content: '\25E6'; /* 使用空心圆点 Unicode 字符 */
+  color: #e74c3c; /* 二级无序列表圆点颜色 */
+}
+
+.ul .ul .ul > .li::before {
+  content: '\25AA'; /* 使用小方块 Unicode 字符 */
+  color: #2ecc71; /* 三级无序列表圆点颜色 */
+}
+
+.code {
+  background-color: rgba(200, 200, 200, 0.4);
+  backdrop-filter: blur(10px); /* 模糊效果 */
+  color: #ff9500; /* 文字颜色 */
+  padding: 2px 4px; /* 内边距 */
+  border-radius: 4px; /* 圆角 */
+}

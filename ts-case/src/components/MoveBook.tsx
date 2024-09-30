@@ -1,11 +1,11 @@
 import { HELLO } from '@/code-case/move'
 import Case from './Case'
 
-export const AllCase = () => {
+export const MoveBook = () => {
   return (
     <>
       <div className="flex flex-col items-center mx-4 my-4">
-        <p className="font-bold text-9xl mb-4">所有案例</p>
+        <p className="font-bold text-9xl mb-4">Move 手册</p>
         <div className="py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Case
             mdPath="/Docs/test.md"
@@ -27,7 +27,7 @@ export const AllCase = () => {
           </Case>
           <Case
             mdPath="/Docs/hello_world.md"
-            // codeCase={HELLO}
+            codeCase={HELLO}
             cover="/images/cover/hello_world.jpg"
             size="md"
             description="开发者初学第一步"

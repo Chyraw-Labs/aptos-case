@@ -429,3 +429,257 @@ export const NFT = `module my_first_nft::my_first_nft {
         init_module(sender)
     }
 }`
+
+export const MAILBOX = `module case::mailbox {
+
+    use std::option::{Self, Option};
+    use std::signer;
+    use std::string::String;
+    use std::vector;
+    use aptos_std::smart_table::{Self, SmartTable};
+    use aptos_std::smart_vector::{Self, SmartVector};
+    use aptos_framework::aptos_coin::AptosCoin;
+    use aptos_framework::coin::{Self, Coin};
+    use aptos_framework::object::{Self, Object, ObjectCore, ExtendRef};
+    use aptos_token::token::{Self, Token, TokenId};
+
+    const E_TOKEN_INPUT_LENGTH_MISMATCH: u64 = 2;
+
+    const E_NO_MAILBOX_EXISTS: u64 = 3;
+
+    const E_MAILBOX_NOT_EMPTY: u64 = 4;
+
+    const E_MAILBOX_EMPTY: u64 = 5;
+
+    const E_OUT_OF_BOUNDS: u64 = 6;
+
+    const E_NOT_SENDER: u64 = 7;
+
+    const SEED: vector<u8> = b"Mailbox";
+
+    struct MailboxRouter has key {
+        mailboxes: SmartTable<MailboxId, Mailbox>,
+        extend_ref: ExtendRef,
+    }
+
+    struct MailboxId has store, copy, drop {
+        receiver: address
+    }
+
+    struct Mailbox has store {
+        mail: SmartVector<Envelope>,
+    }
+
+    struct Envelope has store {
+        sender: address,
+        note: Option<String>,
+        coins: Option<Coin<AptosCoin>>,
+        legacy_tokens: vector<Token>,
+        objects: vector<Object<ObjectCore>>
+    }
+
+    fun init_module(deployer: &signer) {
+        let constructor_ref = object::create_named_object(deployer, SEED);
+        let extend_ref = object::generate_extend_ref(&constructor_ref);
+
+        let transfer_ref = object::generate_transfer_ref(&constructor_ref);
+        object::disable_ungated_transfer(&transfer_ref);
+
+        let object_signer = object::generate_signer(&constructor_ref);
+        move_to(&object_signer, MailboxRouter {
+            mailboxes: smart_table::new(),
+            extend_ref
+        });
+    }
+
+    entry fun send_mail(
+        caller: &signer,
+        receiver: address,
+        note: Option<String>,
+        coin_amount: u64,
+        objects: vector<Object<ObjectCore>>,
+        legacy_token_creator_addresses: vector<address>,
+        legacy_token_collection_names: vector<String>,
+        legacy_token_names: vector<String>,
+    ) acquires MailboxRouter {
+        assert!(
+            vector::length(&legacy_token_creator_addresses) == vector::length(&legacy_token_collection_names),
+            E_TOKEN_INPUT_LENGTH_MISMATCH
+        );
+        assert!(
+            vector::length(&legacy_token_creator_addresses) == vector::length(&legacy_token_names),
+            E_TOKEN_INPUT_LENGTH_MISMATCH
+        );
+
+        let token_ids = vector[];
+        let length = vector::length(&legacy_token_names);
+        for (i in 0..length) {
+            let creator_address = *vector::borrow(&legacy_token_creator_addresses, i);
+            let collection_name = *vector::borrow(&legacy_token_collection_names, i);
+            let token_name = *vector::borrow(&legacy_token_names, i);
+            let data_id = token::create_token_data_id(creator_address, collection_name, token_name);
+            let latest_property_version = token::get_tokendata_largest_property_version(creator_address, data_id);
+            let token_id = token::create_token_id(data_id, latest_property_version);
+            vector::push_back(&mut token_ids, token_id);
+        };
+
+        send_mail_internal(caller, receiver, note, coin_amount, objects, token_ids);
+    }
+
+    entry fun open_latest_envelope(caller: &signer) acquires MailboxRouter {
+        let mailbox = get_mailbox(signer::address_of(caller));
+        let length = smart_vector::length(&mailbox.mail);
+        open_envelope(caller, length - 1)
+    }
+
+    entry fun open_oldest_envelope(caller: &signer) acquires MailboxRouter {
+        open_envelope(caller, 0)
+    }
+
+    entry fun open_envelope(caller: &signer, num: u64) acquires MailboxRouter {
+        let caller_address = signer::address_of(caller);
+        let envelope = open_mail(caller_address, num);
+
+        deposit_contents(caller, envelope);
+    }
+
+    entry fun return_envelope(sender: &signer, receiver: address, num: u64) acquires MailboxRouter {
+        let envelope = open_mail(receiver, num);
+
+        assert!(envelope.sender == signer::address_of(sender), E_NOT_SENDER);
+        deposit_contents(sender, envelope);
+    }
+
+    fun deposit_contents(receiver: &signer, envelope: Envelope) acquires MailboxRouter {
+        let receiver_address = signer::address_of(receiver);
+
+        let Envelope {
+            sender: _, 
+            note: _, 
+            coins,
+            legacy_tokens,
+            objects,
+        } = envelope;
+
+        if (option::is_some(&coins)) {
+            coin::deposit(receiver_address, option::destroy_some(coins))
+        } else {
+            option::destroy_none(coins);
+        };
+
+        vector::for_each(legacy_tokens, |legacy_token| {
+            token::deposit_token(receiver, legacy_token);
+        });
+
+        let mailbox_signer = get_mailbox_signer();
+        vector::for_each(objects, |obj| {
+            object::transfer(mailbox_signer, obj, receiver_address)
+        });
+    }
+
+    entry fun destroy_mailbox(caller: &signer) acquires MailboxRouter {
+        let receiver = signer::address_of(caller);
+        let router = get_mailbox_router_mut();
+
+        let mailbox_id = MailboxId { receiver };
+
+        if (smart_table::contains(&router.mailboxes, mailbox_id)) {
+            let is_empty = smart_vector::is_empty(&smart_table::borrow(&router.mailboxes, mailbox_id).mail);
+            assert!(is_empty, E_MAILBOX_NOT_EMPTY);
+
+            let Mailbox {
+                mail,
+            } = smart_table::remove(&mut router.mailboxes, mailbox_id);
+            smart_vector::destroy_empty(mail);
+        }
+    }
+
+    fun send_mail_internal(
+        caller: &signer,
+        receiver: address,
+        note: Option<String>,
+        coin_amount: u64,
+        objects: vector<Object<ObjectCore>>,
+        legacy_token_ids: vector<TokenId>
+    ) acquires MailboxRouter {
+        let coins = coin::withdraw<AptosCoin>(caller, coin_amount);
+
+        vector::for_each_ref(&objects, |obj| {
+            object::transfer(caller, *obj, @deploy_addr);
+        });
+
+        let legacy_tokens = vector::map(legacy_token_ids, |token_id| {
+            token::withdraw_token(caller, token_id, 1)
+        });
+
+        let envelope = Envelope {
+            sender: signer::address_of(caller),
+            note,
+            objects,
+            legacy_tokens,
+            coins: option::some(coins),
+        };
+
+        let router = get_mailbox_router_mut();
+        let mailbox_id = MailboxId {
+            receiver
+        };
+        if (!smart_table::contains(&router.mailboxes, mailbox_id)) {
+            smart_table::add(&mut router.mailboxes, mailbox_id, Mailbox {
+                mail: smart_vector::new(),
+            })
+        };
+
+        let mailbox = smart_table::borrow_mut(&mut router.mailboxes, mailbox_id);
+
+        smart_vector::push_back(&mut mailbox.mail, envelope);
+    }
+
+    fun open_mail(receiver: address, num: u64): Envelope acquires MailboxRouter {
+        let mailbox = get_mailbox_mut(receiver);
+
+        let length = smart_vector::length(&mailbox.mail);
+        assert!(length > 0, E_MAILBOX_EMPTY); 
+        assert!(num < length, E_OUT_OF_BOUNDS);
+
+        smart_vector::remove(&mut mailbox.mail, num)
+    }
+
+    #[view]
+    fun view_mail(receiver: address, num: u64): Envelope acquires MailboxRouter {
+        let mailbox = get_mailbox_mut(receiver);
+
+        smart_vector::remove(&mut mailbox.mail, num)
+    }
+
+    inline fun get_mailbox_router_mut(): &mut MailboxRouter {
+        let mailbox_router_address = object::create_object_address(&@deploy_addr, SEED);
+        borrow_global_mut<MailboxRouter>(mailbox_router_address)
+    }
+
+    inline fun get_mailbox_signer(): &signer {
+        let router = get_mailbox_router_mut();
+        &object::generate_signer_for_extending(&router.extend_ref)
+    }
+
+    inline fun get_mailbox_mut(receiver: address): &mut Mailbox {
+        let router = get_mailbox_router_mut();
+        let mailbox_id = MailboxId {
+            receiver
+        };
+        assert!(smart_table::contains(&router.mailboxes, mailbox_id), E_NO_MAILBOX_EXISTS);
+
+        smart_table::borrow_mut(&mut router.mailboxes, mailbox_id)
+    }
+
+    inline fun get_mailbox(receiver: address): &Mailbox {
+        let router = get_mailbox_router_mut();
+        let mailbox_id = MailboxId {
+            receiver
+        };
+        assert!(smart_table::contains(&router.mailboxes, mailbox_id), E_NO_MAILBOX_EXISTS);
+
+        smart_table::borrow(&mut router.mailboxes, mailbox_id)
+    }
+}
+`

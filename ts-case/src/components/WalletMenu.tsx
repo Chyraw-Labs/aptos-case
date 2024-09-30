@@ -196,11 +196,12 @@ const WalletMenu = () => {
   }
 
   return (
-    <Popover className="relative" ref={popoverRef}>
-      {({ open }) => (
-        <>
-          <PopoverButton
-            className={`
+    <div className="bg-transparent">
+      <Popover className="relative isolate" ref={popoverRef}>
+        {({ open }) => (
+          <>
+            <PopoverButton
+              className={`
             ${
               open
                 ? 'text-white bg-white/10 bg-opacity-20 outline outline-1'
@@ -208,172 +209,172 @@ const WalletMenu = () => {
             }
             
             inline-flex items-center px-4 py-2 text-sm font-medium rounded-md hover:bg-white hover:text-black text-white focus-visible:text-gray-700 focus-visible:bg-gray-100`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span className="font-bold">
-              {account?.address && account.address.length > 8
-                ? `${account.address.slice(0, 6)}...${account.address.slice(
-                    -4
-                  )}`
-                : account?.address || ''}
-            </span>
-
-            <svg
-              className={`${
-                isOpen ? 'transform rotate-180' : ''
-              } ml-2 h-5 w-5 transition-transform`}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </PopoverButton>
-          <Transition
-            show={isOpen}
-            as={Fragment}
-            enter="transition ease-out duration-200"
-            enterFrom="opacity-0 translate-y-1"
-            enterTo="opacity-100 translate-y-0"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100 translate-y-0"
-            leaveTo="opacity-0 translate-y-1"
-          >
-            <PopoverPanel
-              transition
-              anchor="bottom"
-              static
-              className="absolute z-10 mt-1 w-48 p-1 bg-white border rounded shadow-md divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition ease-in-out bg-opacity-20 backdrop-blur-sm"
-            >
-              <div className="divide-y divide-gray-100">
-                <div className="px-1 py-1">
-                  <button
-                    className={`group flex rounded-md items-center w-full px-2 py-2 text-sm text-white ${
-                      isOpenFetchBalance
-                        ? 'bg-opacity-20 bg-gray-300 cursor-not-allowed'
-                        : 'hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-white hover:bg-white/10'
-                    }`}
-                    onClick={handleClick}
-                    disabled={isOpenFetchBalance}
-                  >
-                    <div className="flex items-center justify-between w-full">
-                      <p>余额</p>
+              <span className="font-bold">
+                {account?.address && account.address.length > 8
+                  ? `${account.address.slice(0, 6)}...${account.address.slice(
+                      -4
+                    )}`
+                  : account?.address || ''}
+              </span>
 
-                      <div className="flex items-center">
-                        <p className="text-gray-100 mr-2">{balance}</p>
-                        {isOpenFetchBalance && (
-                          <p className="text-gray-300 text-xs">{cooldown}s</p>
-                        )}
+              <svg
+                className={`${
+                  isOpen ? 'transform rotate-180' : ''
+                } ml-2 h-5 w-5 transition-transform`}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </PopoverButton>
+            <Transition
+              show={isOpen}
+              as={Fragment}
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 translate-y-1"
+            >
+              <PopoverPanel
+                transition
+                // anchor="bottom"
+                static
+                className="absolute z-70 mt-1 w-48 p-1 bg-white bg-opacity-20 backdrop-blur-md  border rounded shadow-md divide-y divide-white/5 rounded-xl transition ease-in-out"
+                // className="absolute z-10 mt-1 w-48 p-1 bg-white/20 backdrop-blur-lg rounded-lg shadow-lg"
+              >
+                <div className="divide-y divide-gray-100 ">
+                  <div className="px-1 py-1">
+                    <button
+                      className={`group flex rounded-md items-center w-full px-2 py-2 text-sm text-white ${
+                        isOpenFetchBalance
+                          ? 'bg-opacity-20 bg-gray-300 cursor-not-allowed'
+                          : 'hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-white hover:bg-white/10'
+                      }`}
+                      onClick={handleClick}
+                      disabled={isOpenFetchBalance}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <p>余额</p>
+
+                        <div className="flex items-center">
+                          <p className="text-gray-100 mr-2">{balance}</p>
+                          {isOpenFetchBalance && (
+                            <p className="text-gray-300 text-xs">{cooldown}s</p>
+                          )}
+                        </div>
                       </div>
+                    </button>
+                    <div className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-white hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-white hover:bg-white/10">
+                      <button
+                        className="w-full h-full text-left"
+                        onClick={() => {
+                          setIsOpenHistory(true)
+                          getHistory()
+                        }}
+                      >
+                        历史记录
+                      </button>
+                      <Dialog
+                        open={isOpenHistory}
+                        onClose={() => setIsOpenHistory(false)}
+                        className="relative z-50"
+                      >
+                        {/* The backdrop, rendered as a fixed sibling to the panel container */}
+                        <div
+                          className="fixed inset-0 bg-black/30 backdrop-blur-sm"
+                          aria-hidden="true"
+                        />
+
+                        {/* Full-screen container to center the panel */}
+                        <div className="fixed inset-0 flex items-center justify-center p-4">
+                          {/* The actual dialog panel  */}
+                          <DialogPanel className="mx-auto max-w-sm rounded bg-white p-6">
+                            <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
+                              历史记录
+                            </DialogTitle>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                well be adding this soon.
+                              </p>
+                            </div>
+
+                            <button
+                              className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              onClick={() => setIsOpenHistory(false)}
+                            >
+                              关闭
+                            </button>
+                          </DialogPanel>
+                        </div>
+                      </Dialog>
                     </div>
-                  </button>
-                  <div className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-white hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-white hover:bg-white/10">
-                    <button
-                      className="w-full h-full text-left" // Changed to text-left
-                      onClick={() => {
-                        setIsOpenHistory(true)
-                        getHistory()
-                      }}
-                    >
-                      历史记录
-                    </button>
+                    <div className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-white hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-white hover:bg-white/10">
+                      <button
+                        className="w-full h-full text-left"
+                        onClick={() => setIsOpenRanking(true)}
+                      >
+                        排名
+                      </button>
+                      <Dialog
+                        open={isOpenRanking}
+                        onClose={() => setIsOpenRanking(false)}
+                        className="relative z-50"
+                      >
+                        {/* The backdrop, rendered as a fixed sibling to the panel container */}
+                        <div
+                          className="fixed inset-0 bg-black/30 backdrop-blur-sm"
+                          aria-hidden="true"
+                        />
 
-                    <Dialog
-                      open={isOpenHistory}
-                      onClose={() => setIsOpenHistory(false)}
-                      className="relative z-50"
-                    >
-                      {/* The backdrop, rendered as a fixed sibling to the panel container */}
-                      <div
-                        className="fixed inset-0 bg-black/30 backdrop-blur-sm"
-                        aria-hidden="true"
-                      />
+                        {/* Full-screen container to center the panel */}
+                        <div className="fixed inset-0 flex items-center justify-center p-4">
+                          {/* The actual dialog panel  */}
+                          <DialogPanel className="mx-auto max-w-sm rounded bg-white p-6">
+                            <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
+                              排名
+                            </DialogTitle>
+                            <div className="mt-2">
+                              <p className="text-sm text-gray-500">
+                                will be added soon
+                              </p>
+                            </div>
 
-                      {/* Full-screen container to center the panel */}
-                      <div className="fixed inset-0 flex items-center justify-center p-4">
-                        {/* The actual dialog panel  */}
-                        <DialogPanel className="mx-auto max-w-sm rounded bg-white p-6">
-                          <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
-                            历史记录
-                          </DialogTitle>
-                          <div className="mt-2">
-                            <p className="text-sm text-gray-500">
-                              well be adding this soon.
-                            </p>
-                          </div>
-
-                          <button
-                            className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                            onClick={() => setIsOpenHistory(false)}
-                          >
-                            关闭
-                          </button>
-                        </DialogPanel>
-                      </div>
-                    </Dialog>
+                            <button
+                              className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              onClick={() => setIsOpenRanking(false)}
+                            >
+                              Close
+                            </button>
+                          </DialogPanel>
+                        </div>
+                      </Dialog>
+                    </div>
                   </div>
-                  <div className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-white hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-white hover:bg-white/10">
+                  <div className="px-1 py-1">
                     <button
-                      className="w-full h-full text-left" // Changed to text-left
-                      onClick={() => setIsOpenRanking(true)}
+                      className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-red-200 hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-red-600 hover:bg-white/10"
+                      onClick={disconnect}
                     >
-                      排名
+                      Disconnect
                     </button>
-
-                    <Dialog
-                      open={isOpenRanking}
-                      onClose={() => setIsOpenRanking(false)}
-                      className="relative z-50"
-                    >
-                      {/* The backdrop, rendered as a fixed sibling to the panel container */}
-                      <div
-                        className="fixed inset-0 bg-black/30 backdrop-blur-sm"
-                        aria-hidden="true"
-                      />
-
-                      {/* Full-screen container to center the panel */}
-                      <div className="fixed inset-0 flex items-center justify-center p-4">
-                        {/* The actual dialog panel  */}
-                        <DialogPanel className="mx-auto max-w-sm rounded bg-white p-6">
-                          <DialogTitle className="text-lg font-medium leading-6 text-gray-900">
-                            排名
-                          </DialogTitle>
-                          <div className="mt-2">
-                            <p className="text-sm text-gray-500">
-                              will be added soon
-                            </p>
-                          </div>
-
-                          <button
-                            className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                            onClick={() => setIsOpenRanking(false)}
-                          >
-                            Close
-                          </button>
-                        </DialogPanel>
-                      </div>
-                    </Dialog>
                   </div>
                 </div>
-                <div className="px-1 py-1">
-                  <button
-                    className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-red-200 hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-red-600 hover:bg-white/10"
-                    onClick={disconnect}
-                  >
-                    Disconnect
-                  </button>
-                </div>
-              </div>
-            </PopoverPanel>
-          </Transition>
-        </>
-      )}
-    </Popover>
+              </PopoverPanel>
+            </Transition>
+          </>
+        )}
+      </Popover>
+    </div>
   )
 }
 

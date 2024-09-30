@@ -249,10 +249,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           th: (props) => <th className={styles.th} {...props} />,
           td: (props) => <td className={styles.td} {...props} />,
           table: (props) => <table className={styles.table} {...props} />,
-
+          // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+          img: (props) => <img className={styles.img} {...props} />,
           thead: (props) => <thead className={styles.thead} {...props} />,
           tbody: (props) => <tbody className={styles.tbody} {...props} />,
           tr: (props) => <tr className={styles.tr} {...props} />,
+          strong: (props) => <strong className={styles.strong} {...props} />,
         }}
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[

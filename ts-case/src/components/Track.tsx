@@ -27,7 +27,7 @@ import { MoveWasm } from '@/move-wasm/MoveWasm'
 import MarkdownRenderer from './MarkdownRenderer'
 import Image from 'next/image'
 
-interface CaseProps {
+interface TrackProps {
   mdPath: string
   codeCase?: string
   cover: string
@@ -44,11 +44,11 @@ interface CompileMoveResult {
   // 其他属性
 }
 
-const Case: React.FC<CaseProps> = ({
+const Track: React.FC<TrackProps> = ({
   mdPath,
   codeCase = `module case::move_code{
-  // write move code here
-}`,
+    // write move code here
+  }`,
   cover,
   size = 'md',
   className,
@@ -83,109 +83,6 @@ const Case: React.FC<CaseProps> = ({
     className
   )
 
-  // const mdxStyleConfig = {
-  //   h1: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h1 className={styles.h1} {...props} />,
-  //   h2: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h2 className={styles.h2} {...props} />,
-  //   h3: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h3 className={styles.h3} {...props} />,
-  //   h4: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h4 className={styles.h4} {...props} />,
-  //   h5: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h5 className={styles.h5} {...props} />,
-  //   h6: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h6 className={styles.h6} {...props} />,
-  //   p: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLParagraphElement> &
-  //       React.HTMLAttributes<HTMLParagraphElement>
-  //   ) => <p className={styles.p} {...props} />,
-  //   code: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLElement> &
-  //       React.HTMLAttributes<HTMLElement>
-  //   ) => <code className={styles.code} {...props} />,
-  //   pre: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLPreElement> &
-  //       React.HTMLAttributes<HTMLPreElement>
-  //   ) => <pre className={styles.pre} {...props} />,
-  //   blockquote: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLQuoteElement> &
-  //       React.BlockquoteHTMLAttributes<HTMLQuoteElement>
-  //   ) => <blockquote className={styles.blockquote} {...props} />,
-  //   ul: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLUListElement> &
-  //       React.HTMLAttributes<HTMLUListElement>
-  //   ) => <ul className={styles.ul} {...props} />,
-  //   li: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLLIElement> &
-  //       React.LiHTMLAttributes<HTMLLIElement>
-  //   ) => <li className={styles.li} {...props} />,
-  //   ol: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLOListElement> &
-  //       React.OlHTMLAttributes<HTMLOListElement>
-  //   ) => <ol className={styles.ol} {...props} />,
-  //   th: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableHeaderCellElement> &
-  //       React.ThHTMLAttributes<HTMLTableHeaderCellElement>
-  //   ) => <th className={styles.th} {...props} />,
-  //   td: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableDataCellElement> &
-  //       React.TdHTMLAttributes<HTMLTableDataCellElement>
-  //   ) => <td className={styles.td} {...props} />,
-  //   table: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableElement> &
-  //       React.TableHTMLAttributes<HTMLTableElement>
-  //   ) => <table className={styles.table} {...props} />,
-
-  //   thead: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableSectionElement> &
-  //       React.HTMLAttributes<HTMLTableSectionElement>
-  //   ) => <thead className="md-thead" {...props} />,
-  //   tbody: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableSectionElement> &
-  //       React.HTMLAttributes<HTMLTableSectionElement>
-  //   ) => <tbody className="md-tbody" {...props} />,
-  //   tr: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableRowElement> &
-  //       React.HTMLAttributes<HTMLTableRowElement>
-  //   ) => <tr className={styles.tr} {...props} />,
-  // }
-
-  // useEffect(() => {
-  //   fetchMdContent()
-  // }, [])
-
   const fetchMdContent = async () => {
     setIsLoading(true)
     setError(null)
@@ -208,51 +105,17 @@ const Case: React.FC<CaseProps> = ({
       setIsLoading(false)
     }
   }
-  // const fetchMdxContent = async () => {
-  //   setIsLoading(true)
-  //   setError(null)
 
-  //   try {
-  //     let response
-  //     if (mdPath.startsWith('http')) {
-  //       response = await fetch(mdPath)
-  //     } else {
-  //       const url = `/api/mdx?path=${encodeURIComponent(mdPath)}`
-  //       response = await fetch(url)
-  //     }
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch MDX content')
-  //     }
-
-  //     const mdxText = await response.text()
-  //     const mdxSource = await serialize(mdxText)
-  //     // const mdxSource = await serialize(mdxText, {
-  //     //   mdxOptions: {
-  //     //     remarkPlugins: [remarkGfm],
-  //     //   },
-  //     // })
-  //     console.log(mdxSource)
-  //     setMdxSource(mdxSource)
-  //   } catch (err) {
-  //     console.error('Error fetching MDX:', err)
-  //     setError('Failed to load MDX content')
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
-  // TODO Code case
+  // TODO Code track
   const { exportCode } = useMoveEditor()
   const editorCode = exportCode()
   useEffect(() => {
     setCode(editorCode)
   }, [editorCode])
-
+  // console.log(exportCode())
   useEffect(() => {
     setCode(codeCase)
   }, [codeCase])
-  // console.log(exportCode())
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return
@@ -342,7 +205,7 @@ const Case: React.FC<CaseProps> = ({
           >
             {mdPath && (
               <div className="max-w-sm rounded-lg shadow-lg flex flex-col ">
-                <div className="relative min-h-[300px]">
+                <div className="relative min-h-[280px]">
                   <Image
                     src={cover}
                     alt={title}
@@ -383,7 +246,7 @@ const Case: React.FC<CaseProps> = ({
 
           {open && (
             <div
-              className="fixed inset-0 z-40 bg-black bg-opacity-70 backdrop-blur-md"
+              className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm"
               aria-hidden="true"
             />
           )}
@@ -499,4 +362,4 @@ const Case: React.FC<CaseProps> = ({
   )
 }
 
-export default Case
+export default Track
