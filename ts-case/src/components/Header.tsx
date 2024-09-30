@@ -107,29 +107,29 @@ function Header() {
                         <div className="p-3">
                           <a
                             className="px-2 py-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
-                            href="/what"
+                            href="/project"
                           >
-                            <p className="font-semibold text-white">What</p>
-                            <p className="text-white/50">
-                              What do the pictures of cats mean respectively?
-                            </p>
+                            <p className="font-semibold text-white">分步教程</p>
+                            <p className="text-white/50">创建一个 NFT</p>
                           </a>
 
                           <a
                             className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
-                            href="/way"
+                            href="/playground"
                           >
-                            <p className="font-semibold text-white ">Way</p>
-                            <p className="text-white/50">Ways to play?</p>
+                            <p className="font-semibold text-white ">
+                              案例演示
+                            </p>
+                            <p className="text-white/50">test: playground</p>
                           </a>
                           <a
                             className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
-                            href="/how"
+                            href="/editor"
                           >
-                            <p className="font-semibold text-white ">How</p>
-                            <p className="text-white/50">
-                              How are the scores calculated?
+                            <p className="font-semibold text-white ">
+                              快速开始
                             </p>
+                            <p className="text-white/50">test: editor</p>
                           </a>
                         </div>
                       </PopoverPanel>

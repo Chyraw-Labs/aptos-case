@@ -4,6 +4,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import BackgroundSVG from './BackgroundSVG'
 import Image from 'next/image'
 
+import { Description, Field, Label, Textarea } from '@headlessui/react'
+
 interface Step {
   id: number
   title: string
@@ -25,20 +27,20 @@ const ProjectTrack = () => {
       {
         id: 1,
         title: '步骤 1',
-        content: "这是第一步的内容，请输入 'Hello World!'",
-        expectedOutput: 'Hello World!',
+        content: "这是第一步的内容，请输入 'aptos'",
+        expectedOutput: 'aptos',
       },
       {
         id: 2,
         title: '步骤 2',
-        content: "这是第二步的内容，请输入 '2 + 2 = 4'",
-        expectedOutput: '2 + 2 = 4',
+        content: "这是第二步的内容，请输入 'move'",
+        expectedOutput: 'move',
       },
       {
         id: 3,
         title: '步骤 3',
-        content: "这是第三步的内容，请输入 'Goodbye!'",
-        expectedOutput: 'Goodbye!',
+        content: "这是第三步的内容，请输入 'test'",
+        expectedOutput: 'test',
       },
     ],
   })
@@ -86,14 +88,16 @@ const ProjectTrack = () => {
   // 完成项目
   if (completed) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4 text-black">恭喜完成项目！</h2>
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="w-full max-w-4xl p-6 bg-black rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4 text-white flex justify-center items-center">
+            恭喜完成项目!
+          </h2>
           <div className="flex flex-col items-center mb-6">
             <CheckCircle2 className="w-16 h-16 text-green-500 mb-4" />
-            <h3 className="text-xl mb-2 text-black">项目里程碑</h3>
+            <h3 className="text-xl mb-2 text-white">项目里程碑</h3>
             {project.steps.map((step) => (
-              <div key={step.id} className="flex items-center mb-2 text-black">
+              <div key={step.id} className="flex items-center mb-2 text-white">
                 <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
                 <span>{step.title}</span>
               </div>
@@ -185,10 +189,10 @@ const ProjectTrack = () => {
 
   // 返回页面
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-black">
       {/* 左侧：项目内容和用户输入 */}
       <div className="flex-1 p-6 overflow-auto">
-        <h1 className="text-2xl font-bold mb-4 text-black">{project.name}</h1>
+        <h1 className="text-2xl font-bold mb-4 text-white">{project.name}</h1>
         {/* 进度条 */}
         <div className="w-full bg-gray-400 rounded-full h-2.5 mb-4">
           <div
@@ -197,19 +201,26 @@ const ProjectTrack = () => {
           ></div>
         </div>
         <div className="mb-4">
-          <h2 className="text-xl font-bold mb-2 text-black">
+          <h2 className="text-xl font-bold mb-2 text-white">
             当前步骤：{project.steps[currentStepIndex].title}
           </h2>
-          <p className="mb-4 text-black">
+          <p className="mb-4 text-white">
             {project.steps[currentStepIndex].content}
           </p>
         </div>
-        <textarea
+        {/* 文本输入框 */}
+        <Textarea
           value={userInput}
           onChange={handleInputChange}
           placeholder="在这里输入你的答案..."
-          className="w-full h-40 p-2 mb-4 border border-gray-300 rounded-md text-black"
+          className="w-full h-40 p-2 mb-4 border border-gray-900 rounded-md text-black"
         />
+        {/* <textarea
+          value={userInput}
+          onChange={handleInputChange}
+          placeholder="在这里输入你的答案..."
+          className="w-full h-40 p-2 mb-4 border border-gray-900 rounded-md text-black"
+        /> */}
         {error && (
           <div className="p-4 mb-4 bg-red-100 rounded-lg">
             <div className="flex items-start">
@@ -221,13 +232,13 @@ const ProjectTrack = () => {
       </div>
 
       {/* 右侧：步骤列表 */}
-      <div className="w-64 bg-gray-200 p-6 overflow-auto">
-        <h2 className="text-xl font-bold mb-4 text-black">项目步骤</h2>
+      <div className="w-64 bg-black p-6 overflow-auto">
+        <h2 className="text-xl font-bold mb-4 text-white">项目步骤</h2>
         <ul>
           {project.steps.map((step, index) => (
             <li
               key={step.id}
-              className={`mb-2 p-2 rounded text-black ${
+              className={`mb-2 p-2 rounded text-white ${
                 index === currentStepIndex
                   ? 'bg-blue-500 text-white'
                   : index < currentStepIndex
