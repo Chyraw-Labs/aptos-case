@@ -186,18 +186,6 @@ const ProjectTrack = () => {
   // 返回页面
   return (
     <div className="flex h-screen bg-gray-100">
-      <a href="/" className="flex justify-center items-center">
-        <Image
-          className="flex-shrink-0"
-          src="/assets/logo.svg"
-          alt="logo"
-          width={40}
-          height={40}
-        />
-        <h1 className="flex-none justify-start px-2 font-bold text-md">
-          Aptos Case
-        </h1>
-      </a>
       {/* 左侧：项目内容和用户输入 */}
       <div className="flex-1 p-6 overflow-auto">
         <h1 className="text-2xl font-bold mb-4 text-black">{project.name}</h1>
