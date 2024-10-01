@@ -1,17 +1,18 @@
 'use client'
-
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeHighlight from 'rehype-highlight'
 import 'katex/dist/katex.min.css'
-// import 'highlight.js/styles/github.css'
-import 'highlight.js/styles/atom-one-dark.css' // 暗色主题
+import 'highlight.js/styles/atom-one-dark.css'
 import styles from '@/styles/md.module.css'
 import hljs from 'highlight.js'
-import '@/styles/custom-dark-highlight.css' // 自定义样式
+import '@/styles/custom-dark-highlight.css'
+import mermaid from 'mermaid'
+
+// mermaid.initialize({ startOnLoad: true, theme: 'dark' })
 
 hljs.registerLanguage('mylxxang', function (hljs) {
   return {
@@ -213,12 +214,40 @@ interface MarkdownRendererProps {
 }
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
+  const mermaidRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      securityLevel: 'loose', // 如果你信任你的内容源
+    })
+
+    const renderMermaidDiagrams = async () => {
+      if (mermaidRef.current) {
+        const mermaidDivs = mermaidRef.current.querySelectorAll('.mermaid')
+        for (let i = 0; i < mermaidDivs.length; i++) {
+          const element = mermaidDivs[i]
+          const graphDefinition = element.textContent
+          if (graphDefinition) {
+            const { svg } = await mermaid.render(
+              `mermaid-${i}`,
+              graphDefinition
+            )
+            element.innerHTML = svg
+          }
+        }
+      }
+    }
+
     hljs.highlightAll()
     // Manually trigger highlight.js after component mounts
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block as HTMLElement)
     })
+    // if (mermaidRef.current) {
+    //   mermaid.init(undefined, mermaidRef.current.querySelectorAll('.mermaid'))
+    // }
+    renderMermaidDiagrams()
   }, [content])
   // Log the content for debugging
   // console.log('Markdown content:', content)
@@ -238,7 +267,6 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           p: (props) => <p className={styles.p} {...props} />,
           a: (props) => <a className={styles.a} {...props} />,
           em: (props) => <em className={styles.em} {...props} />,
-          code: (props) => <code className={styles.code} {...props} />,
           pre: (props) => <pre className={styles.pre} {...props} />,
           blockquote: (props) => (
             <blockquote className={styles.blockquote} {...props} />
@@ -255,6 +283,28 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           tbody: (props) => <tbody className={styles.tbody} {...props} />,
           tr: (props) => <tr className={styles.tr} {...props} />,
           strong: (props) => <strong className={styles.strong} {...props} />,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          code({ node, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '')
+            if (match && match[1] === 'mermaid') {
+              return (
+                <div className="mermaid">
+                  {String(children).replace(/\n$/, '')}
+                </div>
+              )
+            }
+            return match ? (
+              <pre className={styles.pre}>
+                <code className={`${className} ${styles.code}`} {...props}>
+                  {children}
+                </code>
+              </pre>
+            ) : (
+              <code className={`${className} ${styles.code}`} {...props}>
+                {children}
+              </code>
+            )
+          },
         }}
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[

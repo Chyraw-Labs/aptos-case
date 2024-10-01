@@ -38,6 +38,9 @@ importers:
       highlight.js:
         specifier: ^11.10.0
         version: 11.10.0
+      katex:
+        specifier: ^0.16.11
+        version: 0.16.11
       lucide-react:
         specifier: ^0.446.0
         version: 0.446.0(react@18.3.1)
