@@ -17,6 +17,7 @@
     "@mdx-js/react": "^3.0.1",
     "@monaco-editor/react": "^4.6.0",
     "bignumber.js": "^9.1.2",
+    "fuse.js": "^7.0.0",
     "highlight.js": "^11.10.0",
     "lucide-react": "^0.446.0",
     "monaco-editor": "^0.52.0",
@@ -30,7 +31,8 @@
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
     "styled-components": "^6.1.13",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "toml": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.16.10",

@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col h-screen">
-        <a href="/" className="flex justify-center items-center">
+        <a href="/" className="flex justify-center items-center my-2 ">
           <Image
             className="flex-shrink-0"
             src="/assets/logo.svg"

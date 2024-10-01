@@ -4,7 +4,7 @@ import Track from './Track'
 export const AllDailyMove = () => {
   return (
     <>
-      <div className="flex flex-col items-center mx-4 my-4">
+      <div className="flex flex-col mx-4 my-4">
         <p className="font-bold text-9xl mb-4">Move 工坊</p>
         <div className="py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Track

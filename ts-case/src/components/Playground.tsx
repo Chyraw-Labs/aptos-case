@@ -19,6 +19,7 @@ import '@aptos-labs/wallet-adapter-ant-design/dist/index.css'
 import '@/styles/wallet.css'
 import MoveEditorWrapper from './MoveEditorWrapper'
 import { HELLO } from '@/code-case/move'
+import SearchKnowledge from './Search'
 
 const Playground: React.FC = () => {
   // const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(
@@ -121,6 +122,7 @@ const Playground: React.FC = () => {
               <div className="flex justify-between">
                 <WalletButton />
               </div>
+              <SearchKnowledge />
               {/* {isLoading && <p>Loading...</p>}
               {error && <p className="text-red-500">{error}</p>} */}
               {/* {mdxSource && (

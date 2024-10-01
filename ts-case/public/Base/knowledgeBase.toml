@@ -1,0 +1,87 @@
+
+
+# =============================================================
+[move]
+name = "Move 语言"
+
+[[move.items]]
+title = "Move 的介绍"
+content = "Move 是一种用于编写安全智能合约的编程语言..."
+keywords = ["move", "介绍", "智能合约", "区块链"]
+
+[[move.items]]
+title = "Move 语法基础"
+content = "学习 Move 编程语言的基本语法..."
+keywords = ["move", "语法", "基础", "编程"]
+
+[[move.items]]
+title = "Move 类型系统"
+content = "Move 具有强类型系统，确保安全性和可靠性..."
+keywords = ["move", "类型系统", "安全性", "可靠性"]
+
+[[move.items]]
+title = "Move 的模块和资源"
+content = "模块和资源是 Move 的核心概念，用于组织代码和管理资源..."
+keywords = ["move", "模块", "资源", "核心概念"]
+
+[move.stdlib]
+name = "Move 标准库"
+
+[[move.stdlib.items]]
+title = "向量"
+content = "向量是用于存储元素的通用数据结构..."
+keywords = ["move", "stdlib", "向量", "数据结构"]
+
+[[move.stdlib.items]]
+title = "选项"
+content = "选项是 Move 中用于表示可选值的一种类型..."
+keywords = ["move", "stdlib", "选项", "可选"]
+
+[[move.stdlib.items]]
+title = "映射"
+content = "映射是一种键值对数据结构，常用于快速查找..."
+keywords = ["move", "stdlib", "映射", "数据结构"]
+
+# =============================================================
+[aptos]
+name = "Aptos 区块链"
+
+[[aptos.items]]
+title = "什么是 Aptos？"
+content = "Aptos 是一个为安全性和可扩展性而构建的 Layer 1 区块链..."
+keywords = ["aptos", "区块链", "layer 1", "可扩展性"]
+
+[[aptos.items]]
+title = "Aptos 代币标准"
+content = "Aptos 代币标准定义了数字资产的创建方式..."
+keywords = ["aptos", "代币", "标准", "数字资产"]
+
+[[aptos.items]]
+title = "Aptos 共识机制"
+content = "Aptos 使用一种创新的共识机制，旨在提高交易速度..."
+keywords = ["aptos", "共识机制", "交易速度", "安全性"]
+
+[[aptos.items]]
+title = "Aptos 开发者生态"
+content = "Aptos 提供了丰富的开发者工具和支持，促进生态系统的繁荣..."
+keywords = ["aptos", "开发者", "生态", "工具"]
+
+
+# =============================================================
+[ts-sdk]
+name = "Typescript SDK"
+
+[[ts-sdk.items]]
+title = "什么是 TypeScript SDK？"
+content = "TypeScript SDK 是一个用于与 Aptos 区块链交互的 TypeScript 库..."
+keywords = ["ts-sdk", "typescript", "sdk", "aptos", "区块链"]
+
+[[ts-sdk.items]]
+title = "如何使用 TypeScript SDK？"
+content = "使用 TypeScript SDK，您可以轻松地与 Aptos 区块链进行交互..."
+keywords = ["ts-sdk", "typescript", "sdk", "aptos", "区块链", "交互"]
+
+[[ts-sdk.items]]
+title = "TypeScript SDK 的功能"
+content = "TypeScript SDK 提供了丰富的功能，包括账户管理、交易创建和查询..."
+keywords = ["ts-sdk", "typescript", "sdk", "aptos", "区块链", "功能"]

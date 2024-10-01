@@ -1,4 +1,3 @@
-import { HELLO } from '@/code-case/move'
 import Case from './Case'
 
 export const AllCase = () => {
@@ -36,40 +35,7 @@ export const AllCase = () => {
           >
             <p className="text-blue-500">埃洛 · 伍德</p>
           </Case>
-          <Case
-            mdPath="/Docs/module_script.md"
-            cover="/images/cover/module_and_script.jpg"
-            // codeCase={HELLO}
-            size="md"
-            description="模块脚本的讲解"
-            tags={['Move', '简单', '基础']}
-            title="模块和脚本"
-          >
-            <p className="text-blue-500">模块和脚本......</p>
-          </Case>
-          <Case
-            mdPath="/Docs/primitive_types.md"
-            cover="/images/cover/primitive_types.jpg"
-            // codeCase={HELLO}
-            size="md"
-            description="aptos 上的 move 原始类型"
-            tags={['Move', '类型']}
-            title="原始类型"
-          >
-            <p className="text-blue-500">Move 的类型系统...</p>
-          </Case>
 
-          <Case
-            mdPath="/Docs/local_variables_scope.md"
-            cover="/images/cover/local_variables_scope.jpg"
-            // codeCase={HELLO}
-            size="md"
-            description="Move 语言的示例"
-            tags={['move', '合约']}
-            title="局部变量和作用域"
-          >
-            <p className="text-blue-500">Move 语法...</p>
-          </Case>
           {/* 添加更多 Case 组件 */}
         </div>
       </div>

@@ -238,12 +238,12 @@ const ProjectTrack = () => {
           {project.steps.map((step, index) => (
             <li
               key={step.id}
-              className={`mb-2 p-2 rounded text-white ${
+              className={`mb-2 p-2 rounded  ${
                 index === currentStepIndex
                   ? 'bg-blue-500 text-white'
                   : index < currentStepIndex
-                  ? 'bg-green-200'
-                  : 'bg-gray-300'
+                  ? 'bg-green-200 text-black'
+                  : 'bg-gray-400 text-white'
               }`}
             >
               {step.title}
