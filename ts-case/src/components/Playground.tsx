@@ -1,8 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react'
-// import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
-// import { twMerge } from 'tailwind-merge'
-// import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
-// import { serialize } from 'next-mdx-remote/serialize'
 import {
   // X,
   Maximize2,
@@ -10,9 +6,6 @@ import {
   LayoutGrid,
   ArrowLeftRight,
 } from 'lucide-react'
-// import styles from '@/styles/md.module.css'
-// import { OnMount } from '@monaco-editor/react'
-// import * as monaco from 'monaco-editor'
 import WalletButton from './WalletButton'
 import Image from 'next/image'
 import '@aptos-labs/wallet-adapter-ant-design/dist/index.css'
@@ -22,22 +15,11 @@ import { HELLO } from '@/code-case/move'
 import SearchKnowledge from './Search'
 
 const Playground: React.FC = () => {
-  // const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(
-  //   null
-  // )
-  // const [isLoading, setIsLoading] = useState(false)
-  // const [error, setError] = useState<string | null>(null)
   const [splitRatio, setSplitRatio] = useState(50)
   const [code] = useState('// Write your code here')
   const [output, setOutput] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const splitPaneRef = useRef<HTMLDivElement>(null)
-  // const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
-
-  // const fetchMdxContent = async () => {
-  //   setIsLoading(true)
-  //   setError(null)
-  // }
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return
@@ -64,18 +46,7 @@ const Playground: React.FC = () => {
     }
   }, [isDragging])
 
-  // const handleEditorDidMount: OnMount = (editor) => {
-  //   editorRef.current = editor
-  // }
-
-  // const handleEditorChange: OnChange = (value) => {
-  //   if (value !== undefined) {
-  //     setCode(value)
-  //   }
-  // }
-
   const handleRunCode = () => {
-    // This is a placeholder. In a real application, you'd send the code to a backend for execution.
     setOutput(`Executing code:\n\n${code}\n\nOutput would appear here.`)
   }
 
@@ -123,32 +94,6 @@ const Playground: React.FC = () => {
                 <WalletButton />
               </div>
               <SearchKnowledge />
-              {/* {isLoading && <p>Loading...</p>}
-              {error && <p className="text-red-500">{error}</p>} */}
-              {/* {mdxSource && (
-                <MDXRemote
-                  {...mdxSource}
-                  components={{
-                    h1: (props) => <h1 className={styles.h1} {...props} />,
-                    h2: (props) => <h2 className={styles.h2} {...props} />,
-                    h3: (props) => <h3 className={styles.h3} {...props} />,
-                    h4: (props) => <h4 className={styles.h4} {...props} />,
-                    h5: (props) => <h5 className={styles.h5} {...props} />,
-                    h6: (props) => <h6 className={styles.h6} {...props} />,
-                    p: (props) => <p className={styles.p} {...props} />,
-                    code: (props) => (
-                      <code className={styles.code} {...props} />
-                    ),
-                    pre: (props) => <pre className={styles.pre} {...props} />,
-                    blockquote: (props) => (
-                      <blockquote className={styles.blockquote} {...props} />
-                    ),
-                    ul: (props) => <ul className={styles.ul} {...props} />,
-                    li: (props) => <li className={styles.li} {...props} />,
-                    ol: (props) => <ol className={styles.ol} {...props} />,
-                  }}
-                />
-              )} */}
             </div>
           </div>
 
@@ -158,7 +103,6 @@ const Playground: React.FC = () => {
             onMouseDown={handleDragStart}
           >
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-12 bg-gray-400 rounded-full flex items-center justify-center z-50">
-              {/* <LayoutGrid size={16} className="text-white" /> */}
               <ArrowLeftRight size={16} className="text-white" />
             </div>
           </div>
@@ -171,7 +115,8 @@ const Playground: React.FC = () => {
             {/* Code Editor */}
             <div className="flex-1 overflow-hidden flex flex-col">
               <div className="flex justify-between items-center p-4">
-                <h2 className="text-xl font-bold text-black">Code Editor</h2>
+                <h2 className="text-xl font-bold text-black">编辑器</h2>
+
                 <div className="flex space-x-2 pr-16">
                   <button
                     onClick={() => handleLayoutChange('left')}
@@ -197,28 +142,17 @@ const Playground: React.FC = () => {
                 <div style={{ height: '100vh', width: '100%' }}>
                   <MoveEditorWrapper initialCode={HELLO} />
                 </div>
-                {/* <Editor
-                  height="100%"
-                  defaultLanguage="rust"
-                  defaultValue={code}
-                  onMount={handleEditorDidMount}
-                  onChange={handleEditorChange}
-                  options={{
-                    minimap: { enabled: false },
-                    fontSize: 14,
-                  }}
-                /> */}
               </div>
             </div>
             {/* Command Line */}
             <div className="h-1/3 bg-black text-white flex flex-col overflow-hidden">
               <div className="flex justify-between items-center p-4">
-                <h2 className="text-xl font-bold">Command Line</h2>
+                <h2 className="text-xl font-bold">命令行</h2>
                 <button
                   onClick={handleRunCode}
                   className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                 >
-                  Run
+                  运行
                 </button>
               </div>
               <pre className="flex-1 overflow-y-auto p-2 bg-gray-800 rounded m-4">
@@ -227,13 +161,6 @@ const Playground: React.FC = () => {
             </div>
           </div>
         </div>
-        {/* Close button */}
-        {/* <button
-          onClick={close}
-          className="absolute top-4 right-4 p-2 rounded-full bg-red-300 shadow-md hover:bg-red-500"
-        >
-          <X size={16} />
-        </button> */}
       </div>
     </>
   )

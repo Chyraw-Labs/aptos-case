@@ -101,50 +101,56 @@ const AdvancedSearch: React.FC = () => {
     })
   }
 
+  // 透明效果 bg-opacity-80 backdrop-blur-sm
+
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 bg-white shadow-lg rounded-lg">
+    <div className="w-full max-w-3xl mx-auto p-4 bg-black bg-opacity-80 backdrop-blur-sm shadow-lg rounded-lg">
       <div className="relative mb-6">
         <input
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          className="w-full px-4 py-2 pr-10 border rounded-full text-black focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="w-full px-4 py-2 pr-10 border rounded-full text-white bg-black focus:outline-none focus:ring-2 focus:ring-blue-300"
           placeholder="输入搜索关键词"
         />
         <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
       </div>
 
       {searchResults.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-4 bg-black">
           {searchResults.map(({ category, item }, index) => {
             const isExpanded = expandedItems.has(`${category}-${item.title}`)
             return (
               <div
                 key={index}
-                className="bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-4 rounded-lg bg-black hover:bg-gray-900 transition-colors"
               >
                 <div
                   className="flex justify-between items-center cursor-pointer"
                   onClick={() => toggleItem(category, item.title)}
                 >
-                  <h3 className="text-lg font-semibold text-blue-600">
+                  {/* 搜索标题 */}
+                  <h3 className="text-lg font-semibold text-blue-500">
                     {item.title}
                   </h3>
                   {isExpanded ? (
-                    <ChevronUp size={20} />
+                    <ChevronUp size={20} className="text-blue-700" />
                   ) : (
-                    <ChevronDown size={20} />
+                    <ChevronDown size={20} className="text-blue-500" />
                   )}
                 </div>
+                {/* 分类 */}
                 <p className="text-sm text-gray-500 mt-1">{category}</p>
                 {isExpanded && (
                   <div className="mt-2">
-                    <p className="text-gray-700">{item.content}</p>
+                    <p className="text-gray-200">{item.content}</p>
+
                     <div className="mt-2 flex flex-wrap gap-2">
+                      {/* 搜索关键字 */}
                       {item.keywords.map((kw, i) => (
                         <span
                           key={i}
-                          className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded"
+                          className="bg-gray-600 text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded"
                         >
                           {kw}
                         </span>
