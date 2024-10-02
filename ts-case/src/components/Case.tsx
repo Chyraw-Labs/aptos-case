@@ -16,7 +16,6 @@ import {
 // import { OnMount, OnChange } from '@monaco-editor/react'
 // import * as monaco from 'monaco-editor'
 import MoveEditorWrapper from './MoveEditorWrapper'
-import { HELLO } from '@/code-case/move'
 // import { MoveEditorProvider } from './MoveEditorProvider'
 import { useMoveEditor } from './MoveEditorProvider'
 import DocsTable from './DocsTable'
