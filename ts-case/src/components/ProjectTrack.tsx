@@ -5,12 +5,14 @@ import BackgroundSVG from './BackgroundSVG'
 import Image from 'next/image'
 
 import { Description, Field, Label, Textarea } from '@headlessui/react'
+import FileStructureTree, { FileStructure } from './FileStructureTree'
 
 interface Step {
   id: number
   title: string
   content: string
   expectedOutput: string
+  fileStructure: FileStructure
 }
 
 interface Project {
@@ -20,27 +22,55 @@ interface Project {
 }
 
 const ProjectTrack = () => {
-  const [project, setProject] = useState<Project>({
+  // const [files, setFiles] = useState<FileStructure>([{ root: ['README.md'] }])
+  const [initialFiles, setInitialFiles] = useState<FileStructure>([
+    { root: ['README.md'] },
+  ])
+
+  const initialFileContents: [string, string][] = [
+    ['file1.txt', 'Content of file1'],
+    ['file2.txt', 'Content of file2'],
+    ['file3.txt', 'Content of file3'],
+    ['file4.txt', 'Content of file4'],
+  ]
+
+  const [project] = useState<Project>({
     id: 1,
-    name: '示例项目',
+    name: '从零创建基础 NFT 项目',
     steps: [
       {
         id: 1,
-        title: '步骤 1',
-        content: "这是第一步的内容，请输入 'aptos'",
-        expectedOutput: 'aptos',
+        title: '1. 初始化 Move 项目',
+        content: '打开您的系统命令行工具，输入 "aptos move init --name my_nft"',
+        expectedOutput: 'aptos move init --name my_nft',
+        fileStructure: [{ root: ['README.md'] }],
       },
       {
         id: 2,
-        title: '步骤 2',
-        content: "这是第二步的内容，请输入 'move'",
-        expectedOutput: 'move',
+        title: '2. 创建 Aptos 账户',
+        content: "继续输入 'aptos init'",
+        expectedOutput: 'aptos init',
+        fileStructure: [{ root: ['Move.toml', { sources: [] }] }],
       },
       {
         id: 3,
-        title: '步骤 3',
-        content: "这是第三步的内容，请输入 'test'",
-        expectedOutput: 'test',
+        title: '3. 创建 Move 合约文件: nft.move',
+        content: "这是第三步的内容，请输入 'mkdir sources/nft.move'",
+        expectedOutput: 'mkdir sources/nft.move',
+        fileStructure: [
+          { root: ['Move.toml', { sources: [] }] },
+          { '.aptos': ['config.yaml'] },
+        ],
+      },
+      {
+        id: 4,
+        title: '4. 在 nft.move 中定义 NFT 模块',
+        content: "请输入 'module case::nft{}'",
+        expectedOutput: 'module case::nft{}',
+        fileStructure: [
+          { root: ['Move.toml', { sources: ['nft.move'] }] },
+          { '.aptos': ['config.yaml'] },
+        ],
       },
     ],
   })
@@ -52,13 +82,29 @@ const ProjectTrack = () => {
 
   const progress = Math.round((currentStepIndex / project.steps.length) * 100)
 
+  // 手动文件结构
+  const handleUpdateFileStructre = (
+    updatedFiles: FileStructure,
+    selectedPath?: string[]
+  ) => {
+    console.log(updatedFiles)
+    if (selectedPath) {
+      console.log('[INFO](ProjectTrack.tsx) 选择的 item 路径是:', selectedPath)
+      //
+    }
+  }
+  // 输入框
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserInput(e.target.value)
-    setError('error')
+    // setError('error')
+    setError('请输入: ' + project.steps[currentStepIndex].expectedOutput)
 
     if (
       e.target.value.trim() === project.steps[currentStepIndex].expectedOutput
     ) {
+      console.log('[INFO] ProjectTrack.tsx: 用户的输入与预期输出匹配')
+
+      setError('')
       if (currentStepIndex < project.steps.length - 1) {
         setCurrentStepIndex((prevIndex) => prevIndex + 1)
         setUserInput('')
@@ -68,12 +114,14 @@ const ProjectTrack = () => {
     }
   }
 
+  // 确认
   const handleConfirm = () => {
     setCompleted(false)
     setCurrentStepIndex(0)
     setUserInput('')
   }
 
+  // 提交
   const handleSubmit = () => {
     setIsSubmitDialogOpen(true)
   }
@@ -83,7 +131,21 @@ const ProjectTrack = () => {
       'projectProgress',
       JSON.stringify({ projectId: project.id, stepIndex: currentStepIndex })
     )
-  }, [currentStepIndex, project.id])
+    // changeFileStructure(step.fileStructure)
+    setInitialFiles(project.steps[currentStepIndex].fileStructure)
+  }, [currentStepIndex, project.id, project.steps])
+
+  // function changeFileStructure(files: FileStructure) {
+  //   console.log('changeFiles: ', files)
+  //   setInitialFiles(files)
+  // }
+
+  // useEffect(() => {
+  //   project.steps.forEach((step) => {
+  //     // changeFileStructure(step.fileStructure)
+  //     setInitialFiles(step.fileStructure)
+  //   })
+  // }, [project.steps[currentStepIndex].fileStructure]) // 只在 steps 变化时调用
 
   // 完成项目
   if (completed) {
@@ -187,10 +249,20 @@ const ProjectTrack = () => {
     )
   }
 
-  // 返回页面
+  // 主页面
   return (
     <div className="flex h-screen bg-black">
-      {/* 左侧：项目内容和用户输入 */}
+      {/* 左侧：动态增加或删除文件夹 */}
+      <div className="w-80 bg-black p-6 overflow-auto">
+        {/* <h2 className="text-xl font-bold mb-4 text-white">当前项目状态</h2> */}
+        {/* <FileStructureTree initialFiles={files} onUpdate={handleUpdate} /> */}
+        <FileStructureTree
+          initialFiles={initialFiles}
+          initialFileContents={initialFileContents}
+          onUpdate={handleUpdateFileStructre}
+        />
+      </div>
+      {/* 中间 */}
       <div className="flex-1 p-6 overflow-auto">
         <h1 className="text-2xl font-bold mb-4 text-white">{project.name}</h1>
         {/* 进度条 */}
@@ -201,9 +273,11 @@ const ProjectTrack = () => {
           ></div>
         </div>
         <div className="mb-4">
-          <h2 className="text-xl font-bold mb-2 text-white">
-            当前步骤：{project.steps[currentStepIndex].title}
-          </h2>
+          <h2 className="text-xl font-bold mb-2 text-white">当前步骤： </h2>
+          <h3 className="text-lg font-bold mb-2 text-white">
+            {project.steps[currentStepIndex].title}
+          </h3>
+
           <p className="mb-4 text-white">
             {project.steps[currentStepIndex].content}
           </p>
@@ -215,17 +289,12 @@ const ProjectTrack = () => {
           placeholder="在这里输入你的答案..."
           className="w-full h-40 p-2 mb-4 border border-gray-900 rounded-md text-black"
         />
-        {/* <textarea
-          value={userInput}
-          onChange={handleInputChange}
-          placeholder="在这里输入你的答案..."
-          className="w-full h-40 p-2 mb-4 border border-gray-900 rounded-md text-black"
-        /> */}
+
         {error && (
-          <div className="p-4 mb-4 bg-red-100 rounded-lg">
+          <div className="p-4 mb-4 bg-blue-100 rounded-lg">
             <div className="flex items-start">
-              <AlertCircle className="w-5 h-5 text-red-400 mr-2" />
-              <p className="text-sm font-medium text-red-800">{error}</p>
+              <AlertCircle className="w-5 h-5 text-blue-400 mr-2" />
+              <p className="text-sm font-medium text-blue-800">{error}</p>
             </div>
           </div>
         )}
@@ -233,7 +302,7 @@ const ProjectTrack = () => {
 
       {/* 右侧：步骤列表 */}
       <div className="w-64 bg-black p-6 overflow-auto">
-        <h2 className="text-xl font-bold mb-4 text-white">项目步骤</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">步骤预览</h2>
         <ul>
           {project.steps.map((step, index) => (
             <li
