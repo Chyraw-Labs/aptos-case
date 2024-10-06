@@ -112,7 +112,13 @@ function Header() {
                             <p className="font-semibold text-white">分步教程</p>
                             <p className="text-white/50">创建一个 NFT</p>
                           </a>
-
+                          <a
+                            className="px-2 py-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
+                            href="/python"
+                          >
+                            <p className="font-semibold text-white">合约安全</p>
+                            <p className="text-white/50">python playground</p>
+                          </a>
                           <a
                             className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
                             href="/playground"

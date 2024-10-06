@@ -12,8 +12,6 @@ import hljs from 'highlight.js'
 import '@/styles/custom-dark-highlight.css'
 import mermaid from 'mermaid'
 
-// mermaid.initialize({ startOnLoad: true, theme: 'dark' })
-
 hljs.registerLanguage('mylxxang', function (hljs) {
   return {
     keywords: {
@@ -244,14 +242,9 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block as HTMLElement)
     })
-    // if (mermaidRef.current) {
-    //   mermaid.init(undefined, mermaidRef.current.querySelectorAll('.mermaid'))
-    // }
+
     renderMermaidDiagrams()
   }, [content])
-  // Log the content for debugging
-  // console.log('Markdown content:', content)
-
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <ReactMarkdown
