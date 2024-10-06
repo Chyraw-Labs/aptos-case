@@ -1,4 +1,4 @@
-import { HELLO, MAILBOX } from '@/code-case/move'
+import { MAILBOX } from '@/code-case/move'
 import Track from './Track'
 
 export const AllDailyMove = () => {

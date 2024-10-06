@@ -46,6 +46,7 @@ const Playground: React.FC = () => {
     }
   }, [isDragging])
 
+  // 运行
   const handleRunCode = () => {
     setOutput(`Executing code:\n\n${code}\n\nOutput would appear here.`)
   }

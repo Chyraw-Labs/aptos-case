@@ -218,17 +218,13 @@ export default function DocsTable() {
 
                                     <li>
                                       <a className="block rounded-lg py-2 px-3 transition hover:bg-white/5">
-                                        <strong>文档注释</strong>:
-                                        <code>///</code>
+                                        <strong>文档注释</strong>: ///
                                         <br />
-                                        <strong>常规单行注释</strong>:
-                                        <code>//</code>
+                                        <strong>常规单行注释</strong>: //
                                         <br />
-                                        <strong>块注释</strong>:
-                                        <code>/* */</code>
+                                        <strong>块注释</strong>: /* */
                                         <br />
-                                        <strong>块文档注释</strong>:
-                                        <code>/** */</code>
+                                        <strong>块文档注释</strong>: /** */
                                       </a>
                                     </li>
                                     <li>

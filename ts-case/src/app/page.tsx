@@ -3,7 +3,7 @@
 import { AllCase } from '@/components/AllCase'
 import { AllDailyMove } from '@/components/AllDailyMove'
 import { AllTrack } from '@/components/AllTrack'
-import BackgroundSVG from '@/components/BackgroundSVG'
+// import BackgroundSVG from '@/components/BackgroundSVG'
 // import Case from '@/components/Case'
 import { GettingStarted } from '@/components/GettingStarted'
 import Header from '@/components/Header'

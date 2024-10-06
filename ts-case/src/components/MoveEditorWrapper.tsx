@@ -6,6 +6,7 @@ import MoveEditor from './MoveEditor'
 
 interface MoveEditorWrapperProps {
   initialCode?: string
+  onCodeChange?: (newCode: string) => void
 }
 
 const MoveEditorWrapper: React.FC<MoveEditorWrapperProps> = ({
@@ -15,6 +16,7 @@ const MoveEditorWrapper: React.FC<MoveEditorWrapperProps> = ({
 
   const handleCodeChange = useCallback((newCode: string) => {
     setCode(newCode)
+
     // 这里可以添加其他需要的逻辑，比如保存到数据库等
   }, [])
 

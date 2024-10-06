@@ -63,6 +63,7 @@ const moveSnippets: CodeSnippet[] = [
 const moveKeywords = [
   'module',
   'struct',
+  'has',
   'public',
   'fun',
   'let',

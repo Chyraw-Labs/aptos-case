@@ -74,6 +74,7 @@ const AdvancedSearch: React.FC = () => {
 
     Object.entries(knowledgeBase).forEach(([categoryKey, category]) => {
       category.items.forEach((item) => {
+        console.log(categoryKey)
         const searchableText = `${item.title} ${
           item.content
         } ${item.keywords.join(' ')}`
