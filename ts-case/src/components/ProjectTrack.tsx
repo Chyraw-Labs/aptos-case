@@ -1,3 +1,4 @@
+// NFT 创建教程
 import React, { useState, useEffect, Fragment } from 'react'
 import { CheckCircle2, AlertCircle } from 'lucide-react'
 import { Dialog, Transition } from '@headlessui/react'

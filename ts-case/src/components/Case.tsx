@@ -42,7 +42,11 @@ interface CompileMoveResult {
   response: string
   // 其他属性
 }
-
+/**
+ *
+ * @param param0 mdPath, codeCase, cover, size, className, description, tags, title, children
+ * @returns
+ */
 const Case: React.FC<CaseProps> = ({
   mdPath,
   codeCase = `module case::move_code{

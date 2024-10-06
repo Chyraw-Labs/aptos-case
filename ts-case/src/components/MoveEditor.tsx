@@ -192,8 +192,8 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
         const lastChar = line.trim().slice(-1)
         const shouldIndent = ![';', ',', '.'].includes(lastChar)
 
-        // 如果需要缩进，则添加两个空格
-        const newIndentation = shouldIndent ? '  ' : ''
+        // 如果需要缩进，则添加四个空格
+        const newIndentation = shouldIndent ? '\t\t' : ''
 
         editor.trigger('keyboard', 'type', { text: '\n' + newIndentation })
       } else {

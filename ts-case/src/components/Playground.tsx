@@ -1,3 +1,4 @@
+// 独立页面
 import React, { useState, useRef, useEffect } from 'react'
 import {
   // X,
@@ -19,6 +20,7 @@ const Playground: React.FC = () => {
   const [code] = useState('// Write your code here')
   const [output, setOutput] = useState('')
   const [isDragging, setIsDragging] = useState(false)
+
   const splitPaneRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

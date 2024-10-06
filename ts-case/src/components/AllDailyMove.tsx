@@ -8,11 +8,11 @@ export const AllDailyMove = () => {
         <p className="font-bold text-9xl mb-4">Move 工坊</p>
         <div className="py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Track
-            mdPath="/Docs/test.md"
+            mdPath="/Docs/test-mermaid.md"
             cover="/images/cover/module_and_script.jpg"
             size="md"
             description="用于 Aptos Case 的测试"
-            tags={['test']}
+            tags={['test', 'track']}
             title="测试"
           >
             <p className="text-blue-500">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Search, ChevronDown, ChevronUp } from 'lucide-react'
 import toml from 'toml'
-
+import { KNOWLEDGEBASE } from '@/static/knowledgeBase'
 interface ContentItem {
   title: string
   content: string
@@ -21,19 +21,17 @@ const AdvancedSearch: React.FC = () => {
   const [keyword, setKeyword] = useState<string>('')
   const [knowledgeBase, setKnowledgeBase] = useState<KnowledgeBase>({})
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
+  // const tomlPath = '/Base/KnowledgeBase.txt'
+  // const url = `/api/mdx?path=${encodeURIComponent(tomlPath)}`
+  // const response = await fetch(url)
+  // console.log(response)
+  // if (!response.ok) {
+  //   throw new Error('Network response was not ok')
+  // }
+  // const tomlContent = await response.text()
 
   async function fetchTomlContent() {
-    try {
-      const response = await fetch('/base/KnowledgeBase.toml')
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const tomlContent = await response.text() // 获取文本内容
-      return tomlContent // 返回 TOML 文件内容
-    } catch (error) {
-      console.error('Fetch error: ', error)
-      return null // 在发生错误时返回 null
-    }
+    return KNOWLEDGEBASE
   }
 
   useEffect(() => {

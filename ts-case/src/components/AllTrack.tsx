@@ -1,4 +1,5 @@
 // import { HELLO } from '@/code-case/move'
+// import ProjectTrack from './ProjectTrack'
 import Track from './Track'
 
 export const AllTrack = () => {
@@ -7,12 +8,13 @@ export const AllTrack = () => {
       <div className="flex flex-col items-center mx-4 my-4">
         <p className="font-bold text-9xl mb-4">分步教程</p>
         <div className="py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {/* <ProjectTrack /> */}
           <Track
-            mdPath="/Docs/test.md"
+            mdPath="/Docs/test-mermaid.md"
             cover="/images/cover/module_and_script.jpg"
             size="md"
             description="用于 Aptos Case 的测试"
-            tags={['test']}
+            tags={['track']}
             title="测试"
             // codeCase={}
           >
