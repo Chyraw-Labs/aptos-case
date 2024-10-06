@@ -634,7 +634,7 @@ module case::nft{
 
   // 主页面
   return (
-    <div className="flex h-screen bg-black">
+    <div className="flex h-full bg-black">
       {/* 左侧：动态增加或删除文件夹 */}
       <div className="w-80 bg-black p-6 overflow-auto">
         <FileStructureTree

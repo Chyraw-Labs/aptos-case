@@ -180,6 +180,26 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
         }
       },
     })
+
+    editor.addCommand(monaco.KeyCode.Enter, () => {
+      const selection = editor.getSelection()
+      if (selection && selection.isEmpty()) {
+        const lineNumber = selection.startLineNumber
+        const line = editor.getModel()?.getLineContent(lineNumber) || ''
+        // const indentation = line.match(/^\s*/)?.[0] || ''
+
+        // 检查行末字符
+        const lastChar = line.trim().slice(-1)
+        const shouldIndent = ![';', ',', '.'].includes(lastChar)
+
+        // 如果需要缩进，则添加两个空格
+        const newIndentation = shouldIndent ? '  ' : ''
+
+        editor.trigger('keyboard', 'type', { text: '\n' + newIndentation })
+      } else {
+        editor.trigger('keyboard', 'type', { text: '\n' })
+      }
+    })
   }, [])
 
   return (
@@ -193,6 +213,9 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
       options={{
         minimap: { enabled: false },
         fontSize: 14,
+        autoIndent: 'full',
+        tabSize: 2,
+        insertSpaces: true,
       }}
       {...props}
     />

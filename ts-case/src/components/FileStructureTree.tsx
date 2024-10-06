@@ -249,27 +249,30 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
 
   return (
     <>
-      <h2 className="text-xl font-bold mb-4 text-white">项目结构</h2>
+      <div className="flex flex-col h-full">
+        <h2 className="text-xl font-bold mb-4 text-white">项目结构</h2>
 
-      <div className="mb-4">
-        <FileTree
-          files={files}
-          onAddFile={addFile}
-          onAddFolder={addFolder}
-          onDeleteItem={deleteItem}
-          onSelectItem={selectItem}
-          allowEdit={allowEdit}
-        />
-      </div>
-      <div className="my-4">
-        <h2 className="text-xl font-bold  text-white">文件详情</h2>
-        {selectedFile ? (
-          <pre className="bg-gray-800 m-1 p-1 rounded overflow-auto max-h-72">
-            {fileContents[selectedFile] || '没有查询到文件内容'}
-          </pre>
-        ) : (
-          <p className="text-white">点击任意文件以查看内容</p>
-        )}
+        <div className="mb-4">
+          <FileTree
+            files={files}
+            onAddFile={addFile}
+            onAddFolder={addFolder}
+            onDeleteItem={deleteItem}
+            onSelectItem={selectItem}
+            allowEdit={allowEdit}
+          />
+        </div>
+
+        <div className="my-4 flex flex-col flex-grow">
+          <h2 className="text-xl font-bold text-white">文件详情</h2>
+          {selectedFile ? (
+            <pre className="bg-gray-800 m-1 p-1 rounded overflow-auto flex-grow min-h-24">
+              {fileContents[selectedFile] || '没有查询到文件内容'}
+            </pre>
+          ) : (
+            <p className="text-white">点击任意文件以查看内容</p>
+          )}
+        </div>
       </div>
     </>
   )

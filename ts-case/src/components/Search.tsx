@@ -24,7 +24,7 @@ const AdvancedSearch: React.FC = () => {
 
   async function fetchTomlContent() {
     try {
-      const response = await fetch('/Base/KnowledgeBase.toml')
+      const response = await fetch('/base/KnowledgeBase.toml')
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }

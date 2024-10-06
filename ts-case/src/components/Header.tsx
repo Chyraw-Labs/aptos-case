@@ -107,13 +107,17 @@ function Header() {
                         <div className="p-3">
                           <a
                             className="px-2 py-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
-                            href="/project"
+                            href="/track_nft"
                           >
-                            <p className="font-semibold text-white">分步教程</p>
-                            <p className="text-white/50">创建一个 NFT</p>
+                            <p className="font-semibold text-white">
+                              初学者教程
+                            </p>
+                            <p className="text-white/50">
+                              创建一个简易的 NFT 合约
+                            </p>
                           </a>
                           <a
-                            className="px-2 py-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
+                            className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
                             href="/python"
                           >
                             <p className="font-semibold text-white">合约安全</p>
@@ -123,12 +127,10 @@ function Header() {
                             className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
                             href="/playground"
                           >
-                            <p className="font-semibold text-white ">
-                              案例演示
-                            </p>
-                            <p className="text-white/50">test: playground</p>
+                            <p className="font-semibold text-white ">编辑器</p>
+                            <p className="text-white/50">Move playground</p>
                           </a>
-                          <a
+                          {/* <a
                             className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
                             href="/editor"
                           >
@@ -136,61 +138,7 @@ function Header() {
                               快速开始
                             </p>
                             <p className="text-white/50">test: editor</p>
-                          </a>
-                        </div>
-                      </PopoverPanel>
-                    )}
-                  </div>
-                </Popover>
-              </div>
-              <div className="flex-1 justify-center">
-                <Popover className="relative">
-                  <div
-                    onMouseEnter={() => handleMouseEnter('about')}
-                    onMouseLeave={() => handleMouseLeave('about')}
-                  >
-                    <PopoverButton className="block text-lg/12 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
-                      <span>关于</span>
-                    </PopoverButton>
-                    {isOpenAbout && (
-                      <PopoverPanel
-                        transition
-                        anchor="bottom"
-                        static
-                        className="absolute z-10 mt-1 w-48 p-1 bg-white border rounded shadow-md divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition  ease-in-out  bg-opacity-20 backdrop-blur-md"
-                      >
-                        <div className="p-3">
-                          <div>
-                            <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
-                              href="/resource"
-                            >
-                              <p className="font-semibold text-white ">
-                                Resource
-                              </p>
-                              <p className="text-white/50">illustration</p>
-                              <p className="text-white/50">headless-ui</p>
-                              <p className="text-white/50">tailwind-css</p>
-                            </a>
-                            <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
-                              href="https://chyraw.com"
-                            >
-                              <p className="font-semibold text-white ">Idea</p>
-                              <p className="text-white/50">Science</p>
-                              <p className="text-white/50">Chyraw Labs</p>
-                            </a>
-                            <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
-                              href="/team"
-                            >
-                              <p className="font-semibold text-white ">
-                                Developer
-                              </p>
-                              <p className="text-white/50">Simons</p>
-                              <p className="text-white/50">Yongbye</p>
-                            </a>
-                          </div>
+                          </a> */}
                         </div>
                       </PopoverPanel>
                     )}
@@ -241,6 +189,62 @@ function Header() {
                   </div>
                 </Popover>
               </div>
+              <div className="flex-1 justify-center">
+                <Popover className="relative">
+                  <div
+                    onMouseEnter={() => handleMouseEnter('about')}
+                    onMouseLeave={() => handleMouseLeave('about')}
+                  >
+                    <PopoverButton className="block text-lg/12 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
+                      <span>关于</span>
+                    </PopoverButton>
+                    {isOpenAbout && (
+                      <PopoverPanel
+                        transition
+                        anchor="bottom"
+                        static
+                        className="absolute z-10 mt-1 w-48 p-1 bg-white border rounded shadow-md divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition  ease-in-out  bg-opacity-20 backdrop-blur-md"
+                      >
+                        <div className="p-3">
+                          <div>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              href="/resource"
+                            >
+                              <p className="font-semibold text-white ">
+                                Resource
+                              </p>
+                              <p className="text-white/50">illustration</p>
+                              <p className="text-white/50">headless-ui</p>
+                              <p className="text-white/50">tailwind-css</p>
+                              <p className="text-white/50">pyodide</p>
+                              <p className="text-white/50">move-aptos-wasm</p>
+                            </a>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              href="https://chyraw.com"
+                            >
+                              <p className="font-semibold text-white ">Idea</p>
+                              <p className="text-white/50">Simons</p>
+                              <p className="text-white/50">Chyraw Labs</p>
+                            </a>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              href="/team"
+                            >
+                              <p className="font-semibold text-white">
+                                Developer
+                              </p>
+                              <p className="text-white/50">Simons</p>
+                            </a>
+                          </div>
+                        </div>
+                      </PopoverPanel>
+                    )}
+                  </div>
+                </Popover>
+              </div>
+
               <div className="flex-1 justify-center">
                 <a href="https://github.com/caoyang2002">
                   <Image

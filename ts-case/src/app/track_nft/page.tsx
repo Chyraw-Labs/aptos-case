@@ -5,7 +5,7 @@ import Image from 'next/image'
 export default function Home() {
   return (
     <>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-screen w-screen">
         <a href="/" className="flex justify-center items-center my-2 ">
           <Image
             className="flex-shrink-0"
@@ -18,8 +18,9 @@ export default function Home() {
             Aptos Case
           </h1>
         </a>
-
-        <ProjectTrack />
+        <div className="flex-grow overflow-auto">
+          <ProjectTrack />
+        </div>
       </div>
     </>
   )
