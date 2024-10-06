@@ -21,14 +21,6 @@ const AdvancedSearch: React.FC = () => {
   const [keyword, setKeyword] = useState<string>('')
   const [knowledgeBase, setKnowledgeBase] = useState<KnowledgeBase>({})
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
-  // const tomlPath = '/Base/KnowledgeBase.txt'
-  // const url = `/api/mdx?path=${encodeURIComponent(tomlPath)}`
-  // const response = await fetch(url)
-  // console.log(response)
-  // if (!response.ok) {
-  //   throw new Error('Network response was not ok')
-  // }
-  // const tomlContent = await response.text()
 
   async function fetchTomlContent() {
     return KNOWLEDGEBASE
@@ -103,7 +95,7 @@ const AdvancedSearch: React.FC = () => {
   // 透明效果 bg-opacity-80 backdrop-blur-sm
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 bg-black bg-opacity-80 backdrop-blur-sm shadow-lg rounded-lg">
+    <div className="w-full max-w-3xl mx-auto p-4 bg-black/5 bg-opacity-80 backdrop-blur-sm shadow-lg rounded-lg">
       <div className="relative mb-6">
         <input
           type="text"
@@ -116,13 +108,13 @@ const AdvancedSearch: React.FC = () => {
       </div>
 
       {searchResults.length > 0 ? (
-        <div className="space-y-4 bg-black">
+        <div className="space-y-4 bg-black/5">
           {searchResults.map(({ category, item }, index) => {
             const isExpanded = expandedItems.has(`${category}-${item.title}`)
             return (
               <div
                 key={index}
-                className="p-4 rounded-lg bg-black hover:bg-gray-900 transition-colors"
+                className="p-4 rounded-lg bg-black/5 hover:bg-gray-900 transition-colors"
               >
                 <div
                   className="flex justify-between items-center cursor-pointer"

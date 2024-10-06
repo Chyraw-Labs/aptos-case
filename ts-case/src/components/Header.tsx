@@ -102,11 +102,11 @@ function Header() {
                         anchor="bottom"
                         static
                         // className="absolute z-10 mt-2 w-48 p-4 bg-white border rounded shadow-md"
-                        className="absolute z-10 mt-1 w-48 p-1 bg-white/5 border rounded shadow-md divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition  ease-in-out  bg-opacity-20 backdrop-blur-md"
+                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-40 backdrop-blur-md"
                       >
                         <div className="p-3">
                           <a
-                            className="px-2 py-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
+                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                             href="/track_nft"
                           >
                             <p className="font-semibold text-white">
@@ -117,28 +117,19 @@ function Header() {
                             </p>
                           </a>
                           <a
-                            className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
+                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                             href="/python"
                           >
                             <p className="font-semibold text-white">合约安全</p>
                             <p className="text-white/50">python playground</p>
                           </a>
                           <a
-                            className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
+                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                             href="/playground"
                           >
                             <p className="font-semibold text-white ">编辑器</p>
                             <p className="text-white/50">Move playground</p>
                           </a>
-                          {/* <a
-                            className="px-2 py-2 mt-2 bg-opacity-30 backdrop-blur-md block rounded-lg transition hover:bg-white/5"
-                            href="/editor"
-                          >
-                            <p className="font-semibold text-white ">
-                              快速开始
-                            </p>
-                            <p className="text-white/50">test: editor</p>
-                          </a> */}
                         </div>
                       </PopoverPanel>
                     )}
@@ -159,12 +150,12 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-10 mt-1 w-48 p-1 bg-white border rounded shadow-md divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition  ease-in-out  bg-opacity-20 backdrop-blur-md"
+                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-40 backdrop-blur-md"
                       >
                         <div className="p-3">
                           <div>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                               href="/playground"
                             >
                               <p className="font-semibold text-white ">
@@ -174,7 +165,16 @@ function Header() {
                               <p className="text-white/50">TS sdk</p>
                             </a>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                              href="http://43.138.107.218:3000/"
+                            >
+                              <p className="font-semibold text-white ">
+                                Move IDE
+                              </p>
+                              <p className="text-white/50">Move 版的 Remix</p>
+                            </a>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                               href="/indexer"
                             >
                               <p className="font-semibold text-white ">
@@ -203,12 +203,12 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-10 mt-1 w-48 p-1 bg-white border rounded shadow-md divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition  ease-in-out  bg-opacity-20 backdrop-blur-md"
+                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-40 backdrop-blur-md"
                       >
                         <div className="p-3">
                           <div>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                               href="/resource"
                             >
                               <p className="font-semibold text-white ">
@@ -221,7 +221,7 @@ function Header() {
                               <p className="text-white/50">move-aptos-wasm</p>
                             </a>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                               href="https://chyraw.com"
                             >
                               <p className="font-semibold text-white ">Idea</p>
@@ -229,7 +229,7 @@ function Header() {
                               <p className="text-white/50">Chyraw Labs</p>
                             </a>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-60 backdrop-blur-xl block rounded-lg transition hover:bg-white/5"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
                               href="/team"
                             >
                               <p className="font-semibold text-white">

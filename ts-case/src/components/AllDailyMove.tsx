@@ -5,7 +5,12 @@ export const AllDailyMove = () => {
   return (
     <>
       <div className="flex flex-col mx-4 my-4">
-        <p className="font-bold text-9xl mb-4">Move 工坊</p>
+        <p className="font-bold text-6xl mb-4">Move 工坊</p>
+        <p className="font-bold text-xs mb-4">
+          本节深入探讨 Aptos
+          上最常用的库和框架，以及如何使用它们编写复杂但简单高效的模块。完成本课程后，您可以使用
+          Aptos Framework 中的库使他们的代码更简单但更复杂。
+        </p>
         <div className="py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Track
             mdPath="/Docs/test-mermaid.md"

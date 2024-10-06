@@ -6,7 +6,11 @@ export const AllTrack = () => {
   return (
     <>
       <div className="flex flex-col items-center mx-4 my-4">
-        <p className="font-bold text-9xl mb-4">分步教程</p>
+        <p className="font-bold text-6xl mb-4">分步教程</p>
+        <p className="font-bold text-xs mb-4">
+          于课程：本课程涵盖 Aptos 上的数字资产标准以及如何创建创新而复杂的
+          NFT。我们将从如何创建收藏品和铸造代币的基础知识开始，并探索我们可以用数字资产做的所有创造性的事情。完成本课程后，您可以在其应用程序中创建和使用数字资产。
+        </p>
         <div className="py-4 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {/* <ProjectTrack /> */}
           <Track

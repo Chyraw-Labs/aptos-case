@@ -3,7 +3,7 @@
 import { AllCase } from '@/components/AllCase'
 import { AllDailyMove } from '@/components/AllDailyMove'
 import { AllTrack } from '@/components/AllTrack'
-// import BackgroundSVG from '@/components/BackgroundSVG'
+import BackgroundSVG from '@/components/BackgroundSVG'
 // import Case from '@/components/Case'
 import { GettingStarted } from '@/components/GettingStarted'
 import Header from '@/components/Header'
@@ -18,14 +18,14 @@ export default function Home() {
         <Header />
       </div>
       {/* <Playground /> */}
-      {/* <BackgroundSVG
+      <BackgroundSVG
         svgPath="/assets/logo-outline.svg"
         svgSize={{ width: 128, height: 128 }}
         scrollDirection="right"
         backgroundColor="#000"
         scrollSpeed={0.3}
-      /> */}
-      <div className="my-20">
+      />
+      <div className="flex flex-col gap-8 my-20">
         <GettingStarted />
         <AllTrack />
         <AllCase />

@@ -249,7 +249,7 @@ const WalletMenu = () => {
                 transition
                 // anchor="bottom"
                 static
-                className="absolute z-70 mt-1 w-48 p-1 bg-white bg-opacity-20 backdrop-blur-md  border rounded shadow-md divide-y divide-white/5 rounded-xl transition ease-in-out"
+                className="absolute z-70 mt-1 w-48 p-1 bg-black bg-opacity-60 backdrop-blur-md  border rounded shadow-md divide-y divide-white/5 rounded-xl transition ease-in-out"
                 // className="absolute z-10 mt-1 w-48 p-1 bg-white/20 backdrop-blur-lg rounded-lg shadow-lg"
               >
                 <div className="divide-y divide-gray-100 ">
@@ -362,10 +362,10 @@ const WalletMenu = () => {
                   </div>
                   <div className="px-1 py-1">
                     <button
-                      className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-red-200 hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-red-600 hover:bg-white/10"
+                      className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-red-600 hover:bg-opacity-20 hover:backdrop-blur-sm hover:text-red-400 hover:bg-white/10"
                       onClick={disconnect}
                     >
-                      Disconnect
+                      断开连接
                     </button>
                   </div>
                 </div>

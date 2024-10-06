@@ -14,6 +14,7 @@ import '@/styles/wallet.css'
 import MoveEditorWrapper from './MoveEditorWrapper'
 import { HELLO } from '@/code-case/move'
 import SearchKnowledge from './Search'
+import { Explorer } from './Explorer'
 
 const Playground: React.FC = () => {
   const [splitRatio, setSplitRatio] = useState(50)
@@ -70,6 +71,20 @@ const Playground: React.FC = () => {
         break
     }
   }
+  const [activeComponent, setActiveComponent] = useState('SearchKnowledge')
+
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case 'SearchKnowledge':
+        return <SearchKnowledge />
+      case 'Explorer':
+        return <Explorer />
+      case 'Opretion':
+        return <p>opretion</p>
+      default:
+        return <SearchKnowledge />
+    }
+  }
 
   return (
     <>
@@ -96,7 +111,34 @@ const Playground: React.FC = () => {
               <div className="flex justify-between">
                 <WalletButton />
               </div>
-              <SearchKnowledge />
+              <div className="flex flex-col items-center  mt-2">
+                <div className="flex space-x-4 mb-4">
+                  <button
+                    onClick={() => setActiveComponent('SearchKnowledge')}
+                    className="px-2 py-1 rounded-2xl bg-white bg-opacity-20 backdrop-blur-sm text-sm font-medium hover:bg-opacity-0 hover:backdrop-blur-xl hover:border hover:border-gray-300"
+                  >
+                    知识库
+                  </button>
+                  <button
+                    onClick={() => setActiveComponent('Explorer')}
+                    className="px-2 py-1 rounded-2xl bg-white bg-opacity-20 backdrop-blur-sm text-sm font-medium hover:bg-opacity-0 hover:backdrop-blur-xl hover:border hover:border-gray-300"
+                  >
+                    浏览器
+                  </button>
+                  <button
+                    onClick={() => setActiveComponent('Opretion')}
+                    className="px-2 py-1 rounded-2xl bg-white bg-opacity-20 backdrop-blur-sm text-sm font-medium hover:bg-opacity-0 hover:backdrop-blur-xl hover:border hover:border-gray-300"
+                  >
+                    操作信息
+                  </button>
+                </div>
+
+                <div className="mt-4 " style={{ width: `${splitRatio}%` }}>
+                  {renderComponent()}
+                </div>
+              </div>
+
+              {/* explorer.aptoslabs.com/ */}
             </div>
           </div>
 
