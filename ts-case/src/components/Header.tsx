@@ -66,7 +66,7 @@ function Header() {
 
   return (
     <>
-      <div className="flex justify-center w-full py-2 px-2 rounded-lg bg-opacity-10 backdrop-blur-md block">
+      <div className="flex justify-center w-full py-2 px-2 rounded-lg bg-opacity-10 backdrop-blur block">
         <div className="flex justify-between w-full max-w-4xl items-center ">
           {/* LOGO */}
           <div className="flex-none justify-center px-2">
@@ -97,38 +97,48 @@ function Header() {
                       <span>教程</span>
                     </PopoverButton>
                     {isOpenTips && (
+                      // 背景
                       <PopoverPanel
                         transition
                         anchor="bottom"
                         static
                         // className="absolute z-10 mt-2 w-48 p-4 bg-white border rounded shadow-md"
-                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-40 backdrop-blur-md"
+                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <a
-                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                             href="/track_nft"
                           >
-                            <p className="font-semibold text-white">
+                            <p className="font-semibold text-sm text-white">
                               初学者教程
                             </p>
-                            <p className="text-white/50">
+                            <p className="text-white/80 text-xs/4">
                               创建一个简易的 NFT 合约
                             </p>
                           </a>
                           <a
-                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                             href="/python"
                           >
-                            <p className="font-semibold text-white">合约安全</p>
-                            <p className="text-white/50">python playground</p>
+                            <p className="font-semibold text-sm text-white">
+                              合约安全
+                            </p>
+                            <p className="text-white/80 text-xs/4">
+                              通过 Python 学习安全和不安全的合约，以及 Move 实现
+                            </p>
                           </a>
                           <a
-                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                            className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                             href="/playground"
                           >
-                            <p className="font-semibold text-white ">编辑器</p>
-                            <p className="text-white/50">Move playground</p>
+                            <p className="font-semibold text-sm text-white">
+                              编辑器
+                            </p>
+                            <p className="text-white/80 text-xs/4">
+                              在 Move 和 Aptos
+                              的完备支持下，完成项目的编写和调试
+                            </p>
                           </a>
                         </div>
                       </PopoverPanel>
@@ -150,37 +160,39 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-40 backdrop-blur-md"
+                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                               href="/playground"
                             >
-                              <p className="font-semibold text-white ">
+                              <p className="font-semibold text-sm text-white">
                                 在线编译器
                               </p>
-                              <p className="text-white/50">Move</p>
-                              <p className="text-white/50">TS sdk</p>
+                              <p className="text-white/80 text-xs/4">Move</p>
+                              <p className="text-white/80 text-xs/4">TS sdk</p>
                             </a>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                               href="http://43.138.107.218:3000/"
                             >
-                              <p className="font-semibold text-white ">
+                              <p className="font-semibold text-sm text-white">
                                 Move IDE
                               </p>
-                              <p className="text-white/50">Move 版的 Remix</p>
+                              <p className="text-white/80 text-xs/4">
+                                Move 版的 Remix
+                              </p>
                             </a>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                               href="/indexer"
                             >
-                              <p className="font-semibold text-white ">
+                              <p className="font-semibold text-sm text-white">
                                 Indexer
                               </p>
-                              <p className="text-white/50">在线</p>
+                              <p className="text-white/80 text-xs/4">在线</p>
                             </a>
                           </div>
                         </div>
@@ -203,39 +215,51 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-40 backdrop-blur-md"
+                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                               href="/resource"
                             >
-                              <p className="font-semibold text-white ">
+                              <p className="font-semibold text-sm text-white">
                                 Resource
                               </p>
-                              <p className="text-white/50">illustration</p>
-                              <p className="text-white/50">headless-ui</p>
-                              <p className="text-white/50">tailwind-css</p>
-                              <p className="text-white/50">pyodide</p>
-                              <p className="text-white/50">move-aptos-wasm</p>
+                              <p className="text-white/80 text-xs/4">
+                                illustration
+                              </p>
+                              <p className="text-white/80 text-xs/4">
+                                headless-ui
+                              </p>
+                              <p className="text-white/80 text-xs/4">
+                                tailwind-css
+                              </p>
+                              <p className="text-white/80 text-xs/4">pyodide</p>
+                              <p className="text-white/80 text-xs/4">
+                                move-aptos-wasm
+                              </p>
                             </a>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                               href="https://chyraw.com"
                             >
-                              <p className="font-semibold text-white ">Idea</p>
-                              <p className="text-white/50">Simons</p>
-                              <p className="text-white/50">Chyraw Labs</p>
+                              <p className="font-semibold text-sm text-white">
+                                Idea
+                              </p>
+                              <p className="text-white/80 text-xs/4">Simons</p>
+                              <p className="text-white/80 text-xs/4">
+                                Chyraw Labs
+                              </p>
                             </a>
                             <a
-                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-xl block rounded-lg transition hover:bg-black hover:bg-opacity-40 hover:border hover:rounded-xl"
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
                               href="/team"
                             >
-                              <p className="font-semibold text-white">
+                              <p className="font-semibold text-sm text-white">
                                 Developer
                               </p>
-                              <p className="text-white/50">Simons</p>
+                              <p className="text-white/80 text-xs/4">Simons</p>
                             </a>
                           </div>
                         </div>

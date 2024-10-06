@@ -11,6 +11,10 @@ const config: Config = {
       backdropBlur: {
         sm: '4px',
       },
+      backdropFilter: {
+        none: 'none',
+        blur: 'blur(20px)',
+      },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',

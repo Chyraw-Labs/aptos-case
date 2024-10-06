@@ -247,11 +247,15 @@ const WalletMenu = () => {
             >
               <PopoverPanel
                 transition
-                // anchor="bottom"
                 static
-                className="absolute z-70 mt-1 w-48 p-1 bg-black bg-opacity-60 backdrop-blur-md  border rounded shadow-md divide-y divide-white/5 rounded-xl transition ease-in-out"
-                // className="absolute z-10 mt-1 w-48 p-1 bg-white/20 backdrop-blur-lg rounded-lg shadow-lg"
+                className="fixed z-70 mt-1 w-48 p-1 bg-black bg-opacity-60 overflow-hidden backdrop-blur-md block border rounded shadow-md divide-y divide-white/5 rounded-xl transition ease-in-out"
+                style={{
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                }}
               >
+                <div className="bg-black bg-opacity-30 backdrop-blur-md block w-full h-full absolute top-0 left-0 -z-10"></div>
+
                 <div className="divide-y divide-gray-100 ">
                   <div className="px-1 py-1">
                     <button
