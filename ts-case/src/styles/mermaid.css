@@ -1,0 +1,20 @@
+.mermaid-wrapper {
+  /* background-color: white; */
+  padding: 10px;
+  margin: 10px 0;
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 4px;
+}
+
+.mermaid-wrapper .mermaid {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mermaid-wrapper svg {
+  max-width: 100%;
+  height: auto;
+}

@@ -11,6 +11,9 @@ import styles from '@/styles/md.module.css'
 import hljs from 'highlight.js'
 import '@/styles/custom-dark-highlight.css'
 import mermaid from 'mermaid'
+import MermaidRenderer from './MermaidRender'
+// import '@/styles/mermaid.css'
+import ErrorBoundary from './ErrorBoundary'
 
 hljs.registerLanguage('mylxxang', function (hljs) {
   return {
@@ -213,37 +216,44 @@ interface MarkdownRendererProps {
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
   const mermaidRef = useRef<HTMLDivElement>(null)
+  // useEffect(() => {
+  //   mermaid.initialize({
+  //     startOnLoad: true,
+  //     theme: 'dark',
+  //     securityLevel: 'loose', // 如果你信任你的内容源
+  //   })
+  //   mermaid.run()
+  //   const renderMermaidDiagrams = async () => {
+  //     if (mermaidRef.current) {
+  //       const mermaidDivs = mermaidRef.current.querySelectorAll('.mermaid')
+  //       for (let i = 0; i < mermaidDivs.length; i++) {
+  //         const element = mermaidDivs[i]
+  //         const graphDefinition = element.textContent
+  //         if (graphDefinition) {
+  //           const { svg } = await mermaid.render(
+  //             `mermaid-${i}`,
+  //             graphDefinition
+  //           )
+  //           element.innerHTML = svg
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   hljs.highlightAll()
+  //   // Manually trigger highlight.js after component mounts
+  //   document.querySelectorAll('pre code').forEach((block) => {
+  //     hljs.highlightBlock(block as HTMLElement)
+  //   })
+
+  //   renderMermaidDiagrams()
+  // }, [content])
   useEffect(() => {
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'dark',
-      securityLevel: 'loose', // 如果你信任你的内容源
-    })
-
-    const renderMermaidDiagrams = async () => {
-      if (mermaidRef.current) {
-        const mermaidDivs = mermaidRef.current.querySelectorAll('.mermaid')
-        for (let i = 0; i < mermaidDivs.length; i++) {
-          const element = mermaidDivs[i]
-          const graphDefinition = element.textContent
-          if (graphDefinition) {
-            const { svg } = await mermaid.render(
-              `mermaid-${i}`,
-              graphDefinition
-            )
-            element.innerHTML = svg
-          }
-        }
-      }
-    }
-
     hljs.highlightAll()
     // Manually trigger highlight.js after component mounts
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block as HTMLElement)
     })
-
-    renderMermaidDiagrams()
   }, [content])
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
@@ -280,10 +290,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           code({ node, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '')
             if (match && match[1] === 'mermaid') {
+              const chart = String(children).replace(/\n$/, '')
+              console.log('Mermaid code block detected:', chart)
               return (
-                <div className="mermaid">
-                  {String(children).replace(/\n$/, '')}
-                </div>
+                <ErrorBoundary>
+                  <MermaidRenderer chart={chart} />
+                </ErrorBoundary>
               )
             }
             return match ? (

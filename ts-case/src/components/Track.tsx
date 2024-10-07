@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { twMerge } from 'tailwind-merge'
-// import { MDXRemoteSerializeResult } from 'next-mdx-remote'
-// import { MDXProvider } from '@mdx-js/react'
-// import { serialize } from 'next-mdx-remote/serialize'
 import {
   X,
   Maximize2,
@@ -12,12 +9,7 @@ import {
   ArrowLeftRight,
   Loader,
 } from 'lucide-react'
-// import styles from '@/styles/md.module.css'
-// import { OnMount, OnChange } from '@monaco-editor/react'
-// import * as monaco from 'monaco-editor'
 import MoveEditorWrapper from './EditorWrapper'
-// import { HELLO } from '@/code-case/move'
-// import { MoveEditorProvider } from './MoveEditorProvider'
 import { useMoveEditor } from './MoveEditorProvider'
 import DocsTable from './DocsTable'
 import useCompileMove from '@/move-wasm/CompileMove'
@@ -31,7 +23,6 @@ interface TrackProps {
   mdPath: string
   codeCase?: string
   cover: string
-  size?: 'sm' | 'md' | 'lg'
   className?: string
   description?: string
   tags?: string[]
@@ -50,16 +41,12 @@ const Track: React.FC<TrackProps> = ({
     // write move code here
   }`,
   cover,
-  size = 'md',
   className,
   description,
   tags,
   title,
   children,
 }) => {
-  // const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(
-  //   null
-  // )
   const [mdContent, setMdContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -69,17 +56,9 @@ const Track: React.FC<TrackProps> = ({
   const [isDragging, setIsDragging] = useState(false)
   const splitPaneRef = useRef<HTMLDivElement>(null)
   const { account } = useWallet()
-  // const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
-
-  const sizeClasses = {
-    sm: 'w-32 h-72',
-    md: 'w-66 h-120',
-    lg: 'w-92 h-160',
-  }
 
   const baseClasses = twMerge(
-    'bg-white bg-opacity-80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300  transform transition-transform hover:scale-105 hover:bg-opacity-100',
-    sizeClasses[size],
+    'bg-white bg-opacity-80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300 transform transition-transform hover:scale-105 hover:bg-opacity-100',
     className
   )
 
@@ -89,7 +68,6 @@ const Track: React.FC<TrackProps> = ({
     try {
       const url = `/api/mdx?path=${encodeURIComponent(mdPath)}`
       const response = await fetch(url)
-      // console.log(response)
       if (!response.ok) {
         throw new Error('Failed to fetch Markdown content')
       }
@@ -106,16 +84,16 @@ const Track: React.FC<TrackProps> = ({
     }
   }
 
-  // TODO Code track
   const { exportCode } = useMoveEditor()
   const editorCode = exportCode()
   useEffect(() => {
     setCode(editorCode)
   }, [editorCode])
-  // console.log(exportCode())
+
   useEffect(() => {
     setCode(codeCase)
   }, [codeCase])
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return
@@ -141,15 +119,7 @@ const Track: React.FC<TrackProps> = ({
       document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [isDragging])
-  // const handleEditorDidMount: OnMount = (editor) => {
-  //   editorRef.current = editor
-  // }
 
-  // const handleEditorChange: OnChange = (value) => {
-  //   if (value !== undefined) {
-  //     setCode(value)
-  //   }
-  // }
   const result = useCompileMove() as CompileMoveResult | null
   const handleRunCode = () => {
     console.log(result)
@@ -204,7 +174,7 @@ const Track: React.FC<TrackProps> = ({
             onClick={fetchMdContent}
           >
             {mdPath && (
-              <div className="max-w-sm rounded-lg shadow-lg flex flex-col ">
+              <div className="rounded-lg shadow-lg flex flex-col">
                 <div className="relative min-h-[280px]">
                   <Image
                     src={cover}
@@ -214,7 +184,7 @@ const Track: React.FC<TrackProps> = ({
                     className="rounded-t-lg"
                   />
                 </div>
-                <div className="flex-grow flex flex-col p-6 ">
+                <div className="flex-grow flex flex-col p-6">
                   <div className="mb-2">
                     {tags?.map((tag, index) => (
                       <span
@@ -231,17 +201,6 @@ const Track: React.FC<TrackProps> = ({
                 </div>
               </div>
             )}
-            {/* <div className="p-4">
-              {tag && (
-                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2">
-                  {tag}
-                </span>
-              )}
-              {description && (
-                <p className="text-gray-600 text-sm">{description}</p>
-              )}
-              {children}
-            </div> */}
           </PopoverButton>
 
           {open && (
@@ -275,7 +234,6 @@ const Track: React.FC<TrackProps> = ({
                       <div className="container mx-auto px-4 py-8">
                         <MarkdownRenderer content={mdContent} />
                       </div>
-                      // <MDXRemote {...mdxSource} components={mdxStyleConfig} />
                     )}
                   </div>
                 </div>
@@ -286,7 +244,6 @@ const Track: React.FC<TrackProps> = ({
                   onMouseDown={handleDragStart}
                 >
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-12 bg-gray-400 rounded-full flex items-center justify-center z-50">
-                    {/* <LayoutGrid size={16} className="text-white" /> */}
                     <ArrowLeftRight size={16} className="text-white" />
                   </div>
                 </div>
@@ -301,7 +258,6 @@ const Track: React.FC<TrackProps> = ({
                     <div className="flex justify-between items-center p-4">
                       <h2 className="text-xl font-bold text-black">编辑器</h2>
                       <DocsTable />
-                      {/* <p>{codeCase}</p> */}
                       <div className="flex space-x-2 pr-16">
                         <button
                           onClick={() => handleLayoutChange('left')}

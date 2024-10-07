@@ -25,12 +25,13 @@ const MoveEditorWrapper: React.FC<MoveEditorWrapperProps> = ({
 
 export default MoveEditorWrapper
 
-interface MoveEditorWrapperProps {
+// aptos 命令行配置
+interface AptosCliEditorWrapperProps {
   initialCode?: string
   onCodeChange?: (newCode: string) => void
 }
 
-export const AptosCliEditorWrapper: React.FC<MoveEditorWrapperProps> = ({
+export const AptosCliEditorWrapper: React.FC<AptosCliEditorWrapperProps> = ({
   initialCode = '// 在这里输入你的命令',
 }) => {
   const [code, setCode] = useState(initialCode)

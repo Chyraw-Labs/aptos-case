@@ -9,10 +9,20 @@ import { GettingStarted } from '@/components/GettingStarted'
 import Header from '@/components/Header'
 import { MoveBook } from '@/components/MoveBook'
 import { Visualization } from '@/components/Visualization'
+import mermaid from 'mermaid'
+import { useEffect } from 'react'
 // import Playground from '@/components/Playground'
 // import WalletButton from '@/components/WalletButton'
 
 export default function Home() {
+  useEffect(() => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      logLevel: 'debug',
+    })
+  }, [])
   return (
     <>
       <div className="fixed top-0 left-0 w-full h-20 z-10">
