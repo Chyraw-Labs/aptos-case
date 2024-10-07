@@ -4,8 +4,7 @@ import { CheckCircle2, AlertCircle } from 'lucide-react'
 import { Dialog, Transition } from '@headlessui/react'
 import FileStructureTree, { FileStructure } from './FileStructureTree'
 import { useMoveEditor } from './MoveEditorProvider'
-import MoveEditorWrapper from './EditorWrapper'
-
+import { AptosCliEditorWrapper } from './EditorWrapper'
 interface Step {
   id: number
   title: string
@@ -20,10 +19,9 @@ interface Project {
   steps: Step[]
 }
 
-const TrackNFT = () => {
+const TrackAptosCLI = () => {
   const [code, setCode] = useState('// 请在这里输入你的答案...')
-  const { exportCode } = useMoveEditor()
-  const editorCode = exportCode()
+
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   // const [userInput, setUserInput] = useState('')
   const [completed, setCompleted] = useState(false)
@@ -33,8 +31,16 @@ const TrackNFT = () => {
     { root: ['README.md'] },
   ])
 
+  // 初始化文件结构
   const initialFileContents: [string, string][] = [
-    ['root/README.md', `这是一个创建 NFT 的教程`],
+    [
+      'root/README.md',
+      `这是一个基础语法的教程，
+您将学习到：
+1. Move 开发思想；
+2. 编写符合 Move 规范的合约；
+3. 命令行工具的基本使用。`,
+    ],
     [
       'root/.aptos/config.yaml',
       `---
@@ -50,7 +56,7 @@ profiles:
     [
       'root/Move.toml',
       `[package]
-name = "my_nft"
+name = "hi_aptos"
 version = "1.0.0"
 authors = []
 
@@ -126,65 +132,58 @@ module MyNFT::first_NFT{
     ],
   ]
 
+  // 项目步骤
   const [project] = useState<Project>({
     id: 1,
-    name: '从零创建基础 NFT 项目',
+    name: 'Aptos CLI 使用教程',
     steps: [
+      // 为了项目的安全，请务必添加 .gtignore 文件，并忽略 .aptos/config.yaml 文件，因为这个文件包含了您的私钥，一旦泄漏可能导致您的资产丢失。
+      // 初始化
       {
         id: 1,
         title: '1. 初始化 Move 项目',
-        content: `清空编辑器中的内容后，输入:
-aptos move init --name my_nft
-💡 解析：这个命令将会创建一个 Move 项目结构`,
+        content: `清空编辑器中的内容后，
+💻 输入:
+aptos move init --name hi_aptos
+
+💡 解析：
+这个命令将会创建一个 Move 项目结构，其中 --name 表示这个项目的名称为 hi_aptos，您能够在稍后创建的 Move.toml 的 name 字段中看到`,
         expectedOutput: `
-aptos move init --name my_nft`,
+aptos move init --name hi_aptos`,
         fileStructure: [{ root: ['README.md'] }],
       },
+      // 创建 aptos 账户
       {
         id: 2,
         title: '2. 创建 Aptos 账户',
-        content: `清空编辑器中刚才输入的命令后，输入:
-aptos init
-💡 解析：这个命令将会创建一个 aptos 账户到 .aptos/config.toml，其中包含了地址、私钥和公钥，请勿泄漏`,
+        content: `清空编辑器中刚才输入的命令后，
+💻 输入:
+aptos init --network testnet
+
+💡 解析：
+这个命令将会在 testnet 创建一个 aptos 账户到 .aptos/config.toml，其中包含了地址、私钥和公钥，请妥善保存在安全的地方。如果泄漏，您将永远丢失这个账户的所有权；如果忘记，没有任何人能够为您恢复`,
         expectedOutput: `
-aptos init`,
+aptos init --network testnet`,
         fileStructure: [{ root: ['Move.toml', { sources: [] }] }],
       },
-
+      // 配置地址别名
       {
         id: 3,
-        title: '3 编辑 Move 配置文件，配置地址别名',
-        content: `3.1 点击 Move.toml 文件，复制内容到下方编辑器，添加地址别名。地址为 config.yaml 文件中 account 后的字符串。输入:
-[addresses]
-case="你在 config.yaml 中的地址字符串"
-💡 解析：case 是自定义的地址别名，0x42 是区块链中的地址，它由`,
-        expectedOutput: `
-[package]
-name = "my_nft"
-version = "1.0.0"
-authors = []
+        title: '3. 在命令行中传递账户地址',
+        content: `清空编辑器中刚才输入的命令后，
+💻 输入:
+aptos account fund-with-faucet --account default
 
-[addresses]
-case="4d07b90d60c60b8c737fbca7b38e83424755ee24c9d8fe4dfb2481420303ab46"
-
-[dev-addresses]
-
-[dependencies.AptosFramework]
-git = "https://github.com/aptos-labs/aptos-core.git"
-rev = "mainnet"
-subdir = "aptos-move/framework/aptos-framework"
-
-[dev-dependencies]`,
+💡 解析：
+case 是自定义的地址别名，0x42 是区块链中的地址，它由 AIP-40 提出。在 Aptos 区块链中，每个账户或对象都有一个 32 字节长度的唯一账户地址来进行标识。在内部处理时，地址就是以一个 32 字节的序列形式存在。但在传输与展示这些地址时，常常采用十六进制的格式。`,
+        expectedOutput: `aptos account fund-with-faucet --account default`,
         fileStructure: [
           {
-            root: [
-              'Move.toml',
-              { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
-            ],
+            root: ['Move.toml', { '.aptos': ['config.yaml'] }],
           },
         ],
       },
+      // 添加依赖
       {
         id: 4,
         title: '4. 继续编辑 Move.toml 文件，添加 AptosTokenObjects 依赖',
@@ -200,10 +199,15 @@ git = "https://github.com/aptos-labs/aptos-core.git"
 rev = "testnet"
 subdir = "aptos-move/framework/aptos-token-objects"
 
-💡 解析：这个命令将会在 sources 下创建 nft.move 文件`,
+💡 解析：这一步旨在将 AptosFramework 替换为 AptosTokenObjects，这在实际开发中使可选的，但推荐这么做，因为 AptosTokenObjects 涵盖了 AptosFramework。
+[dependencies.AptosTokenObjects]: 这是一个依赖项的节标题。表示名为 AptosTokenObjects 的依赖项将被定义在这里。
+git = "https://github.com/aptos-labs/aptos-core.git":指定依赖项的来源是一个 Git 仓库。在这里，它指向了 aptos-labs 的 GitHub 仓库 aptos-core。
+rev = "testnet":指定要使用的版本或分支。在这里，testnet 表示从这个 Git 仓库的 testnet 分支中获取代码。
+subdir = "aptos-move/framework/aptos-token-objects":指定在 Git 仓库中相对于根目录的子目录。在这个例子中，aptos-move/framework/aptos-token-objects 是需要引入的具体路径，意味着这个依赖项的代码位于这个子目录下。
+`,
         expectedOutput: `
 [package]
-name = "my_nft"
+name = "hi_aptos"
 version = "1.0.0"
 authors = []
 
@@ -220,42 +224,45 @@ subdir = "aptos-move/framework/aptos-token-objects"
 [dev-dependencies]`,
         fileStructure: [
           {
-            root: [
-              'Move.toml',
-              { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
-            ],
+            root: ['Move.toml', { '.aptos': ['config.yaml'] }],
           },
         ],
       },
+      // 创建合约文件
       {
         id: 5,
-        title: '5. 创建 Move 合约文件: nft.move',
-        content: `清空编辑器中刚才输入的命令后，使用 touch 命令创建文件:
-touch sources/nft.move
-💡 解析：这个命令将会在 sources 下创建 nft.move 文件`,
+        title: '5. 创建 Move 合约文件: hi_aptos.move',
+        content: `清空编辑器中刚才输入的命令后，使用 touch 命令创建文件,
+💻 输入：
+touch sources/hi_aptos.move
+
+💡 解析：
+这个命令将会在 sources 下创建空文件 hi.move，Move 编码规范建议文件名为小写蛇形命名`,
         expectedOutput: `
-touch sources/nft.move`,
+touch sources/hi_aptos.move`,
         fileStructure: [
           {
-            root: [
-              'Move.toml',
-              { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
-            ],
+            root: ['Move.toml', { '.aptos': ['config.yaml'] }],
           },
         ],
       },
+      // 定义模块
       {
         id: 6,
-        title: '6. 在 nft.move 中定义 NFT 模块',
-        content: `清空编辑器中刚才输入的命令后，输入: 
-module case::nft{
+        title: '6. 在 hi_aptos.move 中定义 hi_aptos 模块',
+        content: `清空编辑器中刚才输入的命令后，
+💻 输入: 
+module case::hi_aptos{
 
 }
-💡 解析：module 表示这是一个模块，其中 case 是刚才定义的地址别名，`,
+💡 解析：module 表示这是一个模块，其中 case 是刚才定义的地址别名，nft 是模块名称，应与文件名一致，并使用小写蛇形命名法。
+🖊️ 模块的语法：
+module <address>::<identifier> { // 这里的 <address> 是一个有效的地址
+    (<use> | <friend> | <type> | <function> | <constant>)*
+}
+其中 <address> 是一个有效的名称或字面量地址。`,
         expectedOutput: `
-module case::nft{
+module case::hi_aptos{
 
 }`,
         fileStructure: [
@@ -263,211 +270,325 @@ module case::nft{
             root: [
               'Move.toml',
               { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
+              { sources: ['hi_aptos.move'] },
             ],
           },
         ],
       },
+      // 引入包
       {
         id: 7,
-        title: '7. 在 NFT 模块中定义 NFT 引用的结构体',
-        content: `在 module case::nft 的 {} 中输入：
-struct TokenRefsStore has key {
-    burn_ref: token::BurnRef,
-}`,
-        expectedOutput: `
-module case::nft{
-    struct TokenRefsStore has key {
-        burn_ref: token::BurnRef,
-    }
-}`,
+        title: '7. 引入包',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
         fileStructure: [
           {
             root: [
               'Move.toml',
               { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
+              { sources: ['hi_aptos.move'] },
             ],
           },
         ],
       },
+      // 原始类型
       {
         id: 8,
-        title: '8. 创建一个 collection 用于保存 NTF',
-        content: `在 module case::nft 的 {} 中输入：
-public entry fun create_collection(creator: &signer) {
-    let max_supply = 1000;
-    let collection_construcor_ref = &collection::create_fixed_collection(
-        creator,
-        string::utf8(b"collection_description"),
-        max_supply,
-        string::utf8(b"collection_name"),
-        option::some(royalty::create(1,1,signer::address_of(creator))),
-        string::utf8(b"collectionURI"),
-    );
-}`,
-        expectedOutput: `
-module case::nft{
-    struct TokenRefsStore has key {
-        burn_ref: token::BurnRef,
-    }
-    public entry fun create_collection(creator: &signer) {
-        let max_supply = 1000;
-        let collection_construcor_ref = &collection::create_fixed_collection(
-            creator,
-            string::utf8(b"collection_description"),
-            max_supply,
-            string::utf8(b"collection_name"),
-            option::some(royalty::create(1,1,signer::address_of(creator))),
-            string::utf8(b"collectionURI"),
-        );
-    }
-}`,
+        title: '8. 原始类型',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
         fileStructure: [
           {
             root: [
               'Move.toml',
               { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
+              { sources: ['hi_aptos.move'] },
             ],
           },
         ],
       },
+      // 局部变量和作用域
       {
-        id: 7,
-        title: '7. 添加创建 NFT 的函数',
-        content: `在 module case::nft 的 {} 中输入：
-public entry fun mint(creator: &signer){
-    let token_constructor_ref = &token::create(
-        creator,
-        string::utf8(b"collection_name"),
-        string::utf8(b"token_description"),
-        string::utf8(b"token_name"),
-        option::some(royalty::create(1,1,signer::address_of(creator))),
-        string::utf8(b"token_uri")
-        );
-    // Create a reference for burning an NFT
-    let burn_ref = token::generate_burn_ref(token_constructor_ref);
-    move_to(
-        creator,
-        TokenRefsStore{
-            burn_ref,
-        }
-    );
-}`,
-        expectedOutput: `
-module case::nft{
-    struct TokenRefsStore has key {
-        burn_ref: token::BurnRef,
-    }
-    public entry fun create_collection(creator: &signer) {
-        let max_supply = 1000;
-        let collection_construcor_ref = &collection::create_fixed_collection(
-            creator,
-            string::utf8(b"collection_description"),
-            max_supply,
-            string::utf8(b"collection_name"),
-            option::some(royalty::create(1,1,signer::address_of(creator))),
-            string::utf8(b"collectionURI"),
-        );
-    }
-    public entry fun mint(creator: &signer){
-        let token_constructor_ref = &token::create(
-            creator,
-            string::utf8(b"collection_name"),
-            string::utf8(b"token_description"),
-            string::utf8(b"token_name"),
-            option::some(royalty::create(1,1,signer::address_of(creator))),
-            string::utf8(b"token_uri")
-            );
-        // Create a reference for burning an NFT
-        let burn_ref = token::generate_burn_ref(token_constructor_ref);
-        move_to(
-            creator,
-            TokenRefsStore{
-                burn_ref,
-            }
-        );
-    }
-}`,
+        id: 9,
+        title: '9. 局部变量和作用域',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
         fileStructure: [
           {
             root: [
               'Move.toml',
               { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
+              { sources: ['hi_aptos.move'] },
             ],
           },
         ],
       },
+      // 终止和断言
       {
-        id: 8,
-        title: '8. 创建一个销毁 NFT 的函数',
-        content: `在 module case::nft 的 {} 中输入：
-public entry fun burn(creator:&signer) acquires TokenRefsStore {
-    let TokenRefsStore{
-        burn_ref,
-    } = move_from<TokenRefsStore>(signer::address_of(creator));
-    token::burn(burn_ref)
-}`,
-        expectedOutput: `
-module case::nft{
-    struct TokenRefsStore has key {
-        burn_ref: token::BurnRef,
-    }
-    public entry fun create_collection(creator: &signer) {
-        let max_supply = 1000;
-        let collection_construcor_ref = &collection::create_fixed_collection(
-            creator,
-            string::utf8(b"collection_description"),
-            max_supply,
-            string::utf8(b"collection_name"),
-            option::some(royalty::create(1,1,signer::address_of(creator))),
-            string::utf8(b"collectionURI"),
-        );
-    }
-    public entry fun mint(creator: &signer){
-        let token_constructor_ref = &token::create(
-            creator,
-            string::utf8(b"collection_name"),
-            string::utf8(b"token_description"),
-            string::utf8(b"token_name"),
-            option::some(royalty::create(1,1,signer::address_of(creator))),
-            string::utf8(b"token_uri")
-            );
-        // Create a reference for burning an NFT
-        let burn_ref = token::generate_burn_ref(token_constructor_ref);
-        move_to(
-            creator,
-            TokenRefsStore{
-                burn_ref,
-            }
-        );
-    }
-    public entry fun burn(creator:&signer) acquires TokenRefsStore {
-        let TokenRefsStore{
-            burn_ref,
-        } = move_from<TokenRefsStore>(signer::address_of(creator));
-        token::burn(burn_ref)
-    }
-}`,
+        id: 10,
+        title: '10. 终止和断言',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
         fileStructure: [
           {
             root: [
               'Move.toml',
               { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 条件语句
+      {
+        id: 11,
+        title: '11. 条件语句',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 循环语句
+      {
+        id: 12,
+        title: '12. 循环语句',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 函数
+      {
+        id: 13,
+        title: '13. 函数',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 结构体和资源
+      {
+        id: 14,
+        title: '14. 结构体和资源',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 常量
+      {
+        id: 15,
+        title: '15. 常量',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 泛型
+      {
+        id: 16,
+        title: '16. 泛型',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 能力
+      {
+        id: 17,
+        title: '17. 能力',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 别名
+      {
+        id: 18,
+        title: '18. 别名',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 友元
+      {
+        id: 19,
+        title: '19. 友元',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 包
+      {
+        id: 20,
+        title: '20. 包',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 单元测试
+      {
+        id: 21,
+        title: '21. 单元测试',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // Move 证明器
+      {
+        id: 22,
+        title: '22. Move 证明器',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 事件
+      {
+        id: 23,
+        title: '23. 事件',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 初始化模块
+      {
+        id: 24,
+        title: '24. 初始化模块',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // Move 安全指南
+      {
+        id: 25,
+        title: '25. Move 安全指南',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
             ],
           },
         ],
       },
     ],
   })
+  // 编辑器
 
+  const { exportCode } = useMoveEditor()
   useEffect(() => {
+    const editorCode = exportCode()
     // 更新 code 状态
     setCode(editorCode)
-    console.log('[INFO]: ', editorCode)
+    console.log('[INFO] 编辑器中的代码: ', editorCode)
 
     // 设定错误提示
     setError('请输入: ' + project.steps[currentStepIndex].expectedOutput)
@@ -480,7 +601,7 @@ module case::nft{
     }
     // 检查用户输入
     if (isEqual(code, project.steps[currentStepIndex].expectedOutput)) {
-      console.log('[INFO] TrackNFT.tsx: 用户的输入与预期输出匹配')
+      console.log('[INFO] TrackAptosCLI.tsx: 用户的输入与预期输出匹配')
 
       // 清空代码和错误
       setCode('')
@@ -494,7 +615,7 @@ module case::nft{
         setCompleted(true)
       }
     }
-  }, [code, currentStepIndex, project.steps, editorCode])
+  }, [code, currentStepIndex, exportCode, project.steps])
 
   const progress = Math.round((currentStepIndex / project.steps.length) * 100)
 
@@ -505,7 +626,7 @@ module case::nft{
   ) => {
     console.log(updatedFiles)
     if (selectedPath) {
-      console.log('[INFO](TrackNFT.tsx) 选择的 item 路径是:', selectedPath)
+      console.log('[INFO](TrackAptosCLI.tsx) 选择的 item 路径是:', selectedPath)
     }
   }
 
@@ -667,7 +788,8 @@ module case::nft{
         </div>
 
         <div style={{ height: '30vh', width: '100%' }}>
-          <MoveEditorWrapper initialCode={code} />
+          {/* <MoveEditorWrapper initialCode={code} /> */}
+          <AptosCliEditorWrapper initialCode={'$'} />
         </div>
         {error && (
           <div className="p-4 my-4 mb-4 bg-blue-100 rounded-lg">
@@ -706,4 +828,4 @@ module case::nft{
   )
 }
 
-export default TrackNFT
+export default TrackAptosCLI

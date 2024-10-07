@@ -3,11 +3,12 @@
 import { AllCase } from '@/components/AllCase'
 import { AllDailyMove } from '@/components/AllDailyMove'
 import { AllTrack } from '@/components/AllTrack'
-import BackgroundSVG from '@/components/BackgroundSVG'
+// import BackgroundSVG from '@/components/BackgroundSVG'
 // import Case from '@/components/Case'
 import { GettingStarted } from '@/components/GettingStarted'
 import Header from '@/components/Header'
 import { MoveBook } from '@/components/MoveBook'
+import { Visualization } from '@/components/Visualization'
 // import Playground from '@/components/Playground'
 // import WalletButton from '@/components/WalletButton'
 
@@ -42,6 +43,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-8 my-20">
         <GettingStarted />
+        <Visualization />
         <AllTrack />
         <AllCase />
         <AllDailyMove />

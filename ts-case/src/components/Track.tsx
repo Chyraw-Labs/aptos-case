@@ -15,7 +15,7 @@ import {
 // import styles from '@/styles/md.module.css'
 // import { OnMount, OnChange } from '@monaco-editor/react'
 // import * as monaco from 'monaco-editor'
-import MoveEditorWrapper from './MoveEditorWrapper'
+import MoveEditorWrapper from './EditorWrapper'
 // import { HELLO } from '@/code-case/move'
 // import { MoveEditorProvider } from './MoveEditorProvider'
 import { useMoveEditor } from './MoveEditorProvider'

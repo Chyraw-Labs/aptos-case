@@ -1,6 +1,6 @@
 'use client'
 // import ProjectTrack from '@/components/ProjectTrack'
-import TrackBasicSyntaxAndCLI from '@/components/TrackBasicSyntaxAndCLI'
+import TrackBasicSyntaxAndCLI from '@/components/TrackBasicSyntax'
 import Image from 'next/image'
 
 export default function Home() {

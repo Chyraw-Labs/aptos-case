@@ -1,6 +1,6 @@
 'use client'
 // import ProjectTrack from '@/components/ProjectTrack'
-import TrackBasicSyntax from '@/components/TrackBasicSyntax'
+import TrackAptosCLI from '@/components/TrackAptosCLI'
 import Image from 'next/image'
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
           </h1>
         </a>
         <div className="flex-grow overflow-auto">
-          <TrackBasicSyntax />
+          <TrackAptosCLI />
         </div>
       </div>
     </>

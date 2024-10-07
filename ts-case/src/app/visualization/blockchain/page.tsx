@@ -1,9 +1,11 @@
-'use client'
-// import ProjectTrack from '@/components/ProjectTrack'
-import TrackBasicSyntax from '@/components/TrackBasicSyntax'
+import BlockchainWorking from '@/components/BlockchainWorking'
+// import MoveEditorWrapper from '@/components/EditorWrapper'
 import Image from 'next/image'
-
 export default function Home() {
+  // const handleCodeChange = (newCode: string) => {
+  //   console.log('New code:', newCode)
+  // }
+
   return (
     <>
       <div className="flex flex-col h-screen w-screen">
@@ -20,7 +22,7 @@ export default function Home() {
           </h1>
         </a>
         <div className="flex-grow overflow-auto">
-          <TrackBasicSyntax />
+          <BlockchainWorking />
         </div>
       </div>
     </>

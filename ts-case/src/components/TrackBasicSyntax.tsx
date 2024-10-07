@@ -4,7 +4,7 @@ import { CheckCircle2, AlertCircle } from 'lucide-react'
 import { Dialog, Transition } from '@headlessui/react'
 import FileStructureTree, { FileStructure } from './FileStructureTree'
 import { useMoveEditor } from './MoveEditorProvider'
-import MoveEditorWrapper from './MoveEditorWrapper'
+import MoveEditorWrapper from './EditorWrapper'
 
 interface Step {
   id: number
@@ -20,7 +20,7 @@ interface Project {
   steps: Step[]
 }
 
-const TrackBasicSyntaxAndCLI = () => {
+const TrackBasicSyntax = () => {
   const [code, setCode] = useState('// 请在这里输入你的答案...')
   const { exportCode } = useMoveEditor()
   const editorCode = exportCode()
@@ -483,6 +483,118 @@ module case::hi_aptos{
           },
         ],
       },
+      // 友元
+      {
+        id: 19,
+        title: '19. 友元',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 包
+      {
+        id: 20,
+        title: '20. 包',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 单元测试
+      {
+        id: 21,
+        title: '21. 单元测试',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // Move 证明器
+      {
+        id: 22,
+        title: '22. Move 证明器',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 事件
+      {
+        id: 23,
+        title: '23. 事件',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // 初始化模块
+      {
+        id: 24,
+        title: '24. 初始化模块',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
+      // Move 安全指南
+      {
+        id: 25,
+        title: '25. Move 安全指南',
+        content: `在 module case::nft 的 {} 中输入：`,
+        expectedOutput: `none`,
+        fileStructure: [
+          {
+            root: [
+              'Move.toml',
+              { '.aptos': ['config.yaml'] },
+              { sources: ['hi_aptos.move'] },
+            ],
+          },
+        ],
+      },
     ],
   })
 
@@ -502,7 +614,7 @@ module case::hi_aptos{
     }
     // 检查用户输入
     if (isEqual(code, project.steps[currentStepIndex].expectedOutput)) {
-      console.log('[INFO] TrackBasicSyntaxAndCLI.tsx: 用户的输入与预期输出匹配')
+      console.log('[INFO] TrackBasicSyntax.tsx: 用户的输入与预期输出匹配')
 
       // 清空代码和错误
       setCode('')
@@ -528,7 +640,7 @@ module case::hi_aptos{
     console.log(updatedFiles)
     if (selectedPath) {
       console.log(
-        '[INFO](TrackBasicSyntaxAndCLI.tsx) 选择的 item 路径是:',
+        '[INFO](TrackBasicSyntax.tsx) 选择的 item 路径是:',
         selectedPath
       )
     }
@@ -731,4 +843,4 @@ module case::hi_aptos{
   )
 }
 
-export default TrackBasicSyntaxAndCLI
+export default TrackBasicSyntax

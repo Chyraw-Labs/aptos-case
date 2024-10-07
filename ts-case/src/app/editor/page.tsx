@@ -1,6 +1,6 @@
 // pages/index.tsx
 import { HELLO } from '@/code-case/move'
-import MoveEditorWrapper from '@/components/MoveEditorWrapper'
+import MoveEditorWrapper from '@/components/EditorWrapper'
 
 export default function Home() {
   // const handleCodeChange = (newCode: string) => {

@@ -89,7 +89,7 @@ const moveKeywords = [
   'address',
 ]
 
-const MoveEditor: React.FC<MoveEditorProps> = ({
+const AptosCliEditor: React.FC<MoveEditorProps> = ({
   initialCode,
   onCodeChange,
   ...props
@@ -222,4 +222,4 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
   )
 }
 
-export default MoveEditor
+export default AptosCliEditor
