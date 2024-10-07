@@ -84,12 +84,16 @@ const TooltipButton: React.FC<TooltipButtonProps> = ({
       </Button>
       <div
         role="tooltip"
-        className={`mt-1 absolute bg-blue-900 text-white text-sm rounded py-1 px-2 transition-opacity duration-200 ${
-          tooltipVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`mt-2 absolute rounded border bg-black border-white  text-white text-sm rounded py-1 px-2 w-64 transition-opacity duration-200 ${
+          tooltipVisible ? 'opacity-100' : 'opacity-0 pointer-events-none '
         }`}
-        style={{ pointerEvents: 'none' }} // Prevent tooltip from capturing mouse events
+        style={{
+          pointerEvents: 'none',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
       >
-        {message}
+        <p className="text-center break-words max-w-xs ">{message}</p>
       </div>
     </div>
   )

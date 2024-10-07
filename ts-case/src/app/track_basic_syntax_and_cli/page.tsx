@@ -1,6 +1,6 @@
 'use client'
-import TrackNFT from '@/components/TrackNFT'
-// import ProjectTrack from '@/components/TrackNFT'
+// import ProjectTrack from '@/components/ProjectTrack'
+import TrackBasicSyntaxAndCLI from '@/components/TrackBasicSyntaxAndCLI'
 import Image from 'next/image'
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
           </h1>
         </a>
         <div className="flex-grow overflow-auto">
-          <TrackNFT />
+          <TrackBasicSyntaxAndCLI />
         </div>
       </div>
     </>

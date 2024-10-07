@@ -20,7 +20,7 @@ interface Project {
   steps: Step[]
 }
 
-const ProjectTrack = () => {
+const TrackNFT = () => {
   const [code, setCode] = useState('// 请在这里输入你的答案...')
   const { exportCode } = useMoveEditor()
   const editorCode = exportCode()
@@ -480,7 +480,7 @@ module case::nft{
     }
     // 检查用户输入
     if (isEqual(code, project.steps[currentStepIndex].expectedOutput)) {
-      console.log('[INFO] ProjectTrack.tsx: 用户的输入与预期输出匹配')
+      console.log('[INFO] TrackNFT.tsx: 用户的输入与预期输出匹配')
 
       // 清空代码和错误
       setCode('')
@@ -505,7 +505,7 @@ module case::nft{
   ) => {
     console.log(updatedFiles)
     if (selectedPath) {
-      console.log('[INFO](ProjectTrack.tsx) 选择的 item 路径是:', selectedPath)
+      console.log('[INFO](TrackNFT.tsx) 选择的 item 路径是:', selectedPath)
     }
   }
 
@@ -706,4 +706,4 @@ module case::nft{
   )
 }
 
-export default ProjectTrack
+export default TrackNFT

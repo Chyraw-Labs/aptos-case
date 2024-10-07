@@ -12,10 +12,10 @@ export default function NotFound() {
     <div className="flex justify-center items-center w-full h-screen flex-col">
       <h2 className="text-2xl font-bold">没有找到</h2>
       <p className="mt-2">
-        没有找到请求的自由，请重试或
+        没有找到请求的内容，请重试或
         <a
           href={`mailto:reggiesimons2cy@gmial.com?subject=[Aptos-Case]页面异常 > '${currentPath}'&body=页面未找到 '${currentPath}'`}
-          className="text-blue-700 hover:text-white"
+          className="text-blue-600 hover:text-white"
         >
           报告开发者
         </a>

@@ -190,7 +190,7 @@ const MoveEditor: React.FC<MoveEditorProps> = ({
 
         // 检查行末字符
         const lastChar = line.trim().slice(-1)
-        const shouldIndent = ![';', ',', '.'].includes(lastChar)
+        const shouldIndent = ![';', ',', '.', '{', '}'].includes(lastChar)
 
         // 如果需要缩进，则添加四个空格
         const newIndentation = shouldIndent ? '\t\t' : ''

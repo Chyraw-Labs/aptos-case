@@ -12,7 +12,11 @@ import {
   Repeat2,
   TrashIcon,
 } from 'lucide-react'
-import { RE_ENTRANCY_ATTACKS } from '@/code-case/python-example'
+import {
+  RE_ENTRANCY_ATTACKS,
+  PERMISSION_VULNERABILITIES,
+  DISPLACEMENT_OVERFLOW,
+} from '@/code-case/python-example'
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -198,16 +202,22 @@ const PythonPlayground: React.FC = () => {
                     </button>
                   </MenuItem>
                   <MenuItem>
-                    <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
+                    <button
+                      className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
+                      onClick={() => handleCopy(PERMISSION_VULNERABILITIES)}
+                    >
                       <Link2Icon className="size-4 fill-white/30" />
                       权限漏洞
                     </button>
                   </MenuItem>
                   <div className="my-1 h-px bg-white/5" />
                   <MenuItem>
-                    <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
+                    <button
+                      className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10"
+                      onClick={() => handleCopy(DISPLACEMENT_OVERFLOW)}
+                    >
                       <PenBoxIcon className="size-4 fill-white/30" />
-                      溢出检查
+                      位移溢出
                     </button>
                   </MenuItem>
                   <MenuItem>
