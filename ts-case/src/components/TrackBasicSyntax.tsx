@@ -298,15 +298,18 @@ module case::hi_aptos{
       {
         id: 20,
         title: '2. 引入包',
-        content: `在 module case::nft 的 {} 中输入：`,
-        expectedOutput: `保留编辑器中的内容
+        content: `保留编辑器中的内容
 💻 输入: 
 module case::hi_aptos{
-
+    use std::debug;
 }
-💡 解析：module 表示这是一个模块，其中 case 是刚才定义的地址别名，nft 是模块名称，应与文件名一致，并使用小写蛇形命名法。
+💡 解析：aptos。
 
-🖊️ 模块的语法：`,
+🖊️ 模块的语法：
+module <address>::<identifier> { 
+    (<use> | <friend> | <type> | <function> | <constant>)*
+}`,
+        expectedOutput: ``,
         fileStructure: [
           {
             root: [

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, SetStateAction } from 'react'
 import {
   LineChart,
   Line,
@@ -15,9 +15,9 @@ import {
   Cell,
 } from 'recharts'
 import {
-  ArrowUpCircle,
-  ArrowDownCircle,
-  AlertTriangle,
+  // ArrowUpCircle,
+  // ArrowDownCircle,
+  // AlertTriangle,
   ToggleRight,
   ToggleLeft,
 } from 'lucide-react'
@@ -117,6 +117,23 @@ const LendingVisualization = () => {
 
   const [isLiveUpdate, setIsLiveUpdate] = useState(true)
 
+  const addHistoryDataPoint = () => {
+    const asset = assets.find((a) => a.symbol === selectedAsset)
+    if (asset) {
+      setHistoryData((prev) =>
+        [
+          ...prev,
+          {
+            time: new Date().toLocaleTimeString(),
+            utilizationRate: asset.utilizationRate,
+            depositAPY: asset.depositAPY,
+            borrowAPY: asset.borrowAPY,
+          },
+        ].slice(-20)
+      )
+    }
+  }
+
   useEffect(() => {
     updatePoolData()
     addHistoryDataPoint()
@@ -133,7 +150,7 @@ const LendingVisualization = () => {
     return () => {
       if (interval) clearInterval(interval)
     }
-  }, [users, assets, isLiveUpdate])
+  }, [users, assets, isLiveUpdate, addHistoryDataPoint])
 
   // 添加工具提示功能
   useEffect(() => {
@@ -166,23 +183,6 @@ const LendingVisualization = () => {
       0
     )
     setPool({ totalValueLocked, totalBorrows })
-  }
-
-  const addHistoryDataPoint = () => {
-    const asset = assets.find((a) => a.symbol === selectedAsset)
-    if (asset) {
-      setHistoryData((prev) =>
-        [
-          ...prev,
-          {
-            time: new Date().toLocaleTimeString(),
-            utilizationRate: asset.utilizationRate,
-            depositAPY: asset.depositAPY,
-            borrowAPY: asset.borrowAPY,
-          },
-        ].slice(-20)
-      )
-    }
   }
 
   const toggleLiveUpdate = () => {
@@ -434,7 +434,13 @@ const LendingVisualization = () => {
             <select
               className="w-full p-2 bg-white bg-opacity-20 rounded"
               value={action}
-              onChange={(e) => setAction(e.target.value as any)}
+              onChange={(e) =>
+                setAction(
+                  e.target.value as SetStateAction<
+                    'deposit' | 'withdraw' | 'borrow' | 'repay'
+                  >
+                )
+              }
             >
               <option value="deposit">存款</option>
               <option value="withdraw">取款</option>

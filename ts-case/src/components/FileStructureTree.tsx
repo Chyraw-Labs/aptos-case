@@ -151,7 +151,7 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
     setFileContents(contents)
     if (selectedFile)
       console.log(fileContents[selectedFile], ' 文件内容：', fileContents)
-  }, [initialFileContents])
+  }, [initialFileContents, fileContents, selectedFile])
 
   // Update file structure
   useEffect(() => {

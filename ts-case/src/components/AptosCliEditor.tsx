@@ -98,6 +98,22 @@ const aptosCommands = [
   'fund-with-faucet',
 ]
 
+// 格式化用户输入的命令
+function normalizeCommand(cmd: string): string {
+  return cmd.toLowerCase().replace(/\s+/g, ' ').trim()
+}
+
+// 获取响应
+function getResponse(command: string): string {
+  console.log('get response: ', command)
+  const normalizedCommand = normalizeCommand(command)
+  for (const [enumCommand, response] of Object.entries(commandResponses)) {
+    if (normalizeCommand(enumCommand) === normalizedCommand) {
+      return response
+    }
+  }
+  return `命令没有找到: ${command}. 输入 'help' 查看可用命令.`
+}
 const AptosCliEditor: React.FC<AptosCliEditorProps> = ({
   initialCode,
   onCodeChange,
@@ -126,181 +142,126 @@ const AptosCliEditor: React.FC<AptosCliEditorProps> = ({
     [onCodeChange, setCode]
   )
 
-  // 格式化用户输入的命令
-  function normalizeCommand(cmd: string): string {
-    return cmd.toLowerCase().replace(/\s+/g, ' ').trim()
-  }
-
   // 获取响应
-  function getResponse(command: string): string {
-    console.log('get response: ', command)
-    const normalizedCommand = normalizeCommand(command)
+  // function getResponse(command: string): string {
+  //   console.log('get response: ', command)
+  //   const normalizedCommand = normalizeCommand(command)
 
-    for (const [enumCommand, response] of Object.entries(commandResponses)) {
-      if (normalizeCommand(enumCommand) === normalizedCommand) {
-        return response
-      }
-    }
+  //   for (const [enumCommand, response] of Object.entries(commandResponses)) {
+  //     if (normalizeCommand(enumCommand) === normalizedCommand) {
+  //       return response
+  //     }
+  //   }
 
-    return `命令没有找到: ${command}. 输入 'help' 查看可用命令.`
-  }
+  //   return `命令没有找到: ${command}. 输入 'help' 查看可用命令.`
+  // }
 
-  const handleEditorDidMount: OnMount = useCallback((editor, monaco) => {
-    editorRef.current = editor
+  const handleEditorDidMount: OnMount = useCallback(
+    (editor, monaco) => {
+      editorRef.current = editor
 
-    monaco.languages.register({ id: 'aptosCli' })
+      monaco.languages.register({ id: 'aptosCli' })
 
-    monaco.languages.setMonarchTokensProvider('aptosCli', {
-      tokenizer: {
-        root: [
-          [/^\$/, 'prompt'],
-          [new RegExp(`\\b(${aptosCommands.join('|')})\\b`), 'keyword'],
-          [/[a-zA-Z]\w*/, 'identifier'],
-          [/".*?"/, 'string'],
-          [/\d+/, 'number'],
+      monaco.languages.setMonarchTokensProvider('aptosCli', {
+        tokenizer: {
+          root: [
+            [/^\$/, 'prompt'],
+            [new RegExp(`\\b(${aptosCommands.join('|')})\\b`), 'keyword'],
+            [/[a-zA-Z]\w*/, 'identifier'],
+            [/".*?"/, 'string'],
+            [/\d+/, 'number'],
+          ],
+        },
+      })
+
+      monaco.editor.defineTheme('aptosCliTheme', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: 'prompt', foreground: '00FF00' },
+          { token: 'keyword', foreground: '569CD6' },
+          { token: 'identifier', foreground: 'FFFFFF' },
+          { token: 'string', foreground: 'CE9178' },
+          { token: 'number', foreground: 'B5CEA8' },
         ],
-      },
-    })
+        colors: {
+          'editor.background': '#222222',
+        },
+      })
 
-    monaco.editor.defineTheme('aptosCliTheme', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [
-        { token: 'prompt', foreground: '00FF00' },
-        { token: 'keyword', foreground: '569CD6' },
-        { token: 'identifier', foreground: 'FFFFFF' },
-        { token: 'string', foreground: 'CE9178' },
-        { token: 'number', foreground: 'B5CEA8' },
-      ],
-      colors: {
-        'editor.background': '#222222',
-      },
-    })
+      monaco.editor.setTheme('aptosCliTheme')
 
-    monaco.editor.setTheme('aptosCliTheme')
+      monaco.languages.registerCompletionItemProvider('aptosCli', {
+        provideCompletionItems: (model, position) => {
+          const word = model.getWordUntilPosition(position)
+          const range = {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: word.startColumn,
+            endColumn: word.endColumn,
+          }
 
-    monaco.languages.registerCompletionItemProvider('aptosCli', {
-      provideCompletionItems: (model, position) => {
-        const word = model.getWordUntilPosition(position)
-        const range = {
-          startLineNumber: position.lineNumber,
-          endLineNumber: position.lineNumber,
-          startColumn: word.startColumn,
-          endColumn: word.endColumn,
+          return {
+            suggestions: aptosCommands.map((command) => ({
+              label: command,
+              kind: monaco.languages.CompletionItemKind.Keyword,
+              insertText: command,
+              range: range,
+            })),
+          }
+        },
+      })
+
+      editor.addCommand(monaco.KeyCode.Enter, () => {
+        const model = editor.getModel()
+        if (!model) return
+
+        const selection = editor.getSelection()
+        if (selection && selection.isEmpty()) {
+          const lineNumber = selection.startLineNumber
+          const line = model.getLineContent(lineNumber)
+          const trimmedLine = line.trim()
+
+          if (trimmedLine.startsWith('$')) {
+            const command = trimmedLine.slice(1).trim()
+            const response = getResponse(command)
+
+            const lastLineNumber = model.getLineCount()
+            const lastLineContent = model.getLineContent(lastLineNumber)
+
+            editor.executeEdits('', [
+              {
+                range: new monaco.Range(
+                  lastLineNumber,
+                  lastLineContent.length + 1,
+                  lastLineNumber,
+                  lastLineContent.length + 1
+                ),
+                text: '\n' + response + '\n$ ',
+              },
+            ])
+
+            const newLastLineNumber = model.getLineCount()
+            editor.setPosition({ lineNumber: newLastLineNumber, column: 3 })
+          } else {
+            editor.executeEdits('', [
+              {
+                range: new monaco.Range(
+                  lineNumber,
+                  line.length + 1,
+                  lineNumber,
+                  line.length + 1
+                ),
+                text: '\n$ ',
+              },
+            ])
+            editor.setPosition({ lineNumber: lineNumber + 1, column: 3 })
+          }
         }
-
-        return {
-          suggestions: aptosCommands.map((command) => ({
-            label: command,
-            kind: monaco.languages.CompletionItemKind.Keyword,
-            insertText: command,
-            range: range,
-          })),
-        }
-      },
-    })
-
-    editor.addCommand(monaco.KeyCode.Enter, () => {
-      const model = editor.getModel()
-      if (!model) return
-
-      const selection = editor.getSelection()
-      if (selection && selection.isEmpty()) {
-        const lineNumber = selection.startLineNumber
-        const line = model.getLineContent(lineNumber)
-        const trimmedLine = line.trim()
-
-        if (trimmedLine.startsWith('$')) {
-          const command = trimmedLine.slice(1).trim()
-          let response = getResponse(command)
-
-          // switch (command.toLowerCase().replace(/\s+/g, '')) {
-          //   case 'aptos':
-          //     response = CLI_APTOS
-          //     break
-          //   case 'aptoshelp':
-          //     response = CLI_APTOS_HELP
-          //     break
-          //   case 'aptosmove':
-          //     response = CLI_APTOS_MOVE
-          //     break
-          //   case 'aptosmovehelp':
-          //     response = CLI_APTOS_MOVE_HELP
-          //     break
-          //   case 'aptosmovetest':
-          //     response = CLI_APTOS
-          //     break
-          //   case 'aptosmoveinit':
-          //     response = CLI_APTOS
-          //     break
-          //   case 'aptosmoveinit-h':
-          //     response = CLI_APTOS_INIT_H
-          //     break
-          //   case 'aptosmoveinit-help':
-          //     response = CLI_APTOS_INIT_HELP
-          //     break
-          //   case 'aptos-v':
-          //     response = 'Aptos 命令行演示 UI 工具'
-          //     break
-          //   case 'aptosaccountfund-with-faucet--accountdefault':
-          //     response = '领取 token 到默认账户'
-          //     break
-          //   case 'aptosaccount':
-          //     response = CLI_APTOS_ACCOUNT_H
-          //     break
-          //   case 'aptosaccount-h':
-          //     response = CLI_APTOS_ACCOUNT_H
-          //     break
-          //   case 'aptosaccount-help':
-          //     response = CLI_APTOS_ACCOUNT_HELP
-          //     break
-          //   case 'node':
-          //     response = 'node 未定义'
-          //     break
-          //   case 'move':
-          //     response = `请使用: aptos ${command} <子命令>`
-          //     break
-          //   case 'help':
-          //     response = '输入 aptos 命令，使用 aptos 命令 UI 工具'
-          //     break
-          //   default:
-          //     response = `命令没有找到: ${command}. 输入 'help' 查看可用命令.`
-          // }
-
-          const lastLineNumber = model.getLineCount()
-          const lastLineContent = model.getLineContent(lastLineNumber)
-
-          editor.executeEdits('', [
-            {
-              range: new monaco.Range(
-                lastLineNumber,
-                lastLineContent.length + 1,
-                lastLineNumber,
-                lastLineContent.length + 1
-              ),
-              text: '\n' + response + '\n$ ',
-            },
-          ])
-
-          const newLastLineNumber = model.getLineCount()
-          editor.setPosition({ lineNumber: newLastLineNumber, column: 3 })
-        } else {
-          editor.executeEdits('', [
-            {
-              range: new monaco.Range(
-                lineNumber,
-                line.length + 1,
-                lineNumber,
-                line.length + 1
-              ),
-              text: '\n$ ',
-            },
-          ])
-          editor.setPosition({ lineNumber: lineNumber + 1, column: 3 })
-        }
-      }
-    })
-  }, [])
+      })
+    },
+    [getResponse]
+  )
 
   useEffect(() => {
     if (editorRef.current) {

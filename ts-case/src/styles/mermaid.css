@@ -9,12 +9,12 @@
 .mermaid-wrapper .mermaid {
   width: 100%;
   min-height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 
 .mermaid-wrapper svg {
   max-width: 100%;
-  height: auto;
+  /* height: auto; */
 }

@@ -73,22 +73,6 @@ const SwapDebug = () => {
     priceChange24h: 2.5,
   })
 
-  useEffect(() => {
-    updateChartData()
-  }, [pool, users])
-
-  useEffect(() => {
-    calculateExpectedOutput()
-  }, [input, pool])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      updateRecentTransactions()
-    }, 60000) // Update every minute
-
-    return () => clearInterval(interval)
-  }, [])
-
   const updateChartData = () => {
     const newDataPoint = {
       time: new Date().toLocaleTimeString(),
@@ -118,6 +102,22 @@ const SwapDebug = () => {
     const expected = Math.floor((inAmount * outPool) / (inPool + inAmount))
     setExpectedOutput(expected)
   }
+
+  useEffect(() => {
+    updateChartData()
+  }, [pool, users, updateChartData])
+
+  useEffect(() => {
+    calculateExpectedOutput()
+  }, [input, pool, calculateExpectedOutput])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateRecentTransactions()
+    }, 60000) // Update every minute
+
+    return () => clearInterval(interval)
+  }, [])
 
   const updateRecentTransactions = () => {
     setRecentTransactions((prev) =>

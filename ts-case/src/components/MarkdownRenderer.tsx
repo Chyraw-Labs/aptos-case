@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
@@ -10,9 +10,9 @@ import 'highlight.js/styles/atom-one-dark.css'
 import styles from '@/styles/md.module.css'
 import hljs from 'highlight.js'
 import '@/styles/custom-dark-highlight.css'
-import mermaid from 'mermaid'
+// import mermaid from 'mermaid'
 import MermaidRenderer from './MermaidRender'
-// import '@/styles/mermaid.css'
+
 import ErrorBoundary from './ErrorBoundary'
 
 hljs.registerLanguage('mylxxang', function (hljs) {
@@ -215,7 +215,7 @@ interface MarkdownRendererProps {
 }
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
-  const mermaidRef = useRef<HTMLDivElement>(null)
+  // const mermaidRef = useRef<HTMLDivElement>(null)
   // useEffect(() => {
   //   mermaid.initialize({
   //     startOnLoad: true,

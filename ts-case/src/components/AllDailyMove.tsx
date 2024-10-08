@@ -50,31 +50,75 @@ const tracks: TrackData[] = [
     codeCase: MAILBOX,
     children: <p className="text-blue-500">daily move by greg</p>,
   },
+  {
+    title: '结构体中能力的作用',
+    description: '通过邮箱案例讲解 Move 结构体中能力的作用',
+    mdPath: '/Docs/what-does-key- copy-drop-store-mean.md',
+    cover: '/images/cover/what-does-key- copy-drop-store-mean.jpg',
+    tags: ['Move', '结构体', '能力'],
+    codeCase: MAILBOX,
+    children: <p className="text-blue-500">daily move by greg</p>,
+  },
+  {
+    title: '结构体中能力的作用',
+    description: '通过邮箱案例讲解 Move 结构体中能力的作用',
+    mdPath: '/Docs/what-does-key- copy-drop-store-mean.md',
+    cover: '/images/cover/what-does-key- copy-drop-store-mean.jpg',
+    tags: ['Move', '结构体', '能力'],
+    codeCase: MAILBOX,
+    children: <p className="text-blue-500">daily move by greg</p>,
+  },
+  {
+    title: '结构体中能力的作用',
+    description: '通过邮箱案例讲解 Move 结构体中能力的作用',
+    mdPath: '/Docs/what-does-key- copy-drop-store-mean.md',
+    cover: '/images/cover/what-does-key- copy-drop-store-mean.jpg',
+    tags: ['Move', '结构体', '能力'],
+    codeCase: MAILBOX,
+    children: <p className="text-blue-500">daily move by greg</p>,
+  },
+  {
+    title: '结构体中能力的作用',
+    description: '通过邮箱案例讲解 Move 结构体中能力的作用',
+    mdPath: '/Docs/what-does-key- copy-drop-store-mean.md',
+    cover: '/images/cover/what-does-key- copy-drop-store-mean.jpg',
+    tags: ['Move', '结构体', '能力'],
+    codeCase: MAILBOX,
+    children: <p className="text-blue-500">daily move by greg</p>,
+  },
 ]
 export const AllDailyMove = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="font-bold text-6xl mb-4">Move 工坊</h1>
-      <p className="font-bold text-xs mb-8">
-        本节深入探讨 Aptos
-        上最常用的库和框架，以及如何使用它们编写复杂但简单高效的模块。
-        完成本课程后，您可以使用 Aptos Framework
-        中的库使他们的代码更简单但更复杂。
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-        {tracks.map((track: TrackData, index: number) => (
-          <Track
-            key={index}
-            mdPath={track.mdPath}
-            cover={track.cover}
-            description={track.description}
-            tags={track.tags}
-            title={track.title}
-            codeCase={track.codeCase}
-          >
-            {track.children}
-          </Track>
-        ))}
+    <div className="flex flex-col items-center justify-center min-h-screen w-full px-4">
+      <div className="w-full max-w-7xl">
+        <div className="flex flex-col items-center mx-4 my-4">
+          <p className="font-bold text-7xl mb-4 text-center">Move 工坊</p>
+          <div className="text-center mx-auto max-w-prose mb-8">
+            <span className="text-base mb-4 block">
+              这是关于 Aptos 公链中 Move 语言的说明，来自 Aptos
+              工程师。通过这些文章和代码，您将
+              <span className="font-bold text-blue-400">
+                了解 Move 的底层设计
+              </span>
+              ，这能够帮助你编写出更健壮和安全的代码。
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 w-full">
+            {tracks.map((track: TrackData, index: number) => (
+              <Track
+                key={index}
+                mdPath={track.mdPath}
+                cover={track.cover}
+                description={track.description}
+                tags={track.tags}
+                title={track.title}
+                codeCase={track.codeCase}
+              >
+                {track.children}
+              </Track>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

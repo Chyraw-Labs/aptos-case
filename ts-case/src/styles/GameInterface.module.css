@@ -1,0 +1,70 @@
+.gameContainer {
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.tileContainer {
+  position: absolute;
+  overflow: hidden;
+}
+
+.tileMapContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.tileMap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pixelPerfect {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.tileOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.tilePreviewContainer {
+  margin-bottom: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tilePreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.tilePreviewItem {
+  position: relative;
+  border: 1px solid #ccc;
+  flex: 0 0 auto;
+}
+
+.tileId {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgb(255, 255, 255);
+  padding: 2px 4px;
+  font-size: 10px;
+  z-index: 10;
+}
