@@ -153,19 +153,25 @@ const mapData = [
     96, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97,
     98,
   ],
-  [99, 28, 27, 28, 0, 0, 0, 27, 28, 0, 0, 0, 0, 27, 28, 27, 0, 0, 27, 101],
-  [99, 28, 0, 0, 0, 1, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 101],
-  [99, 0, 1, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 2, 0, 101],
-  [99, 0, 0, 24, 48, 49, 49, 50, 0, 72, 73, 73, 75, 0, 52, 53, 53, 26, 0, 101],
-  [99, 1, 2, 24, 60, 61, 61, 62, 0, 72, 84, 74, 75, 0, 64, 65, 65, 26, 0, 101],
-  [99, 0, 0, 24, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 94, 0, 26, 1, 101],
-  [99, 27, 28, 24, 44, 45, 45, 46, 0, 0, 1, 132, 0, 0, 44, 45, 46, 26, 0, 101],
-  [99, 0, 0, 24, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 133, 26, 0, 101],
-  [99, 1, 2, 24, 0, 0, 83, 0, 0, 0, 2, 0, 0, 0, 29, 0, 2, 26, 0, 101],
-  [99, 0, 0, 36, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 38, 0, 0, 101],
-  [99, 2, 0, 0, 1, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 2, 0, 0, 1, 101],
-  [99, 28, 27, 0, 0, 17, 0, 17, 0, 0, 28, 27, 0, 0, 17, 0, 17, 0, 0, 101],
-  [99, 28, 27, 0, 0, 17, 0, 17, 0, 0, 28, 27, 0, 0, 17, 0, 17, 0, 0, 101],
+  [108, 28, 27, 28, 0, 0, 0, 27, 28, 0, 0, 0, 0, 27, 28, 27, 0, 0, 27, 110],
+  [108, 28, 0, 0, 0, 1, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 110],
+  [
+    108, 0, 1, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 2, 0,
+    110,
+  ],
+  [108, 0, 0, 24, 48, 49, 49, 50, 0, 72, 73, 73, 75, 0, 52, 53, 53, 26, 0, 110],
+  [108, 1, 2, 24, 60, 61, 61, 62, 0, 72, 84, 74, 75, 0, 64, 65, 65, 26, 0, 110],
+  [108, 0, 0, 24, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 94, 0, 26, 1, 110],
+  [108, 27, 28, 24, 44, 45, 45, 46, 0, 0, 1, 132, 0, 0, 44, 45, 46, 26, 0, 110],
+  [108, 0, 0, 24, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 133, 26, 0, 110],
+  [108, 1, 2, 24, 0, 0, 83, 0, 0, 0, 2, 0, 0, 0, 29, 0, 2, 26, 0, 110],
+  [
+    108, 0, 0, 36, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 38, 0, 0,
+    110,
+  ],
+  [108, 2, 0, 0, 1, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 2, 0, 0, 1, 110],
+  [108, 28, 27, 0, 0, 17, 0, 17, 0, 0, 28, 27, 0, 0, 17, 0, 17, 0, 0, 110],
+  [108, 28, 27, 0, 0, 17, 0, 17, 0, 0, 28, 27, 0, 0, 17, 0, 17, 0, 0, 110],
   [
     120, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121,
     121, 121, 121, 121, 122,
@@ -248,54 +254,70 @@ const TileMap: React.FC<TileMapProps> = ({
 
     for (let y = 0; y < tilesInViewY; y++) {
       for (let x = 0; x < tilesInViewX; x++) {
-        const mapX = Math.max(
-          0,
-          Math.min(playerX - centerTileX + x, mapData[0].length - 1)
-        )
-        const mapY = Math.max(
-          0,
-          Math.min(playerY - centerTileY + y, mapData.length - 1)
-        )
+        const mapX = playerX - centerTileX + x
+        const mapY = playerY - centerTileY + y
 
-        const tileId = mapData[mapY][mapX]
-        const tile = tileTypes.find((t) => t.id === tileId)
-        const backgroundTile = tileTypes.find((t) => t.id === 0)
+        const isOutOfBounds =
+          mapX < 0 ||
+          mapX >= mapData[0].length ||
+          mapY < 0 ||
+          mapY >= mapData.length
 
-        tiles.push(
-          <div
-            key={`${x}-${y}`}
-            className={styles.tileContainer}
-            style={{
-              position: 'absolute',
-              left: `${x * tileSize}px`,
-              top: `${y * tileSize}px`,
-              width: `${tileSize}px`,
-              height: `${tileSize}px`,
-              overflow: 'hidden',
-            }}
-          >
-            <Image
-              src={backgroundTile?.src || ''}
-              alt="Background"
-              width={tileSize}
-              height={tileSize}
-              className={styles.pixelPerfect}
+        if (isOutOfBounds) {
+          // 渲染透明的 tiles
+          tiles.push(
+            <div
+              key={`${x}-${y}`}
+              className={styles.tileContainer}
+              style={{
+                position: 'absolute',
+                left: `${x * tileSize}px`,
+                top: `${y * tileSize}px`,
+                width: `${tileSize}px`,
+                height: `${tileSize}px`,
+              }}
             />
-            {tile && tile.id !== 0 && (
+          )
+        } else {
+          const tileId = mapData[mapY][mapX]
+          const tile = tileTypes.find((t) => t.id === tileId)
+          const backgroundTile = tileTypes.find((t) => t.id === 0)
+
+          tiles.push(
+            <div
+              key={`${x}-${y}`}
+              className={styles.tileContainer}
+              style={{
+                position: 'absolute',
+                left: `${x * tileSize}px`,
+                top: `${y * tileSize}px`,
+                width: `${tileSize}px`,
+                height: `${tileSize}px`,
+                overflow: 'hidden',
+              }}
+            >
               <Image
-                src={tile.src}
-                alt={`Tile ${tileId}`}
+                src={backgroundTile?.src || ''}
+                alt="Background"
                 width={tileSize}
                 height={tileSize}
-                className={`${styles.pixelPerfect} ${styles.tileOverlay}`}
+                className={styles.pixelPerfect}
               />
-            )}
-            <div className={styles.tileNumber}>{tileId}</div>
-          </div>
-        )
+              {tile && tile.id !== 0 && (
+                <Image
+                  src={tile.src}
+                  alt={`Tile ${tileId}`}
+                  width={tileSize}
+                  height={tileSize}
+                  className={`${styles.pixelPerfect} ${styles.tileOverlay}`}
+                />
+              )}
+              <div className={styles.tileNumber}>{tileId}</div>
+            </div>
+          )
+        }
       }
     }
-
     // 渲染玩家
     const playerTile = tileTypes.find((t) => t.id === 132)
     if (playerTile) {
@@ -404,7 +426,7 @@ const GameInterface: React.FC = () => {
           viewportWidth={viewportWidth}
           viewportHeight={viewportHeight}
         />
-        <TilePreview tileSize={tileSize} tilesPerRow={tilesPerRow} />
+        {/* <TilePreview tileSize={tileSize} tilesPerRow={tilesPerRow} /> */}
       </div>
     </div>
   )
