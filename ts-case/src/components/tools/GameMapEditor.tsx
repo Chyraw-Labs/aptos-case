@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Menu } from '@headlessui/react'
-import { Upload, Save, Grid, Trash2, ZoomIn, ZoomOut } from 'lucide-react'
+import {
+  Upload,
+  Save,
+  Grid,
+  Trash2,
+  ZoomIn,
+  ZoomOut,
+  Edit,
+  Check,
+} from 'lucide-react'
 
 const GameMapEditor = () => {
   const [tiles, setTiles] = useState<
@@ -22,11 +31,13 @@ const GameMapEditor = () => {
   const [hoverCell, setHoverCell] = useState<{ x: number; y: number } | null>(
     null
   )
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
-    null
-  )
+  // const [isDragging, setIsDragging] = useState(false)
+  // const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
+  //   null
+  // )
   const [zoom, setZoom] = useState(1)
+  const [editingMatrix, setEditingMatrix] = useState(false)
+  const [matrixInput, setMatrixInput] = useState('')
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -36,11 +47,27 @@ const GameMapEditor = () => {
 
   useEffect(() => {
     initializeMap()
-  }, [mapSize])
+  }, [])
 
   useEffect(() => {
     drawMap()
-  }, [map, showGrid, hoverCell, draggedTile, zoom])
+  }, [map, showGrid, hoverCell, draggedTile, zoom, tiles])
+
+  const formatMatrix = (matrix: number[][], forEditing: boolean = false) => {
+    if (forEditing) {
+      return (
+        '[\n' + matrix.map((row) => `  [${row.join(', ')}]`).join(',\n') + '\n]'
+      )
+    }
+    return (
+      '[\n' + matrix.map((row) => `  [${row.join(',')}]`).join('\n') + '\n]'
+    )
+  }
+
+  const handleMatrixEdit = () => {
+    setEditingMatrix(true)
+    setMatrixInput(formatMatrix(map, true))
+  }
 
   const initializeMap = useCallback(() => {
     const width = Math.max(1, Math.floor(mapSize.width))
@@ -49,6 +76,7 @@ const GameMapEditor = () => {
       .fill(null)
       .map(() => Array(width).fill(0))
     setMap(newMap)
+    setMatrixInput(JSON.stringify(newMap, null, 2))
   }, [mapSize])
 
   const drawMap = useCallback(() => {
@@ -65,28 +93,35 @@ const GameMapEditor = () => {
     // Draw tiles
     map.forEach((row, y) => {
       row.forEach((cellId, x) => {
-        if (cellId) {
-          const tile = tiles.find((t) => t.id === cellId)
-          if (tile) {
-            const img = new Image()
-            img.onload = () => {
-              ctx.drawImage(
-                img,
-                x * scaledTileSize,
-                y * scaledTileSize,
-                scaledTileSize,
-                scaledTileSize
-              )
-            }
-            img.src = tile.src
+        const tile = tiles.find((t) => t.id === cellId)
+        if (tile) {
+          const img = new Image()
+          img.onload = () => {
+            ctx.drawImage(
+              img,
+              x * scaledTileSize,
+              y * scaledTileSize,
+              scaledTileSize,
+              scaledTileSize
+            )
           }
+          img.src = tile.src
+        } else {
+          // Draw a placeholder for unknown tile IDs
+          ctx.fillStyle = 'rgba(128, 128, 128, 0.0)' // 初始背景
+          ctx.fillRect(
+            x * scaledTileSize,
+            y * scaledTileSize,
+            scaledTileSize,
+            scaledTileSize
+          )
         }
       })
     })
 
     // Draw grid
     if (showGrid) {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)' // 王哥
       ctx.lineWidth = 1
       for (let x = 0; x <= mapSize.width; x++) {
         ctx.beginPath()
@@ -112,85 +147,94 @@ const GameMapEditor = () => {
         scaledTileSize
       )
     }
-  }, [map, mapSize, tiles, showGrid, hoverCell, draggedTile, zoom])
+  }, [map, mapSize, tiles, showGrid, hoverCell, zoom])
 
-  const handleZoomIn = () => {
-    setZoom((prevZoom) => Math.min(prevZoom + 0.1, 2))
+  // const handleMatrixEdit = () => {
+  //   setEditingMatrix(true)
+  //   setMatrixInput(JSON.stringify(map, null, 2))
+  // }
+
+  const handleMatrixSave = () => {
+    try {
+      const newMap = JSON.parse(matrixInput)
+      if (Array.isArray(newMap) && newMap.every((row) => Array.isArray(row))) {
+        setMap(newMap)
+        setMapSize({ width: newMap[0].length, height: newMap.length })
+        setEditingMatrix(false)
+        drawMap() // Force redraw after saving
+      } else {
+        alert('Invalid matrix format. Please enter a valid 2D array.')
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      alert('Invalid JSON format. Please check your input.')
+    }
   }
 
-  const handleZoomOut = () => {
-    setZoom((prevZoom) => Math.max(prevZoom - 0.1, 0.5))
-  }
+  const handleMatrixImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        try {
+          const content = e.target?.result as string
+          const importedMap = JSON.parse(content)
 
-  const handleTileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || [])
-    Promise.all(
-      files.map((file, index) => {
-        return new Promise<{ id: number; name: string; src: string }>(
-          (resolve) => {
-            const reader = new FileReader()
-            reader.onload = (e) =>
-              resolve({
-                id: tiles.length + index + 1,
-                name: file.name,
-                src: e.target?.result as string,
-              })
-            reader.readAsDataURL(file)
+          if (
+            Array.isArray(importedMap) &&
+            importedMap.every(
+              (row) =>
+                Array.isArray(row) &&
+                row.every((cell) => typeof cell === 'number')
+            )
+          ) {
+            setMap(importedMap)
+            setMapSize({
+              width: importedMap[0].length,
+              height: importedMap.length,
+            })
+            setMatrixInput(JSON.stringify(importedMap, null, 2))
+          } else {
+            throw new Error('Invalid matrix format')
           }
-        )
+        } catch (error) {
+          console.error('Error parsing the imported file:', error)
+          alert(
+            'Error parsing the imported file. Please ensure it contains a valid 2D array of numbers.'
+          )
+        }
+      }
+      reader.readAsText(file)
+    }
+  }
+
+  const handleDoubleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const rect = canvasRef.current?.getBoundingClientRect()
+    if (rect) {
+      const x = Math.floor((event.clientX - rect.left) / (TILE_SIZE * zoom))
+      const y = Math.floor((event.clientY - rect.top) / (TILE_SIZE * zoom))
+      setMap((prevMap) => {
+        const newMap = [...prevMap]
+        newMap[y] = [...newMap[y]]
+        newMap[y][x] = 0 // Set to 0 (empty) when double-clicked
+        return newMap
       })
-    ).then((newTiles) => {
-      setTiles((prevTiles) => [...prevTiles, ...newTiles])
-    })
+    }
   }
 
-  const handleTileSelect = (tile: {
-    id: number
-    name: string
-    src: string
-  }) => {
-    setSelectedTile(tile)
-  }
-
-  const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleDrop = (event: React.DragEvent<HTMLCanvasElement>) => {
+    event.preventDefault()
     const { x, y } = getCellCoordinates(event)
-
-    if (event.detail === 2) {
-      // Double click
-      updateMap(x, y, 0) // Remove tile (set to 0)
-    } else if (selectedTile) {
-      updateMap(x, y, selectedTile.id)
+    if (isValidCell(x, y) && draggedTile) {
+      setMap((prevMap) => {
+        const newMap = [...prevMap]
+        newMap[y] = [...newMap[y]]
+        newMap[y][x] = draggedTile.id
+        return newMap
+      })
     }
-  }
-
-  const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    const { x, y } = getCellCoordinates(event)
-    if (map[y][x] !== 0) {
-      setIsDragging(true)
-      setDragStart({ x, y })
-    }
-  }
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (isDragging && dragStart) {
-      const { x, y } = getCellCoordinates(event)
-      setHoverCell({ x, y })
-    }
-  }
-
-  const handleMouseUp = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (isDragging && dragStart) {
-      const { x: endX, y: endY } = getCellCoordinates(event)
-      const tileId = map[dragStart.y][dragStart.x]
-
-      // Move tile
-      updateMap(endX, endY, tileId)
-      updateMap(dragStart.x, dragStart.y, 0)
-
-      setIsDragging(false)
-      setDragStart(null)
-      setHoverCell(null)
-    }
+    setDraggedTile(null)
+    setHoverCell(null)
   }
 
   const getCellCoordinates = (
@@ -198,88 +242,16 @@ const GameMapEditor = () => {
       | React.MouseEvent<HTMLCanvasElement>
       | React.DragEvent<HTMLCanvasElement>
   ) => {
-    const canvas = canvasRef.current
-    const container = containerRef.current
-    if (!canvas || !container) return { x: 0, y: 0 }
-    const rect = canvas.getBoundingClientRect()
-    const scaledTileSize = TILE_SIZE * zoom
-    const x = Math.floor(
-      (event.clientX - rect.left + container.scrollLeft) / scaledTileSize
-    )
-    const y = Math.floor(
-      (event.clientY - rect.top + container.scrollTop) / scaledTileSize
-    )
+    const rect = canvasRef.current?.getBoundingClientRect()
+    if (!rect) return { x: -1, y: -1 }
+    const x = Math.floor((event.clientX - rect.left) / (TILE_SIZE * zoom))
+    const y = Math.floor((event.clientY - rect.top) / (TILE_SIZE * zoom))
     return { x, y }
   }
 
-  const updateMap = (x: number, y: number, tileId: number) => {
-    setMap((prevMap) => {
-      const newMap = [...prevMap]
-      newMap[y] = [...newMap[y]]
-      newMap[y][x] = tileId
-      return newMap
-    })
+  const isValidCell = (x: number, y: number) => {
+    return x >= 0 && x < mapSize.width && y >= 0 && y < mapSize.height
   }
-
-  const handleDragStart = (
-    event: React.DragEvent<HTMLDivElement>,
-    tile: { id: number; name: string; src: string }
-  ) => {
-    event.dataTransfer.setData('text/plain', JSON.stringify(tile))
-    setDraggedTile(tile)
-  }
-
-  const handleDragOver = (event: React.DragEvent<HTMLCanvasElement>) => {
-    event.preventDefault()
-    const { x, y } = getCellCoordinates(event)
-    setHoverCell({ x, y })
-  }
-
-  const handleDragLeave = () => {
-    setHoverCell(null)
-    setDraggedTile(null)
-  }
-
-  const handleDrop = (event: React.DragEvent<HTMLCanvasElement>) => {
-    event.preventDefault()
-    const tileData = event.dataTransfer.getData('text/plain')
-    const tile = JSON.parse(tileData)
-    const { x, y } = getCellCoordinates(event)
-    updateMap(x, y, tile.id)
-    setHoverCell(null)
-    setDraggedTile(null)
-  }
-
-  const exportMap = () => {
-    if (!canvasRef.current) return
-
-    const dataUrl = canvasRef.current.toDataURL('image/png')
-    const a = document.createElement('a')
-    a.href = dataUrl
-    a.download = 'game-map.png'
-    a.click()
-
-    const jsonData = JSON.stringify(map)
-    const blob = new Blob([jsonData], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'game-map.json'
-    link.click()
-  }
-
-  const updateTileId = (index: number, newId: string) => {
-    setTiles((prevTiles) => {
-      const newTiles = [...prevTiles]
-      newTiles[index] = { ...newTiles[index], id: parseInt(newId) }
-      return newTiles
-    })
-  }
-
-  const handleTileDoubleClick = (index: number) => {
-    setTiles((prevTiles) => prevTiles.filter((_, i) => i !== index))
-  }
-
   return (
     <div className="flex h-screen bg-black">
       {/* Left Panel */}
@@ -291,30 +263,63 @@ const GameMapEditor = () => {
           <input
             type="file"
             className="hidden"
-            onChange={handleTileUpload}
+            onChange={(e) => {
+              const files = Array.from(e.target.files || [])
+              Promise.all(
+                files.map((file, index) => {
+                  return new Promise<{ id: number; name: string; src: string }>(
+                    (resolve) => {
+                      const reader = new FileReader()
+                      reader.onload = (e) =>
+                        resolve({
+                          id: tiles.length + index + 1,
+                          name: file.name,
+                          src: e.target?.result as string,
+                        })
+                      reader.readAsDataURL(file)
+                    }
+                  )
+                })
+              ).then((newTiles) => {
+                setTiles((prevTiles) => [...prevTiles, ...newTiles])
+              })
+            }}
             multiple
           />
         </label>
-        {/* tiles */}
         {tiles.map((tile, index) => (
           <div
             key={index}
             className="flex items-center mb-2 mt-4 cursor-move"
             draggable
-            onDragStart={(e) => handleDragStart(e, tile)}
-            onDoubleClick={() => handleTileDoubleClick(index)}
+            onDragStart={(e) => {
+              e.dataTransfer.setData('text/plain', JSON.stringify(tile))
+              setDraggedTile(tile)
+            }}
+            onDoubleClick={() =>
+              setTiles((prevTiles) => prevTiles.filter((_, i) => i !== index))
+            }
           >
             <img src={tile.src} alt={tile.name} className="w-8 h-8 mr-2" />
             <input
               type="number"
               value={tile.id}
-              onChange={(e) => updateTileId(index, e.target.value)}
+              onChange={(e) => {
+                const newId = parseInt(e.target.value)
+                setTiles((prevTiles) => {
+                  const newTiles = [...prevTiles]
+                  newTiles[index] = { ...newTiles[index], id: newId }
+                  return newTiles
+                })
+              }}
               className="w-16 p-1 border rounded bg-black text-white"
             />
             <span className="ml-2 flex-grow text-white">{tile.name}</span>
             <Trash2
               className="w-5 h-5 text-red-500 cursor-pointer"
-              onClick={() => handleTileDoubleClick(index)}
+              onClick={() =>
+                setTiles((prevTiles) => prevTiles.filter((_, i) => i !== index))
+              }
             />
           </div>
         ))}
@@ -360,14 +365,14 @@ const GameMapEditor = () => {
             {showGrid ? 'Hide Grid' : 'Show Grid'}
           </button>
           <button
-            onClick={handleZoomIn}
+            onClick={() => setZoom((prev) => Math.min(prev + 0.1, 2))}
             className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
           >
             <ZoomIn className="inline-block mr-2" />
             Zoom In
           </button>
           <button
-            onClick={handleZoomOut}
+            onClick={() => setZoom((prev) => Math.max(prev - 0.1, 0.5))}
             className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
           >
             <ZoomOut className="inline-block mr-2" />
@@ -387,7 +392,7 @@ const GameMapEditor = () => {
                       className={`${
                         active ? 'bg-blue-500 text-white' : 'text-gray-900'
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                      onClick={() => handleTileSelect(tile)}
+                      onClick={() => setSelectedTile(tile)}
                     >
                       <img
                         src={tile.src}
@@ -412,22 +417,86 @@ const GameMapEditor = () => {
             width={mapSize.width * TILE_SIZE * zoom}
             height={mapSize.height * TILE_SIZE * zoom}
             className="cursor-pointer"
-            onClick={handleCanvasClick}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onMouseLeave={() => {
-              setIsDragging(false)
-              setDragStart(null)
-              setHoverCell(null)
+            onDoubleClick={handleDoubleClick}
+            onClick={(e) => {
+              const rect = canvasRef.current?.getBoundingClientRect()
+              if (rect) {
+                const x = Math.floor(
+                  (e.clientX - rect.left) / (TILE_SIZE * zoom)
+                )
+                const y = Math.floor(
+                  (e.clientY - rect.top) / (TILE_SIZE * zoom)
+                )
+                if (selectedTile) {
+                  setMap((prevMap) => {
+                    const newMap = [...prevMap]
+                    newMap[y] = [...newMap[y]]
+                    newMap[y][x] = selectedTile.id
+                    return newMap
+                  })
+                }
+              }
             }}
+            onMouseMove={(e) => {
+              const { x, y } = getCellCoordinates(e)
+              if (isValidCell(x, y)) {
+                setHoverCell({ x, y })
+              } else {
+                setHoverCell(null)
+              }
+            }}
+            onMouseLeave={() => setHoverCell(null)}
+            onDragOver={(e) => {
+              e.preventDefault()
+              const { x, y } = getCellCoordinates(e)
+              if (isValidCell(x, y)) {
+                setHoverCell({ x, y })
+              } else {
+                setHoverCell(null)
+              }
+            }}
+            onDrop={handleDrop}
+            //   onDrop={(e) => {
+            //     e.preventDefault()
+            //     const rect = canvasRef.current?.getBoundingClientRect()
+            //     if (rect && draggedTile) {
+            //       const x = Math.floor(
+            //         (e.clientX - rect.left) / (TILE_SIZE * zoom)
+            //       )
+            //       const y = Math.floor(
+            //         (e.clientY - rect.top) / (TILE_SIZE * zoom)
+            //       )
+            //       setMap((prevMap) => {
+            //         const newMap = [...prevMap]
+            //         newMap[y] = [...newMap[y]]
+            //         newMap[y][x] = draggedTile.id
+            //         return newMap
+            //       })
+            //     }
+            //     setDraggedTile(null)
+            //     setHoverCell(null)
+            //   }
+            // }
           />
         </div>
         <button
-          onClick={exportMap}
+          onClick={() => {
+            const canvas = canvasRef.current
+            if (canvas) {
+              const dataUrl = canvas.toDataURL('image/png')
+              const a = document.createElement('a')
+              a.href = dataUrl
+              a.download = 'game-map.png'
+              a.click()
+            }
+            const jsonData = JSON.stringify(map)
+            const blob = new Blob([jsonData], { type: 'application/json' })
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = 'game-map.json'
+            link.click()
+          }}
           className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
         >
           <Save className="inline-block mr-2" />
@@ -438,10 +507,46 @@ const GameMapEditor = () => {
       {/* Right Panel */}
       <div className="w-1/4 p-4 bg-black text-white shadow-md overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Map Matrix</h2>
-        <div className="font-mono text-xs whitespace-pre">
-          {map.map((row, i) => (
-            <div key={i}>[{row.join(', ')}]</div>
-          ))}
+        {editingMatrix ? (
+          <div>
+            <textarea
+              value={matrixInput}
+              onChange={(e) => setMatrixInput(e.target.value)}
+              className="w-full h-64 p-2 bg-gray-800 text-white font-mono text-xs"
+            />
+            <button
+              onClick={handleMatrixSave}
+              className="mt-2 px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-blue-700"
+            >
+              <Check className="inline-block mr-2" />
+              Save Matrix
+            </button>
+          </div>
+        ) : (
+          <div>
+            <pre className="font-mono text-xs whitespace-pre overflow-x-auto">
+              {formatMatrix(map)}
+            </pre>
+            <button
+              onClick={handleMatrixEdit}
+              className="mt-2 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+            >
+              <Edit className="inline-block mr-2" />
+              Edit Matrix
+            </button>
+          </div>
+        )}
+        <div className="mt-4">
+          <label className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg shadow-lg tracking-wide uppercase border border-purple cursor-pointer hover:bg-purple-600">
+            <Upload className="w-6 h-6 mr-2" />
+            <span className="text-base leading-normal">Import Matrix</span>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleMatrixImport}
+              accept=".json"
+            />
+          </label>
         </div>
       </div>
     </div>
