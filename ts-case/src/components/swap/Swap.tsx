@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   ArrowRightLeft,
   UserCircle,
@@ -73,7 +73,7 @@ const SwapDebug = () => {
     priceChange24h: 2.5,
   })
 
-  const updateChartData = () => {
+  const updateChartData = useCallback(() => {
     const newDataPoint = {
       time: new Date().toLocaleTimeString(),
       poolAPT: pool.apt,
@@ -88,9 +88,9 @@ const SwapDebug = () => {
       ),
     }
     setChartData((prevData) => [...prevData.slice(-19), newDataPoint])
-  }
+  }, [pool, users])
 
-  const calculateExpectedOutput = () => {
+  const calculateExpectedOutput = useCallback(() => {
     const inAmount = parseFloat(input.amount)
     if (isNaN(inAmount) || inAmount <= 0) {
       setExpectedOutput(0)
@@ -101,15 +101,15 @@ const SwapDebug = () => {
     const outPool = isAPT ? pool.btc : pool.apt
     const expected = Math.floor((inAmount * outPool) / (inPool + inAmount))
     setExpectedOutput(expected)
-  }
+  }, [input, pool])
 
   useEffect(() => {
     updateChartData()
-  }, [pool, users, updateChartData])
+  }, [updateChartData])
 
   useEffect(() => {
     calculateExpectedOutput()
-  }, [input, pool, calculateExpectedOutput])
+  }, [calculateExpectedOutput])
 
   useEffect(() => {
     const interval = setInterval(() => {
