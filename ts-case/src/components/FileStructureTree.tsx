@@ -142,27 +142,39 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
   const [fileContents, setFileContents] = useState<Record<string, string>>({})
   const [selectedFile, setSelectedFile] = useState<string | null>(null)
 
-  // Update file contents
+  useEffect(() => {
+    if (selectedFile) {
+      console.log(fileContents[selectedFile], ' 文件内容：', fileContents)
+    }
+  }, [selectedFile, fileContents])
+
   useEffect(() => {
     const contents: Record<string, string> = {}
     initialFileContents.forEach(([filename, content]) => {
       contents[filename] = content
     })
     setFileContents(contents)
-    if (selectedFile)
-      console.log(fileContents[selectedFile], ' 文件内容：', fileContents)
-  }, [initialFileContents, fileContents, selectedFile])
+  }, [initialFileContents])
 
   // Update file structure
+  useEffect(() => {
+    const contents: Record<string, string> = {}
+    initialFileContents.forEach(([filename, content]) => {
+      contents[filename] = content
+    })
+  }, [initialFileContents])
+
   useEffect(() => {
     setFiles(initialFiles)
   }, [initialFiles])
 
+  // 更新文件
   const updateFiles = (newFiles: FileStructure) => {
     setFiles(newFiles)
     onUpdate(newFiles)
   }
 
+  // 添加文件
   const addFile = (path: string[]) => {
     if (!allowEdit) return
     const newFiles = [...files]
@@ -182,6 +194,7 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
     updateFiles(newFiles)
   }
 
+  // 添加文件夹
   const addFolder = (path: string[]) => {
     if (!allowEdit) return
     const newFiles = [...files]
@@ -201,6 +214,7 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
     updateFiles(newFiles)
   }
 
+  // 删除项
   const deleteItem = (path: string[]) => {
     if (!allowEdit) return
     if (confirm('Are you sure you want to delete ' + path.join('/') + '?')) {
@@ -232,14 +246,17 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
     }
   }
 
+  // 选择项
   const selectItem = (path: string[]) => {
     const fullPath = path.join('/')
-    console.log('Selected item path:', fullPath)
-    setSelectedFile(fullPath)
-    console.log('Selected file content:', fileContents[path[path.length - 1]])
-    onUpdate(files, path)
+    if (fullPath !== selectedFile) {
+      console.log('Selected item path:', fullPath)
+      setSelectedFile(fullPath)
+      onUpdate(files, path)
+    }
   }
 
+  // 选择文件或文件内容变化时重新渲染
   useEffect(() => {
     if (selectedFile) {
       console.log('Selected file:', selectedFile)
