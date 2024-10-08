@@ -2,6 +2,21 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import styles from '@/styles/GameInterface.module.css'
+import MoveEditorWrapper from '../EditorWrapper'
+import { useMoveEditor } from '../MoveEditorProvider'
+import DocsTable from '../DocsTable'
+import { MoveWasm } from '@/move-wasm/MoveWasm'
+import useCompileMove from '@/move-wasm/CompileMove'
+
+import { useWallet } from '@aptos-labs/wallet-adapter-react'
+// import WalletButton from '../WalletButton'
+import { ClipboardList, X } from 'lucide-react'
+
+import EnhancedWalletButton from '../EnhancedWalletButton'
+interface CompileMoveResult {
+  response: string
+  // 其他属性
+}
 
 interface Tile {
   id: number
@@ -10,13 +25,24 @@ interface Tile {
 
 // 预定义的 tile 类型
 const tileTypes: Tile[] = [
-  { id: 0, src: '/game_assets/tile_0000.png' }, // 空草地
-  { id: 1, src: '/game_assets/tile_0001.png' }, // 杂草草地
-  { id: 2, src: '/game_assets/tile_0002.png' }, // 花草地
-  { id: 3, src: '/game_assets/tile_0003.png' }, // 黄色的树尖
-  { id: 4, src: '/game_assets/tile_0004.png' }, // 绿色的树尖
-  { id: 5, src: '/game_assets/tile_0005.png' }, // 绿色的灌木丛
-  { id: 6, src: '/game_assets/tile_0006.png' }, // 右 - 绿色的小树尖和灌木丛
+  { id: 0, src: '/game_assets/road_1.png' }, // 空草地
+  // 城墙
+
+  { id: 1, src: '/game_assets/walls/wall_1.png' }, // 空草地
+  { id: 2, src: '/game_assets/walls/wall_2.png' }, // 空草地
+  { id: 3, src: '/game_assets/walls/wall_3.png' }, // 空草地
+  { id: 4, src: '/game_assets/walls/wall_4.png' }, // 空草地
+  { id: 5, src: '/game_assets/walls/wall_5.png' }, // 空草地
+  { id: 6, src: '/game_assets/walls/wall_6.png' }, // 空草地
+  { id: 7, src: '/game_assets/walls/wall_7.png' }, // 空草地
+  { id: 8, src: '/game_assets/walls/wall_8.png' }, // 空草地
+
+  // { id: 1, src: '/game_assets/tile_0001.png' }, // 杂草草地
+  // { id: 2, src: '/game_assets/tile_0002.png' }, // 花草地
+  // { id: 3, src: '/game_assets/tile_0003.png' }, // 黄色的树尖
+  // { id: 4, src: '/game_assets/tile_0004.png' }, // 绿色的树尖
+  // { id: 5, src: '/game_assets/tile_0005.png' }, // 绿色的灌木丛
+  // { id: 6, src: '/game_assets/tile_0006.png' }, // 右 - 绿色的小树尖和灌木丛
   { id: 7, src: '/game_assets/tile_0007.png' }, // 绿色的小树尖
   { id: 8, src: '/game_assets/tile_0008.png' }, // 左 - 绿色的小树尖和灌木丛
   { id: 9, src: '/game_assets/tile_0009.png' }, // 右 - 黄色的小树尖和灌木丛
@@ -150,31 +176,104 @@ const tileTypes: Tile[] = [
 // 预定义的地图数据
 const mapData = [
   [
-    96, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97,
-    98,
+    8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 2,
   ],
-  [108, 28, 27, 28, 0, 0, 0, 27, 28, 0, 0, 0, 0, 27, 28, 27, 0, 0, 27, 110],
-  [108, 28, 0, 0, 0, 1, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 1, 0, 0, 110],
   [
-    108, 0, 1, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 2, 0,
-    110,
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
   ],
-  [108, 0, 0, 24, 48, 49, 49, 50, 0, 72, 73, 73, 75, 0, 52, 53, 53, 26, 0, 110],
-  [108, 1, 2, 24, 60, 61, 61, 62, 0, 72, 84, 74, 75, 0, 64, 65, 65, 26, 0, 110],
-  [108, 0, 0, 24, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 94, 0, 26, 1, 110],
-  [108, 27, 28, 24, 44, 45, 45, 46, 0, 0, 1, 132, 0, 0, 44, 45, 46, 26, 0, 110],
-  [108, 0, 0, 24, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 133, 26, 0, 110],
-  [108, 1, 2, 24, 0, 0, 83, 0, 0, 0, 2, 0, 0, 0, 29, 0, 2, 26, 0, 110],
   [
-    108, 0, 0, 36, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 38, 0, 0,
-    110,
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
   ],
-  [108, 2, 0, 0, 1, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 2, 0, 0, 1, 110],
-  [108, 28, 27, 0, 0, 17, 0, 17, 0, 0, 28, 27, 0, 0, 17, 0, 17, 0, 0, 110],
-  [108, 28, 27, 0, 0, 17, 0, 17, 0, 0, 28, 27, 0, 0, 17, 0, 17, 0, 0, 110],
   [
-    120, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121,
-    121, 121, 121, 121, 122,
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 3,
+  ],
+  [
+    6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+    5, 5, 5, 5, 5, 5, 4,
   ],
 ]
 
@@ -363,44 +462,88 @@ const TileMap: React.FC<TileMapProps> = ({
   )
 }
 
-interface TilePreviewProps {
-  tileSize: number
-  tilesPerRow: number
-}
+// interface TilePreviewProps {
+//   tileSize: number
+//   tilesPerRow: number
+// }
 
-const TilePreview: React.FC<TilePreviewProps> = ({ tileSize }) => {
+// const TilePreview: React.FC<TilePreviewProps> = ({ tileSize }) => {
+//   return (
+//     <div className={styles.tilePreviewContainer}>
+//       <h2 className="text-black">图像预览</h2>
+//       <div className={styles.tilePreview}>
+//         {tileTypes.map((tile) => (
+//           <div
+//             key={tile.id}
+//             className={styles.tilePreviewItem}
+//             style={{
+//               width: `${tileSize}px`,
+//               height: `${tileSize}px`,
+//             }}
+//           >
+//             <Image
+//               src={tile.src}
+//               alt={`Tile ${tile.id}`}
+//               width={tileSize}
+//               height={tileSize}
+//             />
+//             <div className={styles.tileId}>{tile.id}</div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   )
+// }
+
+interface TaskProps {
+  task: string
+}
+const TaskListButton: React.FC<TaskProps> = ({ task }) => {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
-    <div className={styles.tilePreviewContainer}>
-      <h2 className="text-black">图像预览</h2>
-      <div className={styles.tilePreview}>
-        {tileTypes.map((tile) => (
-          <div
-            key={tile.id}
-            className={styles.tilePreviewItem}
-            style={{
-              width: `${tileSize}px`,
-              height: `${tileSize}px`,
-            }}
-          >
-            <Image
-              src={tile.src}
-              alt={`Tile ${tile.id}`}
-              width={tileSize}
-              height={tileSize}
-            />
-            <div className={styles.tileId}>{tile.id}</div>
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center"
+      >
+        <ClipboardList size={20} className="mr-1" />
+        任务
+      </button>
+      {isOpen && (
+        <div className="fixed top-4 right-4 w-96 bg-white text-black p-4 rounded-lg shadow-lg z-50 border-l-4 border-blue-500">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-xl font-bold">任务列表</h2>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <X size={24} />
+            </button>
           </div>
-        ))}
-      </div>
-    </div>
+          <div className="max-h-96 overflow-y-auto">
+            <pre className="text-sm whitespace-pre-wrap">{task}</pre>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
 const GameInterface: React.FC = () => {
   const tileSize = 32
-  const tilesPerRow = 10
-  const [viewportWidth, setViewportWidth] = useState(684)
-  const [viewportHeight, setViewportHeight] = useState(768)
+
+  const [viewportWidth, setViewportWidth] = useState(564)
+  const [viewportHeight, setViewportHeight] = useState(248)
+  const { account } = useWallet()
+  const [code, setCode] = useState('// 请在此处输入您的代码，输入前删除此行')
+  const [output, setOutput] = useState('')
+  const [task, setTask] = useState('none')
+  const { exportCode } = useMoveEditor()
+  const editorCode = exportCode()
+  useEffect(() => {
+    setCode(editorCode)
+  }, [editorCode])
 
   useEffect(() => {
     const handleResize = () => {
@@ -417,16 +560,96 @@ const GameInterface: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [tileSize])
 
+  const result = useCompileMove() as CompileMoveResult | null
+
+  const handleRunCode = () => {
+    console.log(result)
+    if (!account?.address) {
+      setOutput(
+        `Address: 未找到\n\n请连接钱包后重试（您可能需要复制当前代码）\n\n[END]`
+      )
+      return
+    }
+    if (result) {
+      console.log('address: ', account?.address, 'result: ', result.response)
+      if (result.response) {
+        setOutput(
+          `Address: ${account?.address} \n\n编译失败\n\n${result.response}\n[END]`
+        )
+      } else {
+        setOutput(`Address: ${account?.address} \n\n编译成功\n\n[END]`)
+      }
+    } else {
+      setOutput(
+        `Address: ${account?.address} \n\n请编辑代码后重新运行\n\n[END]`
+      )
+      console.log('Result is null or undefined')
+    }
+  }
+  // const TaskList = ({ task }) => {
+  //   task = 'test'
+  //   return (
+  //     <div className="bg-gray-800 text-white p-2  flex flex-col">
+  //       <h1 className="text-lg font-bold mb-2">任务列表</h1>
+  //       <div className="overflow-y-auto flex-grow">
+  //         <pre className="text-sm whitespace-pre-wrap">{task}</pre>
+  //       </div>
+  //     </div>
+  //   )
+  // }
+
   return (
-    <div className={styles.gameContainer}>
-      <h1 className={styles.title}>Game</h1>
-      <div style={{ display: 'flex' }}>
-        <TileMap
-          tileSize={tileSize}
-          viewportWidth={viewportWidth}
-          viewportHeight={viewportHeight}
-        />
-        {/* <TilePreview tileSize={tileSize} tilesPerRow={tilesPerRow} /> */}
+    <div className="flex h-screen w-screen bg-black">
+      {/* 左侧 */}
+      <div className="w-1/2 h-full flex flex-col overflow-hidden">
+        <div className="p-2 flex justify-between">
+          <EnhancedWalletButton />
+          {/* <WalletButton /> */}
+          <TaskListButton task={task} />
+        </div>
+        <div className="flex-grow overflow-hidden">
+          <TileMap
+            tileSize={tileSize}
+            viewportWidth={viewportWidth}
+            viewportHeight={viewportHeight}
+          />
+        </div>
+      </div>
+
+      {/* 右侧 */}
+      <div className="w-1/2 h-full flex flex-col bg-gray-100 overflow-hidden">
+        {/* Code Editor */}
+        <div className="flex-1 overflow-hidden flex flex-col">
+          <div className="flex flex-wrap justify-between items-center p-2 sm:p-4">
+            <h2 className="text-lg sm:text-xl font-bold text-black mr-2">
+              编辑器
+            </h2>
+            <div className="flex-grow flex justify-end items-center space-x-2">
+              <DocsTable />
+            </div>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <MoveEditorWrapper initialCode={code} />
+          </div>
+        </div>
+        {/* Command Line */}
+        <div className="h-1/3 bg-black text-white flex flex-col overflow-hidden">
+          <div className="flex flex-wrap justify-between items-center p-2 sm:p-4">
+            <h2 className="text-lg sm:text-xl font-bold">输出</h2>
+            <div className="flex items-center space-x-2">
+              <MoveWasm />
+              <button
+                onClick={handleRunCode}
+                className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm sm:text-base"
+              >
+                运行
+              </button>
+            </div>
+          </div>
+          <pre className="flex-1 overflow-y-auto p-2 bg-gray-800 rounded m-2 sm:m-4 text-sm">
+            {output}
+          </pre>
+        </div>
       </div>
     </div>
   )
