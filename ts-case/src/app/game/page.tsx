@@ -19,7 +19,7 @@ export default function Home() {
               width={32}
               height={32}
             />
-            <h1 className="ml-2 font-bold text-lg ">Aptos Case</h1>
+            <h1 className="ml-2 font-bold text-lg">Aptos Case</h1>
           </a>
         </header>
 
