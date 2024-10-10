@@ -15,7 +15,7 @@ export const GettingStarted = () => {
     window.open('/track_coding_conventions', '_blank')
   }
   return (
-    <div className="flex flex-col items-center mx-4 my-4">
+    <div className="flex flex-col items-center mx-4 my-4 z-10">
       <p className="font-bold text-7xl mb-4">快速开始</p>
       <div className="text-center mx-auto max-w-prose">
         <span className="text-base mb-4 block">

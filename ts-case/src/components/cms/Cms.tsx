@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Search, ChevronDown, X, Check } from 'lucide-react'
+import { Search, X, Check } from 'lucide-react'
 
 interface Category {
   name: string
@@ -209,12 +209,13 @@ export default function SynologyCMS({
                 onClick={() => setSearchTerm('')}
               />
             )}
+            {/* 搜索建议 */}
             {showSuggestions && suggestions.length > 0 && (
-              <ul className="absolute z-10 w-full bg-white mt-1 rounded shadow-lg">
+              <ul className="absolute z-10 w-full bg-white bg-opacity-10 backdrop-blur-sm mt-1 rounded shadow-lg">
                 {suggestions.map((suggestion, index) => (
                   <li
                     key={index}
-                    className="p-2 hover:bg-gray-100 cursor-pointer text-black"
+                    className="p-2 hover:bg-gray-900 hover:text-blue-300 cursor-pointer text-white "
                     onClick={() => {
                       setSearchTerm(suggestion)
                       setShowSuggestions(false)
