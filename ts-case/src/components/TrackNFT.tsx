@@ -21,7 +21,9 @@ interface Project {
 }
 
 const TrackNFT = () => {
-  const [code, setCode] = useState('// 请在这里输入你的答案...')
+  const [code, setCode] = useState(
+    '// 请在这里输入你的答案...（输入前请删除此行）'
+  )
   const { exportCode } = useMoveEditor()
   const editorCode = exportCode()
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
@@ -33,8 +35,18 @@ const TrackNFT = () => {
     { root: ['README.md'] },
   ])
 
+  // 项目文件结构
   const initialFileContents: [string, string][] = [
-    ['root/README.md', `这是一个创建 NFT 的教程`],
+    [
+      'root/README.md',
+      `🚨 注意：
+本教程是一个模拟创建 NFT 的教程，
+该合约地址可能已经存在风险，
+请不要在真实环境中使用本教程中的代码和合约地址。
+
+🔔 提示：
+跟随这个教程，您将学会如何在 Aptos 公链完成 NFT 合约的创建、编译和部署。`,
+    ],
     [
       'root/.aptos/config.yaml',
       `---
@@ -125,24 +137,52 @@ module MyNFT::first_NFT{
 }`,
     ],
   ]
-
+  // 项目 track
   const [project] = useState<Project>({
     id: 1,
     name: '从零创建基础 NFT 项目',
     steps: [
+      // 项目介绍
+      {
+        id: 1,
+        title: '0. 项目介绍',
+        content: `这是一个从零创建基础 NFT 项目的教程，我们将使用 Move 语言来编写智能合约。
+本教程将介绍如何初始化项目、编写智能合约、编译和部署合约等步骤。
+
+🚨 注意：
+本教程是一个模拟教程，请不要在真实环境中使用本教程中的代码和合约地址。在下方编辑器中删除已有内容，然后输入 OK ，即表示您已经明白本教程的注意事项。
+
+✅ 使用方法：
+1. 当您输入正确的代码后会自动进入下一个步骤。
+2. 如果您一直无法进入下一个步骤，可以从下方提示框中复制代码到输入框，以便于你进入下一个步骤（可能需要在旁边的黑色区域滑动）。
+3. 点击左侧文件结构中的文件名，可以查看文件内容。
+4. 本教程不会跟踪您的操作，意味着您的任何退出，都将重新开始本教程，但是你可以复制提示框中的代码，以快速进入到你希望去的步骤。
+5. 如果您执行查看步骤解析，您可以在左侧点击 README.md 文件查看。
+
+💻 输入：
+OK
+
+💡 解析：
+在这里会给出每一个步骤的代码和操作详细解析`,
+        expectedOutput: `OK`,
+        fileStructure: [{ root: ['README.md'] }],
+      },
+      // 初始化 Move 项目
       {
         id: 1,
         title: '1. 初始化 Move 项目',
         content: `清空编辑器中的内容后，输入:
 aptos move init --name my_nft
-💡 解析：这个命令将会创建一个 Move 项目结构`,
+💡 解析：
+这个命令将会创建一个 Move 项目结构`,
         expectedOutput: `
 aptos move init --name my_nft`,
         fileStructure: [{ root: ['README.md'] }],
       },
+      // 创建 Aptos 的链上账户
       {
         id: 2,
-        title: '2. 创建 Aptos 账户',
+        title: '2. 创建 Aptos 链上账户',
         content: `清空编辑器中刚才输入的命令后，输入:
 aptos init
 💡 解析：这个命令将会创建一个 aptos 账户到 .aptos/config.toml，其中包含了地址、私钥和公钥，请勿泄漏`,
@@ -150,11 +190,11 @@ aptos init
 aptos init`,
         fileStructure: [{ root: ['Move.toml', { sources: [] }] }],
       },
-
+      // 编辑 Move.toml 文件，配置地址别名
       {
         id: 3,
-        title: '3 编辑 Move 配置文件，配置地址别名',
-        content: `3.1 点击 Move.toml 文件，复制内容到下方编辑器，添加地址别名。地址为 config.yaml 文件中 account 后的字符串。输入:
+        title: '3-1. 编辑 Move 配置文件 Move.toml，配置地址别名',
+        content: `点击 Move.toml 文件，复制内容到下方编辑器，添加地址别名。地址为 config.yaml 文件中 account 后的字符串。输入:
 [addresses]
 case="你在 config.yaml 中的地址字符串"
 💡 解析：case 是自定义的地址别名，0x42 是区块链中的地址，它由`,

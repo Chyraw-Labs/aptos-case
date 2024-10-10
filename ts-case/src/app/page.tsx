@@ -4,6 +4,8 @@ import { DOCSBASE } from '@/code-case/docsbase'
 // import { AllDailyMove } from '@/components/AllDailyMove'
 // import { AllTrack } from '@/components/AllTrack'
 import Database from '@/components/database/Database'
+import GameInterface from '@/components/gamify/GameInterface'
+import { ToGame } from '@/components/gamify/ToGame'
 import { GettingStarted } from '@/components/GettingStarted'
 import Header from '@/components/Header'
 // import { MoveBook } from '@/components/MoveBook'
@@ -42,6 +44,7 @@ export default function Home() {
       <div className="flex flex-col gap-8 my-20 relative z-20">
         <GettingStarted />
         <Visualization />
+        <ToGame />
         {/* <AllTrack /> */}
         {/* <AllCase /> */}
         {/* <AllDailyMove /> */}
