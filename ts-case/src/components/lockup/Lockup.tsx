@@ -31,13 +31,11 @@ interface ChartDataPoint {
 }
 
 const LockupContractDashboard: React.FC = () => {
-  const [lockedAmount, setLockedAmount] = useState<BigNumber>(
-    new BigNumber(1000000)
-  )
+  const [lockedAmount] = useState<BigNumber>(new BigNumber(1000000))
   const [releasedAmount, setReleasedAmount] = useState<BigNumber>(
     new BigNumber(0)
   )
-  const [lockupPeriod, setLockupPeriod] = useState<number>(365) // days
+  const [lockupPeriod] = useState<number>(365) // days
   const [currentTime, setCurrentTime] = useState<number>(0)
   const [chartData, setChartData] = useState<ChartDataPoint[]>([])
 

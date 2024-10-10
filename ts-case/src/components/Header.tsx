@@ -66,7 +66,7 @@ function Header() {
 
   return (
     <>
-      <div className="flex justify-center w-full py-2 px-2 rounded-lg bg-opacity-10 backdrop-blur block">
+      <div className="flex justify-center w-full py-2 px-2 rounded-lg bg-opacity-10 backdrop-blur block z-50">
         <div className="flex justify-between w-full max-w-4xl items-center ">
           {/* LOGO */}
           <div className="flex-none justify-center px-2">
@@ -102,8 +102,8 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        // className="absolute z-10 mt-2 w-48 p-4 bg-white border rounded shadow-md"
-                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        // className="absolute z-1000 mt-2 w-48 p-4 bg-white border rounded shadow-md"
+                        className="absolute z-50 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <a
@@ -160,7 +160,7 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-50 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>
@@ -215,7 +215,7 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-10 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-50 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>
@@ -248,9 +248,6 @@ function Header() {
                                 Idea
                               </p>
                               <p className="text-white/80 text-xs/4">Simons</p>
-                              <p className="text-white/80 text-xs/4">
-                                Chyraw Labs
-                              </p>
                             </a>
                             <a
                               className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
@@ -260,6 +257,14 @@ function Header() {
                                 Developer
                               </p>
                               <p className="text-white/80 text-xs/4">Simons</p>
+                            </a>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
+                              href="/game"
+                            >
+                              <p className="font-semibold text-sm text-white">
+                                游戏 dev
+                              </p>
                             </a>
                           </div>
                         </div>

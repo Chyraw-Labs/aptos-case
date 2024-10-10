@@ -386,7 +386,7 @@ const DAOGovernanceDashboard = () => {
             <h2 className="text-lg font-semibold text-white">金库余额</h2>
             <Coins className="h-5 w-5 text-gray-400" />
           </div>
-          <p className="text-3xl font-bold">{treasury.toLocaleString()} ETH</p>
+          <p className="text-3xl font-bold">{treasury.toLocaleString()} APT</p>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

@@ -538,7 +538,7 @@ const GameInterface: React.FC = () => {
   const { account } = useWallet()
   const [code, setCode] = useState('// 请在此处输入您的代码，输入前删除此行')
   const [output, setOutput] = useState('')
-  const [task, setTask] = useState('none')
+  const [task] = useState('none')
   const { exportCode } = useMoveEditor()
   const editorCode = exportCode()
   useEffect(() => {

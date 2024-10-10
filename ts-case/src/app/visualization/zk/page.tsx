@@ -1,5 +1,4 @@
 import Groth16 from '@/components/groth16/Groth16'
-import Swap from '@/components/swap/Swap'
 import Image from 'next/image'
 
 export default function Home() {

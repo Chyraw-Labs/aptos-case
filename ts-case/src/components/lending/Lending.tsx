@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -47,23 +48,23 @@ const LendingVisualization = () => {
     {
       id: 1,
       name: '张三',
-      balances: { USDT: 10000, ETH: 5 },
-      borrowed: { USDT: 0, ETH: 0 },
-      collateral: { USDT: 0, ETH: 0 },
+      balances: { USDT: 10000, APT: 5 },
+      borrowed: { USDT: 0, APT: 0 },
+      collateral: { USDT: 0, APT: 0 },
     },
     {
       id: 2,
       name: '李四',
-      balances: { USDT: 5000, ETH: 2 },
-      borrowed: { USDT: 2000, ETH: 0 },
-      collateral: { USDT: 3000, ETH: 1 },
+      balances: { USDT: 5000, APT: 2 },
+      borrowed: { USDT: 2000, APT: 0 },
+      collateral: { USDT: 3000, APT: 1 },
     },
     {
       id: 3,
       name: '王五',
-      balances: { USDT: 20000, ETH: 10 },
-      borrowed: { USDT: 5000, ETH: 1 },
-      collateral: { USDT: 10000, ETH: 3 },
+      balances: { USDT: 20000, APT: 10 },
+      borrowed: { USDT: 5000, APT: 1 },
+      collateral: { USDT: 10000, APT: 3 },
     },
   ])
 
@@ -79,7 +80,7 @@ const LendingVisualization = () => {
       totalBorrows: 21000,
     },
     {
-      symbol: 'ETH',
+      symbol: 'APT',
       name: 'Ethereum',
       price: 2000,
       depositAPY: 0.03,

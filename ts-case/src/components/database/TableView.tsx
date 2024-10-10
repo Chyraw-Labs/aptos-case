@@ -7,11 +7,23 @@ interface TableViewProps {
   onDelete: (id: string | number) => void
 }
 
+// 创建一个映射对象，将英文键名映射到中文
+const keyToChineseMap: Record<keyof Item, string> = {
+  id: 'ID',
+  name: '名称',
+  status: '状态',
+  priority: '优先级',
+  dueDate: '截止日期',
+  assignee: '负责人',
+  progress: '进度',
+  description: '描述',
+  relatedTo: '相关项目',
+}
+
 const TableView: React.FC<TableViewProps> = ({ data, onEdit, onDelete }) => {
   if (!data || data.length === 0) {
-    return <div className="text-center py-4">No data available</div>
+    return <div className="text-center py-4">暂无数据</div>
   }
-
   const headers = Object.keys(data[0]) as (keyof Item)[]
 
   return (
@@ -22,12 +34,12 @@ const TableView: React.FC<TableViewProps> = ({ data, onEdit, onDelete }) => {
             {headers.map((key) => (
               <th
                 key={key}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-2 py-2 text-center text-sm font-medium text-gray-500 uppercase tracking-wider"
               >
-                {key}
+                {keyToChineseMap[key] || key}
               </th>
             ))}
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-2 py-2 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">
               操作
             </th>
           </tr>

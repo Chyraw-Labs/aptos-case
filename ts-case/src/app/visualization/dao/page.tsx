@@ -1,6 +1,4 @@
 import DAOGovernanceDashboard from '@/components/dao/DAO'
-import Lending from '@/components/lending/Lending'
-// import SwapDebug from '@/components/swap/Swap'
 import Image from 'next/image'
 
 export default function Home() {

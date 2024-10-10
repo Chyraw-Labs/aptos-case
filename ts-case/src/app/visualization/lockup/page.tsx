@@ -1,5 +1,4 @@
 import LockupContractDashboard from '@/components/lockup/Lockup'
-import Swap from '@/components/swap/Swap'
 import Image from 'next/image'
 
 export default function Home() {
