@@ -25,7 +25,7 @@ export const ToGame = () => {
 
       <div className="flex flex-row items-center gap-4 my-2">
         <TooltipButton
-          message="探索区块链的运行机制，从全局视角理解区块链的运行过程。"
+          message="通过游戏理解 Move 语法以及区块链程序的运行过程"
           onClick={openGame}
           className="rounded bg-cyan-500 py-2 px-4 text-xl text-white hover:bg-[#84feff] hover:text-black hover:font-bold"
         >
