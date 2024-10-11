@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 // import MarkdownRenderer from './MarkdownRenderer'
 import TrackNFT from '@/components/track_nft/TrackNFT'
 import { FileStructure } from '@/components/FileStructureTree'
+import TrackAptosCLI from '@/components/track_aptos_cli/TrackAptosCli'
 
 // 项目文件结构
 const initialFileContents: [string, string][] = [
@@ -215,13 +216,14 @@ aptos init`,
   return (
     <div className="container mx-auto px-4 py-8">
       {/* <MarkdownRenderer content={mdContent} /> */}
-      <TrackNFT
+      {/* <TrackNFT
         project={project}
         initialFiles={initialFiles}
         initialFileContents={initialFileContents}
         onReturn={openHome}
         onSubmit={submit}
-      />
+      /> */}
+      <TrackAptosCLI />
     </div>
   )
 }

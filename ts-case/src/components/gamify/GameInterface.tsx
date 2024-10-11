@@ -462,39 +462,6 @@ const TileMap: React.FC<TileMapProps> = ({
   )
 }
 
-// interface TilePreviewProps {
-//   tileSize: number
-//   tilesPerRow: number
-// }
-
-// const TilePreview: React.FC<TilePreviewProps> = ({ tileSize }) => {
-//   return (
-//     <div className={styles.tilePreviewContainer}>
-//       <h2 className="text-black">图像预览</h2>
-//       <div className={styles.tilePreview}>
-//         {tileTypes.map((tile) => (
-//           <div
-//             key={tile.id}
-//             className={styles.tilePreviewItem}
-//             style={{
-//               width: `${tileSize}px`,
-//               height: `${tileSize}px`,
-//             }}
-//           >
-//             <Image
-//               src={tile.src}
-//               alt={`Tile ${tile.id}`}
-//               width={tileSize}
-//               height={tileSize}
-//             />
-//             <div className={styles.tileId}>{tile.id}</div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   )
-// }
-
 interface TaskProps {
   task: string
 }
@@ -504,7 +471,7 @@ const TaskListButton: React.FC<TaskProps> = ({ task }) => {
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(!isOpen)}
         className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center"
       >
         <ClipboardList size={20} className="mr-1" />
@@ -538,7 +505,7 @@ const GameInterface: React.FC = () => {
   const { account } = useWallet()
   const [code, setCode] = useState('// 请在此处输入您的代码，输入前删除此行')
   const [output, setOutput] = useState('')
-  const [task] = useState('none')
+  const [task] = useState('正在开发中，感谢关注！')
   const { exportCode } = useMoveEditor()
   const editorCode = exportCode()
   useEffect(() => {
@@ -599,7 +566,7 @@ const GameInterface: React.FC = () => {
   // }
 
   return (
-    <div className="flex h-screen w-screen bg-black">
+    <div className="flex h-full w-screen bg-black">
       {/* 左侧 */}
       <div className="w-1/2 h-full flex flex-col overflow-hidden">
         <div className="p-2 flex justify-between">
@@ -617,7 +584,7 @@ const GameInterface: React.FC = () => {
       </div>
 
       {/* 右侧 */}
-      <div className="w-1/2 h-full flex flex-col bg-gray-100 overflow-hidden">
+      <div className="w-1/2 flex flex-col bg-gray-100 overflow-hidden">
         {/* Code Editor */}
         <div className="flex-1 overflow-hidden flex flex-col">
           <div className="flex flex-wrap justify-between items-center p-2 sm:p-4">

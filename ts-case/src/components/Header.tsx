@@ -66,7 +66,9 @@ function Header() {
 
   return (
     <>
-      <div className="flex justify-center w-full py-2 px-2 rounded-lg bg-opacity-10 backdrop-blur block z-50">
+      <div
+        className={`flex relative justify-center w-full py-2 px-2 rounded-lg bg-opacity-10 backdrop-blur block z-40 `}
+      >
         <div className="flex justify-between w-full max-w-4xl items-center ">
           {/* LOGO */}
           <div className="flex-none justify-center px-2">
@@ -103,7 +105,7 @@ function Header() {
                         anchor="bottom"
                         static
                         // className="absolute z-1000 mt-2 w-48 p-4 bg-white border rounded shadow-md"
-                        className="absolute z-50 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-40 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <a
@@ -160,7 +162,7 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-50 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-40 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>
@@ -226,7 +228,7 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-50 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-40 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>
@@ -235,11 +237,9 @@ function Header() {
                               href="/resource"
                             >
                               <p className="font-semibold text-sm text-white">
-                                Resource
+                                资源
                               </p>
-                              <p className="text-white/80 text-xs/4">
-                                illustration
-                              </p>
+
                               <p className="text-white/80 text-xs/4">
                                 headless-ui
                               </p>
@@ -256,7 +256,7 @@ function Header() {
                               href="https://chyraw.com"
                             >
                               <p className="font-semibold text-sm text-white">
-                                Idea
+                                设计
                               </p>
                               <p className="text-white/80 text-xs/4">Simons</p>
                             </a>
@@ -265,22 +265,30 @@ function Header() {
                               href="/team"
                             >
                               <p className="font-semibold text-sm text-white">
-                                Developer
+                                开发者
                               </p>
                               <p className="text-white/80 text-xs/4">Simons</p>
                             </a>
                             <a
                               className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
-                              href="https://absurd.design/"
+                              href="#"
                             >
                               <p className="font-semibold text-sm text-white">
-                                License
+                                插画来源
                               </p>
                               <p className="text-white/80 text-xs/4">
-                                插图来自{' '}
-                                <a href="https://absurd.design/">
-                                  absurd.design
-                                </a>
+                                <ul>
+                                  <li>
+                                    <a href="https://absurd.design/">
+                                      absurd.design
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a href="https://www.opendoodles.com/">
+                                      OpenDoodles
+                                    </a>
+                                  </li>
+                                </ul>
                               </p>
                             </a>
                           </div>

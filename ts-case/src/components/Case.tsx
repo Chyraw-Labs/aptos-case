@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { twMerge } from 'tailwind-merge'
-// import { MDXRemoteSerializeResult } from 'next-mdx-remote'
-// import { MDXProvider } from '@mdx-js/react'
-// import { serialize } from 'next-mdx-remote/serialize'
 import {
   X,
   Maximize2,
@@ -12,19 +9,15 @@ import {
   ArrowLeftRight,
   Loader,
 } from 'lucide-react'
-// import styles from '@/styles/md.module.css'
-// import { OnMount, OnChange } from '@monaco-editor/react'
-// import * as monaco from 'monaco-editor'
 import MoveEditorWrapper from './EditorWrapper'
-// import { MoveEditorProvider } from './MoveEditorProvider'
 import { useMoveEditor } from './MoveEditorProvider'
 import DocsTable from './DocsTable'
 import useCompileMove from '@/move-wasm/CompileMove'
-
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
 import { MoveWasm } from '@/move-wasm/MoveWasm'
 import MarkdownRenderer from './MarkdownRenderer'
 import Image from 'next/image'
+import { usePopover } from './PopoverProvider'
 
 interface CaseProps {
   mdPath: string
@@ -53,16 +46,13 @@ const Case: React.FC<CaseProps> = ({
   // write move code here
 }`,
   cover,
-  size = 'md',
+  size = 'sm',
   className,
   description,
   tags,
   title,
   children,
 }) => {
-  // const [mdxSource, setMdxSource] = useState<MDXRemoteSerializeResult | null>(
-  //   null
-  // )
   const [mdContent, setMdContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -72,10 +62,9 @@ const Case: React.FC<CaseProps> = ({
   const [isDragging, setIsDragging] = useState(false)
   const splitPaneRef = useRef<HTMLDivElement>(null)
   const { account } = useWallet()
-  // const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
 
   const sizeClasses = {
-    sm: 'w-32 h-72',
+    sm: 'w-32 h-48',
     md: 'w-66 h-120',
     lg: 'w-92 h-160',
   }
@@ -85,109 +74,6 @@ const Case: React.FC<CaseProps> = ({
     sizeClasses[size],
     className
   )
-
-  // const mdxStyleConfig = {
-  //   h1: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h1 className={styles.h1} {...props} />,
-  //   h2: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h2 className={styles.h2} {...props} />,
-  //   h3: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h3 className={styles.h3} {...props} />,
-  //   h4: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h4 className={styles.h4} {...props} />,
-  //   h5: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h5 className={styles.h5} {...props} />,
-  //   h6: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLHeadingElement> &
-  //       React.HTMLAttributes<HTMLHeadingElement>
-  //   ) => <h6 className={styles.h6} {...props} />,
-  //   p: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLParagraphElement> &
-  //       React.HTMLAttributes<HTMLParagraphElement>
-  //   ) => <p className={styles.p} {...props} />,
-  //   code: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLElement> &
-  //       React.HTMLAttributes<HTMLElement>
-  //   ) => <code className={styles.code} {...props} />,
-  //   pre: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLPreElement> &
-  //       React.HTMLAttributes<HTMLPreElement>
-  //   ) => <pre className={styles.pre} {...props} />,
-  //   blockquote: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLQuoteElement> &
-  //       React.BlockquoteHTMLAttributes<HTMLQuoteElement>
-  //   ) => <blockquote className={styles.blockquote} {...props} />,
-  //   ul: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLUListElement> &
-  //       React.HTMLAttributes<HTMLUListElement>
-  //   ) => <ul className={styles.ul} {...props} />,
-  //   li: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLLIElement> &
-  //       React.LiHTMLAttributes<HTMLLIElement>
-  //   ) => <li className={styles.li} {...props} />,
-  //   ol: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLOListElement> &
-  //       React.OlHTMLAttributes<HTMLOListElement>
-  //   ) => <ol className={styles.ol} {...props} />,
-  //   th: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableHeaderCellElement> &
-  //       React.ThHTMLAttributes<HTMLTableHeaderCellElement>
-  //   ) => <th className={styles.th} {...props} />,
-  //   td: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableDataCellElement> &
-  //       React.TdHTMLAttributes<HTMLTableDataCellElement>
-  //   ) => <td className={styles.td} {...props} />,
-  //   table: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableElement> &
-  //       React.TableHTMLAttributes<HTMLTableElement>
-  //   ) => <table className={styles.table} {...props} />,
-
-  //   thead: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableSectionElement> &
-  //       React.HTMLAttributes<HTMLTableSectionElement>
-  //   ) => <thead className="md-thead" {...props} />,
-  //   tbody: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableSectionElement> &
-  //       React.HTMLAttributes<HTMLTableSectionElement>
-  //   ) => <tbody className="md-tbody" {...props} />,
-  //   tr: (
-  //     props: React.JSX.IntrinsicAttributes &
-  //       React.ClassAttributes<HTMLTableRowElement> &
-  //       React.HTMLAttributes<HTMLTableRowElement>
-  //   ) => <tr className={styles.tr} {...props} />,
-  // }
-
-  // useEffect(() => {
-  //   fetchMdContent()
-  // }, [])
 
   const fetchMdContent = async () => {
     setIsLoading(true)
@@ -255,7 +141,6 @@ const Case: React.FC<CaseProps> = ({
   useEffect(() => {
     setCode(codeCase)
   }, [codeCase])
-  // console.log(exportCode())
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return
@@ -281,15 +166,7 @@ const Case: React.FC<CaseProps> = ({
       document.removeEventListener('mouseup', handleMouseUp)
     }
   }, [isDragging])
-  // const handleEditorDidMount: OnMount = (editor) => {
-  //   editorRef.current = editor
-  // }
 
-  // const handleEditorChange: OnChange = (value) => {
-  //   if (value !== undefined) {
-  //     setCode(value)
-  //   }
-  // }
   const result = useCompileMove() as CompileMoveResult | null
   const handleRunCode = () => {
     console.log(result)
@@ -333,6 +210,21 @@ const Case: React.FC<CaseProps> = ({
         break
     }
   }
+  const [isOpen, setIsOpen] = useState(false)
+  const { setIsPopoverOpen } = usePopover()
+
+  useEffect(() => {
+    setIsPopoverOpen(isOpen)
+  }, [isOpen, setIsPopoverOpen])
+
+  const handleToggle = () => {
+    const newIsOpen = !isOpen
+    setIsOpen(newIsOpen)
+    setIsPopoverOpen(newIsOpen)
+    if (newIsOpen) {
+      fetchMdContent()
+    }
+  }
 
   return (
     <Popover className="relative">
@@ -341,11 +233,11 @@ const Case: React.FC<CaseProps> = ({
           <PopoverButton
             as="div"
             className={baseClasses}
-            onClick={fetchMdContent}
+            onClick={handleToggle}
           >
             {mdPath && (
-              <div className="max-w-sm rounded-lg shadow-lg flex flex-col ">
-                <div className="relative min-h-[300px]">
+              <div className="max-w-sm rounded-lg shadow-lg flex flex-col z-10">
+                <div className="relative min-h-32">
                   <Image
                     src={cover}
                     alt={title}
@@ -354,34 +246,23 @@ const Case: React.FC<CaseProps> = ({
                     className="rounded-t-lg"
                   />
                 </div>
-                <div className="flex-grow flex flex-col p-6 ">
+                <div className="flex-grow flex flex-col p-1">
                   <div className="mb-2">
                     {tags?.map((tag, index) => (
                       <span
                         key={index}
-                        className="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mb-2"
+                        className="inline-block bg-blue-200 rounded-full px-2 py-1 text-xs font-semibold text-blue-700 mr-1 mb-1"
                       >
                         #{tag}
                       </span>
                     ))}
                   </div>
-                  <h2 className="font-bold text-xl mb-2 text-black">{title}</h2>
-                  <p className="text-gray-700 text-base mb-4">{description}</p>
+                  <h2 className="font-bold text-sm mb-2 text-black">{title}</h2>
+                  <p className="text-gray-700 text-sm mb-4">{description}</p>
                   <a className="mt-auto">{children}</a>
                 </div>
               </div>
             )}
-            {/* <div className="p-4">
-              {tag && (
-                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2">
-                  {tag}
-                </span>
-              )}
-              {description && (
-                <p className="text-gray-600 text-sm">{description}</p>
-              )}
-              {children}
-            </div> */}
           </PopoverButton>
 
           {open && (
@@ -392,7 +273,7 @@ const Case: React.FC<CaseProps> = ({
           )}
 
           <PopoverPanel className="fixed inset-0 z-50 overflow-hidden">
-            <div className="flex h-screen w-screen">
+            <div className="flex h-full w-screen z-50">
               <div ref={splitPaneRef} className="flex-1 flex overflow-hidden">
                 {/* Left pane */}
                 <div
@@ -492,7 +373,7 @@ const Case: React.FC<CaseProps> = ({
                 onClick={close}
                 className="absolute top-4 right-4 p-2 rounded-full bg-red-300 shadow-md hover:bg-red-500"
               >
-                <X size={16} />
+                <X size={16} onClick={handleToggle} />
               </button>
             </div>
           </PopoverPanel>

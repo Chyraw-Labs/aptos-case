@@ -1,5 +1,6 @@
 import Case from './Case'
 import { EXAMPLE_FOR, EXAMPLE_IF } from '@/code-case/move-example'
+import Image from 'next/image'
 
 interface TrackData {
   mdPath: string
@@ -16,7 +17,7 @@ const tracks: TrackData[] = [
     mdPath: '/Docs/module_script.md',
     cover: '/images/cover/module_and_script.jpg',
     description: '模块脚本的讲解',
-    tags: ['Move', '简单', '基础'],
+    tags: ['Move', '简单'],
     title: '模块和脚本',
     children: [],
   },
@@ -183,37 +184,54 @@ const tracks: TrackData[] = [
 
 export const MoveBook = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full px-4">
-      <div className="w-full max-w-7xl">
-        <div className="flex flex-col items-center mx-4 my-4">
-          <p className="font-bold text-7xl mb-4 text-center">Move 手册</p>
-          <div className="text-center mx-auto max-w-prose mb-8">
-            <span className="text-base mb-4 block">
-              这是 Move 合约的所有案例你可以在
-              <span className="font-bold text-blue-400">
-                <a href="https://github.com/caoyang2002/move-examples-zh">
-                  Move-Example
-                </a>
-              </span>
-              找到这些案例的源码。
-            </span>
+    <div className="relative">
+      {/* 添加相对定位 */}
+      <div className="flex-grow overflow-auto">
+        {/*  <div className="flex flex-col items-center justify-center min-h-screen w-full px-4"> */}
+        {/* <div className="w-full max-w-7xl"> */}
+        {/* <div className="flex flex-col items-center mx-4 my-4"> */}
+        <div className="flex flex-col md:flex-row items-center  gap-4 max-w-6xl w-full">
+          <div className="w-full md:w-1/2 flex justify-center">
+            <Image
+              src="/assets/character_unboxing.png"
+              alt="Strolling"
+              width={300}
+              height={300}
+              className="max-w-full h-auto"
+            />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 w-full">
-            {tracks.map((track: TrackData, index: number) => (
-              <Case
-                key={index}
-                mdPath={track.mdPath}
-                cover={track.cover}
-                description={track.description}
-                tags={track.tags}
-                title={track.title}
-                codeCase={track.codeCase}
-              >
-                {track.children}
-              </Case>
-            ))}
+          <div className="w-full md:w-1/2">
+            <p className="font-bold text-7xl mb-4 text-center">Move 手册</p>
+            <div className="text-center mx-auto max-w-prose mb-8">
+              <span className="text-base mb-4 block">
+                这是 Move 合约的所有案例你可以在
+                <span className="font-bold text-blue-400">
+                  <a href="https://github.com/caoyang2002/move-examples-zh">
+                    Move-Example
+                  </a>
+                </span>
+                找到这些案例的源码。
+              </span>
+            </div>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 w-full h-full m-2 p-4">
+          {tracks.map((track: TrackData, index: number) => (
+            <Case
+              key={index}
+              mdPath={track.mdPath}
+              cover={track.cover}
+              description={track.description}
+              tags={track.tags}
+              title={track.title}
+              codeCase={track.codeCase}
+            >
+              {track.children}
+            </Case>
+          ))}
+        </div>
+        {/* </div> */}
       </div>
     </div>
   )

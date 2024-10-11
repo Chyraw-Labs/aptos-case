@@ -326,7 +326,7 @@ module MyNFT::first_NFT{
       {
         id: 1,
         title: '0. 项目介绍',
-        note: `本教程是一个模拟教程，请不要在真实环境中使用本教程中的代码和合约地址。在下方编辑器中删除已有内容，然后输入 OK ，即表示您已经明白本教程的注意事项。点击左侧 README.md 查看详细使用方法。`,
+        note: `本教程是一个模拟教程，请不要在真实环境中使用本教程中的代码和合约地址。在下方编辑器中删除已有内容，然后输入 OK ，即表示您已经明白本教程的注意事项。点击左侧 README.md 查看详细使用方法。如果代码始终无法通过，您可以通过下方的 “错误提示”进行自查`,
         tips: `OK`,
         analyze: `在这里会给出每一个步骤的代码和操作详细解析`,
         content: `这是一个从零创建基础 NFT 项目的教程，我们将使用 Move 语言来编写智能合约。本教程将介绍如何初始化项目、编写智能合约、编译和部署合约等步骤。`,
@@ -341,7 +341,7 @@ module MyNFT::first_NFT{
         note: '请不要更改项目名称',
         tips: 'aptos move init --name my_nft',
         analyze: '这个命令将会创建一个 Move 项目结构',
-        content: `清空编辑器中的内容后，输入:`,
+        content: `初始化 Move 项目`,
         answer: `aptos move init --name my_nft`,
         presetCode: '',
         fileStructure: [{ root: ['README.md'] }],
@@ -352,7 +352,8 @@ module MyNFT::first_NFT{
         title: '2. 创建 Aptos 链上账户',
         note: '请不要更改网络名称',
         tips: `aptos init --network testnet`,
-        analyze: `这个命令将会创建一个 aptos 账户到 .aptos/config.toml，其中包含了地址、私钥和公钥，请勿泄漏`,
+        analyze: `这个命令将会创建一个 aptos 账户到 .aptos/config.toml，
+其中包含了地址、私钥和公钥，请勿泄漏`,
         content: `创建 Aptos 链上账户`,
         answer: `aptos init --network testnet`,
         presetCode: '',
@@ -371,7 +372,8 @@ case="你在 config.yaml 中的地址字符串"
 
 ...
 [dev-dependencies]`,
-        analyze: `case 是自定义的地址别名，0x42 是 Aptos 的链上账户地址，它由 64 个十六进制字符组成，你可以使用这个地址接收 NFT 和 Token 等资源`,
+        analyze: `case 是自定义的地址别名，0x42 是 Aptos 的链上账户地址，
+它由 64 个十六进制字符组成，你可以使用这个地址接收 NFT 和 Token 等资源`,
         content: `点击左侧 Move.toml 文件，复制内容到下方编辑器，添加地址别名。地址为 config.yaml 文件中 account 后的字符串。`,
         answer: `[package]
 name = "my_nft"
@@ -467,8 +469,8 @@ subdir = "aptos-move/framework/aptos-framework"
         title: '5. 创建 Move 合约文件: nft.move',
         note: '在实际操作中，这个命令属于 Linux，在Windows 上需要使用 PowerShell 执行此命令',
         tips: `touch sources/nft.move`,
-        analyze:
-          '这个命令将会在 sources 下创建 nft.move 文件，在 Move 编码规范中，建议文件名和模块名一致',
+        analyze: `这个命令将会在 sources 下创建 nft.move 文件，在 Move 编码规范中，
+建议文件名和模块名一致`,
         content: `清空编辑器中刚才输入的命令后，使用 touch 命令创建 nft.move文件`,
         answer: `touch sources/nft.move`,
         presetCode: ``,
@@ -490,7 +492,8 @@ subdir = "aptos-move/framework/aptos-framework"
         tips: `module case::nft{
 
 }`,
-        analyze: `module 表示这是一个模块，其中 case 是刚才定义的地址别名，nfy 是模块名，之后的代码需要写在大括号 {} 中`,
+        analyze: `module 表示这是一个模块，其中 case 是刚才定义的地址别名，
+nft 是模块名，之后的代码需要写在大括号 {} 中`,
         content: `定义 NFT 模块`,
         answer: `module case::nft{
 
@@ -514,8 +517,13 @@ subdir = "aptos-move/framework/aptos-framework"
         tips: `struct TokenRefsStore has key {
     burn_ref: token::BurnRef,
 }`,
-        analyze: `struct 表示这是一个结构体，名称为 TokenRefsStore，has 表示这个结构体具备的能力，key 表示作为键的能力，字段为 burn_ref，类型为 token::BurnRef
-我们目前使用了 token 模块的 BurnRef 类型，这种类型是由  aptos_token_objects 提供的所以我们需要在下一步引入这个类型`,
+        analyze: `struct 表示这是一个结构体，名称为 TokenRefsStore，
+has 表示这个结构体具备的能力，
+key 表示作为键的能力，
+字段为 burn_ref，类型为 token::BurnRef
+
+我们目前使用了 token 模块的 BurnRef 类型，
+这种类型是由  aptos_token_objects 提供的所以我们需要在下一步引入这个类型`,
         content: `在 module case::nft 的 {} 中输入：
       struct TokenRefsStore has key {
           burn_ref: token::BurnRef,
@@ -545,7 +553,9 @@ subdir = "aptos-move/framework/aptos-framework"
         content: `使用 use 关键字，从 aptos_token_objects 中引入 token，语法为 "模块名::类型;"`,
         note: '引入模块的语句在可以任意位置，但是为了规范，建议您仅接着 module 后 {} 的起始位置，注意末尾有一个分号“;”',
         tips: 'use aptos_token_objects::token;',
-        analyze: `aptos_token_objects 模块可以调用，是因为我们最开始的时候 在 Move.toml 中加入了 [dependencies.AptosTokenObjects] 依赖，所有的关于 token 的操作都在这里面`,
+        analyze: `aptos_token_objects 模块可以调用，是因为我们最开始的时候
+在 Move.toml 中加入了 [dependencies.AptosTokenObjects] 依赖，
+所有的关于 token 的操作都在这里面`,
         presetCode: `module case::nft{
     // 在这里写下您的代码（输入前请删除此行）
 
@@ -571,47 +581,49 @@ subdir = "aptos-move/framework/aptos-framework"
           },
         ],
       },
+      //       {
+      //         id: 9,
+      //         title: '9. 创建 create_collection 用于收集所有的 NFT',
+      //         content: `创建 create_collection 函数`,
+      //         note: `请勿更改结构体名称，以及结构体中的字段名称`,
+      //         tips: 'fun create_collection() {}',
+      //         analyze: `使用 fun 关键字创建函数`,
+      //         presetCode: `module case::nft{
+      //     // 在这里写下您的代码（输入前请删除此行）
+
+      //     struct TokenRefsStore has key {
+      //         burn_ref: token::BurnRef,
+      //     }
+      // }`,
+      //         answer: `module case::nft{
+      //     use aptos_token_objects::token;
+
+      //     struct TokenRefsStore has key {
+      //         burn_ref: token::BurnRef,
+      //     }
+      // }`,
+      //         fileStructure: [
+      //           {
+      //             root: [
+      //               'README.md',
+      //               'Move.toml',
+      //               { '.aptos': ['config.yaml'] },
+      //               { sources: ['nft.move'] },
+      //             ],
+      //           },
+      //         ],
+      //       },
+
       {
         id: 9,
-        title: '9. 创建 create_collection 用于收集所有的 NFT',
-        content: `创建 create_collection 函数`,
-        note: `请勿更改结构体名称，以及结构体中的字段名称`,
-        tips: 'fun create_collection() {}',
-        analyze: `aptos_token_objects 模块可以调用，是因为我们最开始的时候 在 Move.toml 中加入了 [dependencies.AptosTokenObjects] 依赖，所有的关于 token 的操作都在这里面，token::BurnRef 是销毁 NFT 的引用`,
-        presetCode: `module case::nft{
-    // 在这里写下您的代码（输入前请删除此行）
-
-    struct TokenRefsStore has key {
-        burn_ref: token::BurnRef,
-    }
-}`,
-        answer: `module case::nft{
-    use aptos_token_objects::token;
-
-    struct TokenRefsStore has key {
-        burn_ref: token::BurnRef,
-    }
-}`,
-        fileStructure: [
-          {
-            root: [
-              'README.md',
-              'Move.toml',
-              { '.aptos': ['config.yaml'] },
-              { sources: ['nft.move'] },
-            ],
-          },
-        ],
-      },
-
-      {
-        id: 10,
-        title: '10. 创建 create_collection 函数',
+        title: '9. 创建 create_collection 函数',
         content: `在 module case::nft 的 {} 中输入：fun create_collection() {}，这实际上是创建了一个 collection 用于收集 NTF`,
         note: '请勿更改函数名称',
         tips: `fun create_collection() {
 }`,
-        analyze: `fun 是定义函数的关键字，这里的 create_collection 是函数签名，() 是函数参数，目前为空，{} 里放是函数体，目前为空`,
+        analyze: `fun 是定义函数的关键字，这里的 create_collection 是函数签名，
+() 是函数参数，目前为空，
+{} 里放是函数体，目前为空`,
         presetCode: `module case::nft{
     use aptos_token_objects::token; 
 
@@ -643,13 +655,17 @@ subdir = "aptos-move/framework/aptos-framework"
         ],
       },
       {
-        id: 11,
+        id: 10,
         title:
-          '11. 在函数体内定义 collection 构造器引用 collection_construcor_ref',
+          '10. 在函数体内定义 collection 构造器引用 collection_construcor_ref',
         note: '请勿更改变量名称，语句末尾需要加分号 ";"',
-        tips: `let collection_construcor_ref = &collection::create_fixed_collection()`,
-        analyze:
-          'let 是定义变量的关键字，& 表示不可变引用，（可变引用为 &mut）意在使用 create_fixed_collection() 返回的引用，而不实际拥有该对，这一般用于仅仅需要使用而不更改的情况下。在这里，我们使用了 collection 函数，但是并没有引入它，所以下一步我们需要引入它',
+        tips: `let collection_construcor_ref = &collection::create_fixed_collection();`,
+        analyze: `let 是定义变量的关键字，
+& 表示不可变引用，（可变引用为 &mut）
+意在使用 create_fixed_collection() 返回的引用，而不实际拥有该对，
+这一般用于仅仅需要使用而不更改的情况下。
+
+在这里，我们使用了 collection 函数，但是并没有引入它，所以下一步我们需要引入它`,
         content: `在 fun create_collection() {} 中，使用 let 和 & 关键字，通过 collection 中的 create_fixed_collection() 函数，定义保存 collection 构造器引用的变量，create_fixed_collection() 会创建一个固定供应量的 collection，所以在之后我们还需要设置它的再大供应量。Move 能够进行自动类型推断，所以不用显示标注类型。`,
         presetCode: `module case::nft{
     use aptos_token_objects::token; 
@@ -686,8 +702,8 @@ subdir = "aptos-move/framework/aptos-framework"
         ],
       },
       {
-        id: 12,
-        title: '12. 导入 collection 函数',
+        id: 11,
+        title: '11. 导入 collection 函数',
         note: '请勿进行其他操作',
         tips: `use aptos_token_objects::collection;`,
         analyze: `目前我们已经成功学习了定义函数、变量以及导入包`,
@@ -728,22 +744,35 @@ subdir = "aptos-move/framework/aptos-framework"
         ],
       },
       {
-        id: 13,
-        title: '13. 定义最大供应量为 1000',
+        id: 12,
+        title: '12. 定义最大供应量为 1000',
         note: '请勿更改变量名称。为了熟悉语法，请为变量添加类型',
         tips: `let max_supply:u64 = 1000;`,
         analyze: `u64 是 Move 的原始类型，Move 仍然能够自动推断，在实际生产环境中可以不用写。最大供应量是 NFT （ERC-721）特有的，旨在提供独一无二的 Token`,
         content: `定义 NFT 的最大供应量为 1000`,
-        answer: `module case::nft{
-    use aptos_token_objects::collection;
+        presetCode: `module case::nft{
     use aptos_token_objects::token;
+    use aptos_token_objects::collection;
 
     struct TokenRefsStore has key {
         burn_ref: token::BurnRef,
     }
 
     fun create_collection() {
-        let max_supply = 1000;
+        // 在这里写下您的代码 （输入前请删除此行） 
+        let collection_construcor_ref = &collection::create_fixed_collection();
+    }
+}`,
+        answer: `module case::nft{
+    use aptos_token_objects::token;
+    use aptos_token_objects::collection;
+ 
+    struct TokenRefsStore has key {
+        burn_ref: token::BurnRef,
+    }
+
+    fun create_collection() {
+        let max_supply:u64 = 1000;
         let collection_construcor_ref = &collection::create_fixed_collection();
     }
 }`,
@@ -759,8 +788,8 @@ subdir = "aptos-move/framework/aptos-framework"
         ],
       },
       {
-        id: 14,
-        title: '14. 敬请期待',
+        id: 13,
+        title: '13. 敬请期待',
         note: '敬请期待',
         tips: `ok`,
         analyze: `解析`,

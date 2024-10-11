@@ -11,9 +11,9 @@ export const GettingStarted = () => {
   const openTrackAptosCLI = () => {
     window.open('/track_aptos_cli', '_blank')
   }
-  const openCodingConventions = () => {
-    window.open('/track_coding_conventions', '_blank')
-  }
+  // const openCodingConventions = () => {
+  //   window.open('/track_coding_conventions', '_blank')
+  // }
   return (
     <div className="flex flex-col items-center mx-4 my-4 z-2">
       <p className="font-bold text-7xl mb-4">快速开始</p>

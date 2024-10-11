@@ -325,7 +325,7 @@ const TrackNFT: React.FC<TrackNFTProps> = ({
         />
 
         <CodeCard
-          title="提示"
+          title="代码提示"
           content={currentStep.tips}
           icon={<Lightbulb className="mr-2" size={20} />}
           titleStyle="text-green-500"
@@ -334,6 +334,7 @@ const TrackNFT: React.FC<TrackNFTProps> = ({
           title="解析"
           content={currentStep.analyze}
           icon={<FileQuestion className="mr-2" size={20} />}
+          titleStyle="text-blue-500"
         />
 
         <CodeEditor

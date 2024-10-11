@@ -143,20 +143,6 @@ const AptosCliEditor: React.FC<AptosCliEditorProps> = ({
     [onCodeChange, setCode]
   )
 
-  // 获取响应
-  // function getResponse(command: string): string {
-  //   console.log('get response: ', command)
-  //   const normalizedCommand = normalizeCommand(command)
-
-  //   for (const [enumCommand, response] of Object.entries(commandResponses)) {
-  //     if (normalizeCommand(enumCommand) === normalizedCommand) {
-  //       return response
-  //     }
-  //   }
-
-  //   return `命令没有找到: ${command}. 输入 'help' 查看可用命令.`
-  // }
-
   const handleEditorDidMount: OnMount = useCallback(
     (editor, monaco) => {
       editorRef.current = editor
@@ -281,7 +267,7 @@ const AptosCliEditor: React.FC<AptosCliEditorProps> = ({
   return (
     <MonacoEditor
       height="100%"
-      theme="aptosCliTheme"
+      theme="vs-dark"
       defaultLanguage="aptosCli"
       value={code}
       onChange={handleEditorChange}
@@ -289,16 +275,26 @@ const AptosCliEditor: React.FC<AptosCliEditorProps> = ({
       options={{
         minimap: { enabled: false },
         fontSize: 14,
-        lineNumbers: 'off',
-        glyphMargin: false,
-        folding: false,
-        lineDecorationsWidth: 0,
-        lineNumbersMinChars: 0,
+        lineNumbers: 'on',
+        glyphMargin: true,
+        folding: true,
+        lineDecorationsWidth: 5,
+        lineNumbersMinChars: 3,
         wordWrap: 'on',
         wrappingStrategy: 'advanced',
         scrollBeyondLastLine: false,
         automaticLayout: true,
         padding: { top: 10, bottom: 10 },
+        renderLineHighlight: 'all',
+        // highlightActiveIndentGuide: true,
+        cursorBlinking: 'smooth',
+        cursorSmoothCaretAnimation: 'on',
+        smoothScrolling: true,
+        contextmenu: true,
+        mouseWheelZoom: true,
+        suggest: {
+          showWords: false,
+        },
       }}
       {...props}
     />
