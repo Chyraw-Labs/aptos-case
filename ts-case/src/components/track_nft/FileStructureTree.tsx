@@ -356,7 +356,7 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
   return (
     <>
       <div className={`flex flex-col h-full ${className}`}>
-        <h2 className="text-xl font-bold mb-4 text-white">项目结构</h2>
+        <h2 className="text-xl font-bold mb-4 text-blue-400">项目结构</h2>
 
         <div className="mb-4">
           <FileTree
@@ -370,9 +370,9 @@ const FileStructureTree: React.FC<FileStructureTreeProps> = ({
         </div>
 
         <div className="my-4 flex flex-col flex-grow">
-          <h2 className="text-xl font-bold text-white">文件详情</h2>
+          <h2 className="text-xl font-bold text-blue-400">文件详情</h2>
           {selectedFile ? (
-            <pre className="bg-gray-800 m-1 p-1 rounded overflow-auto flex-grow min-h-24">
+            <pre className="bg-gray-800 m-1 p-1 rounded overflow-auto flex-grow min-h-4 px-4 py-4">
               {fileContents[selectedFile] || '没有查询到文件内容'}
             </pre>
           ) : (

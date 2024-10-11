@@ -4,13 +4,17 @@ import { Menu } from 'lucide-react'
 interface HeaderProps {
   onToggleSidebar: () => void
   projectName: string
+  className?: string
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onToggleSidebar,
   projectName,
+  className,
 }) => (
-  <header className="bg-gray-800 bg-opacity-90 backdrop-blur-sm p-4 flex justify-between items-center">
+  <header
+    className={`bg-gray-800 bg-opacity-90 backdrop-blur-sm p-4 flex justify-between items-center${className}`}
+  >
     <button
       onClick={onToggleSidebar}
       className="text-gray-400 hover:text-white transition-colors duration-200"

@@ -22,6 +22,7 @@ interface SidebarProps {
   initialFiles: FileStructure
   initialFileContents: Array<[string, string]>
   onUpdateFileStructure: (files: FileStructure, selectedPath?: string[]) => void
+  className?: string
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -30,15 +31,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   initialFiles,
   initialFileContents,
   onUpdateFileStructure,
+  className,
 }) => (
   <div
     className={`${
       isOpen ? 'w-80' : 'w-0'
-    } transition-all duration-300 ease-in-out overflow-hidden`}
+    } transition-all duration-300 ease-in-out overflow-hidden ${className}`}
   >
     <div className="h-full bg-gradient-to-b from-gray-800 to-gray-900 p-4 overflow-auto">
       <h2 className="text-xl font-semibold mb-4 flex items-center text-blue-400">
-        <Folder className="mr-2" size={20} />
+        <Folder className="mr-2 text-blue-400" size={20} />
         项目文件
       </h2>
       <FileStructureTree

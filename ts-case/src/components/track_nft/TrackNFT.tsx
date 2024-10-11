@@ -4,7 +4,7 @@ import {
   Info,
   Lightbulb,
   FileQuestion,
-  MessageCircle,
+  // MessageCircle,
 } from 'lucide-react'
 import { useMoveEditor } from '@/components/MoveEditorProvider'
 import { Sidebar } from './Sidebar'
@@ -17,6 +17,7 @@ import { ContentCard } from './ContentCard'
 //@ts-ignore
 import { isEqual } from 'lodash'
 import { FileStructure } from './FileStructureTree'
+import { CodeCard } from './CodeCard'
 
 function isInputCorrect(input: string, answer: string): boolean {
   // Remove whitespace and make comparison case-insensitive
@@ -130,7 +131,7 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         currentStepIndex: state.currentStepIndex + 1,
-        code: '',
+        code: '', // 我们不在这里设置代码，因为它会在 useEffect 中设置
         error: '',
         activeTab: 'editor',
       }
@@ -172,6 +173,7 @@ interface Step {
   tips: string
   analyze: string
   fileStructure: FileStructure
+  presetCode?: string // 添加这行
 }
 
 interface Project {
@@ -188,6 +190,7 @@ type TrackNFTProps = {
   onReturn?: () => void
 }
 
+//TODO
 // 组件
 const TrackNFT: React.FC<TrackNFTProps> = ({
   project,
@@ -213,16 +216,9 @@ const TrackNFT: React.FC<TrackNFTProps> = ({
   } = state
 
   useEffect(() => {
-    console.log('Current step:', currentStepIndex)
-    console.log('Current code:', code)
-    // ... 其余的 useEffect 代码
-  }, [currentStepIndex, code, project.steps, exportCode, setCode, project.id])
-
-  useEffect(() => {
     const handleCodeUpdate = () => {
       const editorCode = exportCode()
 
-      // 只有当代码发生变化时才更新
       if (editorCode !== code) {
         dispatch({ type: 'SET_CODE', payload: editorCode })
 
@@ -246,60 +242,27 @@ const TrackNFT: React.FC<TrackNFTProps> = ({
       }
     }
 
-    // 如果步骤发生变化，重置编辑器
+    // If the step has changed, set the preset code
     if (currentStepIndex !== prevStepRef.current) {
+      const currentStep = project.steps[currentStepIndex]
+      const presetCode = currentStep.presetCode || ''
+
       if (editorRef.current) {
-        editorRef.current.setValue('')
+        editorRef.current.setValue(presetCode)
       }
-      setCode('')
+      setCode(presetCode)
+      dispatch({ type: 'SET_CODE', payload: presetCode })
       prevStepRef.current = currentStepIndex
     }
 
     handleCodeUpdate()
 
-    // 保存进度
     localStorage.setItem(
       'projectProgress',
       JSON.stringify({ projectId: project.id, stepIndex: currentStepIndex })
     )
   }, [currentStepIndex, code, project.steps, exportCode, setCode, project.id])
 
-  // useEffect(() => {
-  //   const editorCode = exportCode()
-  //   dispatch({ type: 'SET_CODE', payload: editorCode })
-
-  //   if (isInputCorrect(editorCode, project.steps[currentStepIndex].answer)) {
-  //     if (currentStepIndex < project.steps.length - 1) {
-  //       dispatch({ type: 'NEXT_STEP' })
-  //     } else {
-  //       dispatch({ type: 'COMPLETE' })
-  //     }
-  //   } else {
-  //     dispatch({
-  //       type: 'SET_ERROR',
-  //       payload: generateErrorFeedback(
-  //         editorCode,
-  //         project.steps[currentStepIndex].answer
-  //       ),
-  //     })
-  //   }
-  // }, [code, currentStepIndex, project.steps, exportCode])
-
-  // useEffect(() => {
-  //   localStorage.setItem(
-  //     'projectProgress',
-  //     JSON.stringify({ projectId: project.id, stepIndex: currentStepIndex })
-  //   )
-  // }, [currentStepIndex, project.id])
-
-  // const reducer = (state: State, action: Action): State => {
-  //   console.log('Reducer action:', action.type, action.payload)
-  //   switch (
-  //     action.type
-  //     // ... 其余代码保持不变
-  //   ) {
-  //   }
-  // }
   const handleUpdateFileStructure = (
     updatedFiles: FileStructure,
     selectedPath?: string[]
@@ -349,46 +312,48 @@ const TrackNFT: React.FC<TrackNFTProps> = ({
         </h2>
 
         <ContentCard
-          title="内容"
+          title="说明"
           content={currentStep.content}
           icon={<BookOpen className="mr-2" size={20} />}
         />
 
         <ContentCard
+          titleStyle="text-red-500"
           title="注意"
           content={currentStep.note}
           icon={<Info className="mr-2" size={20} />}
         />
 
-        <ContentCard
+        <CodeCard
           title="提示"
           content={currentStep.tips}
           icon={<Lightbulb className="mr-2" size={20} />}
+          titleStyle="text-green-500"
+        />
+        <CodeCard
+          title="解析"
+          content={currentStep.analyze}
+          icon={<FileQuestion className="mr-2" size={20} />}
         />
 
         <CodeEditor
-          key={currentStepIndex} // 添加 key prop
+          key={currentStepIndex}
           activeTab={activeTab}
           onTabChange={(tab) =>
             dispatch({ type: 'SET_ACTIVE_TAB', payload: tab })
           }
           code={code}
           error={error}
-          expectedAnswer={project.steps[currentStepIndex].answer}
+          expectedAnswer={currentStep.answer}
           editorRef={editorRef}
+          presetCode={currentStep.presetCode}
         />
 
-        <ContentCard
-          title="解析"
-          content={currentStep.analyze}
-          icon={<FileQuestion className="mr-2" size={20} />}
-        />
-
-        <ContentCard
+        {/* <ContentCard
           title="正确答案"
           content={currentStep.answer}
           icon={<MessageCircle className="mr-2" size={20} />}
-        />
+        /> */}
       </>
     )
   }
@@ -398,31 +363,34 @@ const TrackNFT: React.FC<TrackNFTProps> = ({
   }
 
   return (
-    <div className="h-full w-full fixed">
-      <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
-        <Sidebar
-          isOpen={isSidebarOpen}
-          currentStep={project.steps[currentStepIndex]}
-          initialFiles={initialFiles}
-          initialFileContents={initialFileContents}
-          onUpdateFileStructure={handleUpdateFileStructure}
+    <div className="h-full flex overflow-hidden">
+      <Sidebar
+        isOpen={isSidebarOpen}
+        currentStep={project.steps[currentStepIndex]}
+        initialFiles={initialFiles}
+        initialFileContents={initialFileContents}
+        onUpdateFileStructure={handleUpdateFileStructure}
+        className="flex-shrink-0"
+      />
+
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header
+          onToggleSidebar={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
+          projectName={project.name}
+          className="h-16 flex-shrink-0"
         />
 
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <Header
-            onToggleSidebar={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
-            projectName={project.name}
-          />
-
-          <main className="flex-1 p-6 overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <div className="flex-1 flex overflow-hidden">
+          <main className="flex-1 overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6">
             {renderContent()}
           </main>
-        </div>
 
-        <StepPreview
-          steps={project.steps}
-          currentStepIndex={currentStepIndex}
-        />
+          <StepPreview
+            steps={project.steps}
+            currentStepIndex={currentStepIndex}
+            className="flex-shrink-0 w-64"
+          />
+        </div>
       </div>
     </div>
   )

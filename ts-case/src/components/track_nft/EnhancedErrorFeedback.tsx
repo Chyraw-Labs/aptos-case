@@ -16,7 +16,7 @@ const EnhancedErrorFeedback: React.FC<EnhancedErrorFeedbackProps> = ({
     const answerLines = expectedAnswer.trim().split('\n')
 
     return (
-      <div className="mt-4">
+      <div className="mt-4 bg-gray-700 rounded-2xl px-4 py-4">
         {userLines.map((line, index) => {
           const answerLine = answerLines[index] || ''
           const errorIndex = findFirstDifference(line, answerLine)
@@ -55,7 +55,7 @@ const EnhancedErrorFeedback: React.FC<EnhancedErrorFeedbackProps> = ({
 
   return (
     <div className="bg-gray-800 rounded-lg p-4">
-      <h3 className="text-lg font-semibold mb-2 text-red-400">错误反馈</h3>
+      <h3 className="text-lg font-semibold mb-2 text-red-400">错误提示</h3>
       <p className="text-gray-300 mb-4">{explanation}</p>
       {renderLineComparison()}
     </div>
