@@ -13,12 +13,12 @@ export const Visualization = () => {
   const openNft = () => {
     window.open('/visualization/nft', '_blank')
   }
-  const openLockup = () => {
-    window.open('/visualization/lockup', '_blank')
-  }
-  const openDao = () => {
-    window.open('/visualization/dao', '_blank')
-  }
+  // const openLockup = () => {
+  //   window.open('/visualization/lockup', '_blank')
+  // }
+  // const openDao = () => {
+  //   window.open('/visualization/dao', '_blank')
+  // }
   return (
     <div className="flex flex-col items-center mx-4 my-4 z-10">
       <p className="font-bold text-7xl mb-4">可视化</p>
@@ -56,13 +56,6 @@ export const Visualization = () => {
         >
           Lending
         </TooltipButton>
-        {/* <TooltipButton
-          message="了解区块链上的质押机制，以及学习它如何运作。"
-          onClick={openLockup}
-          className="rounded bg-opacity-80 backdrop-blur-sm py-2 px-4 text-sm text-white border hover:rounded hover:font-bold hover:bg-white hover:text-black"
-        >
-          Lockup
-        </TooltipButton>
         <TooltipButton
           message="探索 NFT 的世界，了解同质化 Token （ERC-20）以及非同质化 Token（NFT / ERC-721），探索 Aptos 的可组合 NFT。"
           onClick={openNft}
@@ -70,7 +63,15 @@ export const Visualization = () => {
         >
           NFT
         </TooltipButton>
-        <TooltipButton
+        {/* <TooltipButton
+          message="了解区块链上的质押机制，以及学习它如何运作。"
+          onClick={openLockup}
+          className="rounded bg-opacity-80 backdrop-blur-sm py-2 px-4 text-sm text-white border hover:rounded hover:font-bold hover:bg-white hover:text-black"
+        >
+          Lockup
+        </TooltipButton> */}
+
+        {/* <TooltipButton
           message="DAO 是一种去中心化的自治组织，知名的 DAO 组织有 Uniswap、Aave 和 MakerDAO。这个页面将介绍 DAO 的概念，以及展示 DAO 的运作过程。"
           onClick={openDao}
           className="rounded bg-opacity-80 backdrop-blur-sm py-2 px-4 text-sm text-white border hover:rounded hover:font-bold hover:bg-white hover:text-black"

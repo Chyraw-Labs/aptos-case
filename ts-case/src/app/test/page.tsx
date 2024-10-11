@@ -206,6 +206,12 @@ aptos init`,
     ],
   })
 
+  const openHome = () => {
+    window.open('/')
+  }
+  const submit = () => {
+    console.log('to submit')
+  }
   return (
     <div className="container mx-auto px-4 py-8">
       {/* <MarkdownRenderer content={mdContent} /> */}
@@ -213,6 +219,8 @@ aptos init`,
         project={project}
         initialFiles={initialFiles}
         initialFileContents={initialFileContents}
+        onReturn={openHome}
+        onSubmit={submit}
       />
     </div>
   )

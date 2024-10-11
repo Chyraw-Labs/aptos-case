@@ -92,7 +92,7 @@ type FileItem = string
 type FolderItem = { [key: string]: FileStructure }
 export type FileStructure = Array<FileItem | FolderItem>
 
-interface FileTreeProps {
+export interface FileTreeProps {
   files: FileStructure
   onAddFile: (path: string[]) => void
   onAddFolder: (path: string[]) => void
