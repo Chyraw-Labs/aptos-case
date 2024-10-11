@@ -194,6 +194,17 @@ function Header() {
                               </p>
                               <p className="text-white/80 text-xs/4">在线</p>
                             </a>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
+                              href="/tool"
+                            >
+                              <p className="font-semibold text-sm text-white">
+                                地图编辑器
+                              </p>
+                              <p className="text-white/80 text-xs/4">
+                                2D 游戏地图编辑器
+                              </p>
+                            </a>
                           </div>
                         </div>
                       </PopoverPanel>
@@ -260,10 +271,16 @@ function Header() {
                             </a>
                             <a
                               className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
-                              href="/game"
+                              href="https://absurd.design/"
                             >
                               <p className="font-semibold text-sm text-white">
-                                游戏 dev
+                                License
+                              </p>
+                              <p className="text-white/80 text-xs/4">
+                                插图来自{' '}
+                                <a href="https://absurd.design/">
+                                  absurd.design
+                                </a>
                               </p>
                             </a>
                           </div>

@@ -26,6 +26,7 @@
     "highlight.js": "^11.10.0",
     "install": "^0.13.0",
     "katex": "^0.16.11",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.446.0",
     "mermaid": "^11.3.0",
     "monaco-editor": "^0.52.0",

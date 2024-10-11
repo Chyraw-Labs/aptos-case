@@ -53,13 +53,13 @@ export const GettingStarted = () => {
         >
           Move 基础语法
         </TooltipButton>
-        <TooltipButton
+        {/* <TooltipButton
           message="练习开发最佳实践，强化编码技能"
           onClick={openCodingConventions}
           className="rounded bg-opacity-80 backdrop-blur-sm py-2 px-4 text-sm text-white border hover:rounded hover:font-bold hover:bg-white hover:text-black"
         >
           编码进阶
-        </TooltipButton>
+        </TooltipButton> */}
       </div>
     </div>
   )

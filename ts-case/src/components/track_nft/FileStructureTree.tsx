@@ -1,3 +1,90 @@
+// import React, { useState } from 'react'
+// import { Folder, File, ChevronRight, ChevronDown } from 'lucide-react'
+
+// export type FileStructure = Array<string | { [key: string]: FileStructure }>
+
+// interface FileStructureTreeProps {
+//   initialFiles: FileStructure
+//   initialFileContents: Array<[string, string]>
+//   onUpdate: (updatedFiles: FileStructure, selectedPath?: string[]) => void
+//   allowEdit: boolean
+// }
+
+// const FileStructureTree: React.FC<FileStructureTreeProps> = ({
+//   initialFiles,
+//   initialFileContents,
+//   onUpdate,
+//   allowEdit,
+// }) => {
+//   const [expandedFolders, setExpandedFolders] = useState<string[]>([])
+
+//   const toggleFolder = (folderPath: string) => {
+//     setExpandedFolders((prev) =>
+//       prev.includes(folderPath)
+//         ? prev.filter((path) => path !== folderPath)
+//         : [...prev, folderPath]
+//     )
+//   }
+
+//   const renderFiles = (
+//     files: FileStructure = [],
+//     path: string[] = []
+//   ): JSX.Element => {
+//     if (!Array.isArray(files) || files.length === 0) {
+//       return <div className="text-gray-500 italic">No files</div>
+//     }
+
+//     return (
+//       <ul className="pl-4">
+//         {files.map((item, index) => {
+//           if (typeof item === 'string') {
+//             // File
+//             return (
+//               <li key={index} className="mb-2">
+//                 <div className="flex items-center">
+//                   <File className="w-4 h-4 mr-2" />
+//                   <span>{item}</span>
+//                 </div>
+//               </li>
+//             )
+//           } else {
+//             // Folder
+//             const folderName = Object.keys(item)[0]
+//             const folderPath = [...path, folderName].join('/')
+//             const isExpanded = expandedFolders.includes(folderPath)
+
+//             return (
+//               <li key={index} className="mb-2">
+//                 <div
+//                   className="flex items-center cursor-pointer"
+//                   onClick={() => toggleFolder(folderPath)}
+//                 >
+//                   {isExpanded ? (
+//                     <ChevronDown className="w-4 h-4 mr-2" />
+//                   ) : (
+//                     <ChevronRight className="w-4 h-4 mr-2" />
+//                   )}
+//                   <Folder className="w-4 h-4 mr-2" />
+//                   <span>{folderName}</span>
+//                 </div>
+//                 {isExpanded && (
+//                   <div className="ml-4 mt-2">
+//                     {renderFiles(item[folderName], [...path, folderName])}
+//                   </div>
+//                 )}
+//               </li>
+//             )
+//           }
+//         })}
+//       </ul>
+//     )
+//   }
+
+//   return <div className="file-structure-tree">{renderFiles(initialFiles)}</div>
+// }
+
+// export default FileStructureTree
+
 import React, { useState, useEffect } from 'react'
 import { Folder, File, Trash2, Plus, FolderPlus } from 'lucide-react'
 

@@ -1,49 +1,46 @@
 'use client'
-
-import { useState, useCallback, useEffect } from 'react'
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+} from 'react'
 import MoveEditor from './MoveEditor'
-import AptosCliEditor from './AptosCliEditor'
 
 interface MoveEditorWrapperProps {
   initialCode?: string
   onCodeChange?: (newCode: string) => void
+  editorRef?: React.RefObject<{ setValue: (value: string) => void }>
 }
 
-const MoveEditorWrapper: React.FC<MoveEditorWrapperProps> = ({
-  initialCode = '// 在这里输入你的 Move 代码',
-}) => {
-  const [code, setCode] = useState(initialCode)
+const MoveEditorWrapper: React.FC<MoveEditorWrapperProps> = React.forwardRef(
+  ({ initialCode = '// 在这里输入你的 Move 代码', onCodeChange }, ref) => {
+    const [code, setCode] = useState(initialCode)
 
-  const handleCodeChange = useCallback((newCode: string) => {
-    setCode(newCode)
+    useEffect(() => {
+      setCode(initialCode)
+    }, [initialCode])
 
-    // 这里可以添加其他需要的逻辑，比如保存到数据库等
-  }, [])
+    const handleCodeChange = useCallback(
+      (newCode: string) => {
+        setCode(newCode)
+        if (onCodeChange) {
+          onCodeChange(newCode)
+        }
+      },
+      [onCodeChange]
+    )
 
-  return <MoveEditor initialCode={code} onCodeChange={handleCodeChange} />
-}
+    useImperativeHandle(ref, () => ({
+      setValue: (value: string) => {
+        setCode(value)
+      },
+    }))
+
+    return <MoveEditor initialCode={code} onCodeChange={handleCodeChange} />
+  }
+)
+
+MoveEditorWrapper.displayName = 'MoveEditorWrapper'
 
 export default MoveEditorWrapper
-
-// aptos 命令行配置
-interface AptosCliEditorWrapperProps {
-  initialCode?: string
-  onCodeChange?: (newCode: string) => void
-}
-
-export const AptosCliEditorWrapper: React.FC<AptosCliEditorWrapperProps> = ({
-  initialCode = '// 在这里输入你的命令',
-}) => {
-  const [code, setCode] = useState(initialCode)
-  useEffect(() => {
-    console.log('[INFO](EditorWrapper.tsx) AptosCliEditorWrapper code:\n', code)
-  }, [code])
-
-  const handleCodeChange = useCallback((newCode: string) => {
-    setCode(newCode)
-
-    // 这里可以添加其他需要的逻辑，比如保存到数据库等
-  }, [])
-
-  return <AptosCliEditor initialCode={code} onCodeChange={handleCodeChange} />
-}

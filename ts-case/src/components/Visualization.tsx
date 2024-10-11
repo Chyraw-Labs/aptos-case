@@ -56,7 +56,7 @@ export const Visualization = () => {
         >
           Lending
         </TooltipButton>
-        <TooltipButton
+        {/* <TooltipButton
           message="了解区块链上的质押机制，以及学习它如何运作。"
           onClick={openLockup}
           className="rounded bg-opacity-80 backdrop-blur-sm py-2 px-4 text-sm text-white border hover:rounded hover:font-bold hover:bg-white hover:text-black"
@@ -76,7 +76,7 @@ export const Visualization = () => {
           className="rounded bg-opacity-80 backdrop-blur-sm py-2 px-4 text-sm text-white border hover:rounded hover:font-bold hover:bg-white hover:text-black"
         >
           DAO
-        </TooltipButton>
+        </TooltipButton> */}
       </div>
     </div>
   )
