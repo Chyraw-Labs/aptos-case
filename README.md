@@ -1,4 +1,4 @@
-# Aptos-Case ![beta](https://img.shields.io/badge/beta-669900)
+# [Aptos-Case](https://aptos-case.vercel.app/) ![beta](https://img.shields.io/badge/beta-669900)
 
 > Revolutionizing blockchain learning: A comprehensive blockchain learning library designed to help **Chinese beginners and developers** quickly master blockchain programming techniques and common protocols.
 

@@ -1,4 +1,6 @@
-# Aptos-Case ![beta](https://img.shields.io/badge/beta-669900)
+# [Aptos-Case](https://aptos-case.vercel.app/) ![beta](https://img.shields.io/badge/beta-669900)
+
+在线访问: https://aptos-case.vercel.app/
 
 > 革新区块链学习：全方位区块链学习库，旨在帮助**中国的初学者和开发者**快速掌握区块链编程技术和常见协议。
 
@@ -11,7 +13,7 @@ Choose Language：**[![简体中文](https://img.shields.io/badge/简体中文-0
 
 # 项目介绍
 
-在线网站： https://aptos-case.vercel.app/
+在线访问： https://aptos-case.vercel.app/
 
 这是一个 Aptos 公链的 Move 语言教程网站，旨在帮助初学者快速入门 Move 语言和区块链。
 教程涉及链上常见协议的原理可视化，帮助初学者更好地理解区块链技术。
