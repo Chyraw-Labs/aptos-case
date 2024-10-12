@@ -300,7 +300,7 @@ function Header() {
               </div>
 
               <div className="flex-1 justify-center">
-                <a href="https://github.com/caoyang2002">
+                <a href="https://github.com/Chyraw-Labs/aptos-case">
                   <Image
                     src="/assets/github-mark-white.svg"
                     alt="logo"
