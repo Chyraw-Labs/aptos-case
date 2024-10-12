@@ -19,16 +19,7 @@ import {
   Clock,
   Image,
 } from 'lucide-react'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts'
+
 // import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import BoardViewWrapper from './BoardViewWrapper'
@@ -39,13 +30,14 @@ import { TimelineView } from './TimelineView'
 import { CalendarView } from './CalendarView'
 import { GalleryView } from './GalleryView'
 import { FilterModal } from './FilterModal'
+import ChartView from './ChartView'
 
 interface DatabaseProps {
   initialData: Item[]
 }
 
 export interface Item {
-  id?: number | string
+  id: number | string
   name: string
   status: string
   priority: string
@@ -199,22 +191,25 @@ const propertyTypes: Record<string, PropertyType> = {
 //   </div>
 // )
 
-interface ChartViewProps {
-  data: Item[]
-}
+// interface ChartViewProps {
+//   data: Item[]
+// }
 
-const ChartView: React.FC<ChartViewProps> = ({ data }) => (
-  <ResponsiveContainer width="100%" height={400}>
-    <BarChart data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="progress" fill="#8884d8" />
-    </BarChart>
-  </ResponsiveContainer>
-)
+// const ChartView: React.FC<ChartViewProps> = ({ data }) => (
+//   <ResponsiveContainer width="100%" height={400}>
+//     <BarChart data={data}>
+//       <CartesianGrid strokeDasharray="3 3" />
+//       <XAxis dataKey="name" className="text-black" />
+//       <YAxis />
+//       <Tooltip
+//         labelClassName="text-black"
+//         contentStyle={{ backgroundColor: '#fff' }}
+//       />
+//       <Legend />
+//       <Bar dataKey="progress" fill="#8884d8" />
+//     </BarChart>
+//   </ResponsiveContainer>
+// )
 
 interface ViewButtonProps {
   icon: ElementType
@@ -234,8 +229,8 @@ const ViewButton: React.FC<ViewButtonProps> = ({
     onClick={onClick}
     className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
       isActive
-        ? 'bg-cyan-400 text-white'
-        : 'text-gray-600 hover:bg-white hover:bg-opacity-30 hover:text-gray-200'
+        ? 'bg-cyan-500 text-white'
+        : 'text-gray-400 hover:bg-white hover:bg-opacity-30 hover:text-gray-200'
     }`}
   >
     <Icon className="mr-2 h-5 w-5" />
@@ -471,13 +466,16 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
     }, {} as { [key: string]: Item[] })
   }, [sortedAndFilteredData, groupBy])
 
-  const handleDrop = useCallback((itemId: number, newStatus: string) => {
-    setData((prevData) =>
-      prevData.map((item) =>
-        item.id === itemId ? { ...item, status: newStatus } : item
+  const handleDrop = useCallback(
+    (itemId: number | string, newStatus: string) => {
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.id === itemId ? { ...item, status: newStatus } : item
+        )
       )
-    )
-  }, [])
+    },
+    []
+  )
 
   useEffect(() => {
     setData(initialData.map((item) => ({ ...item, id: uuidv4() })))
@@ -554,7 +552,7 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
 
         <div className="flex flex-row items-center gap-4 my-2">
           <DndProvider backend={HTML5Backend}>
-            <div className="container mx-auto p-4 bg-black z-100">
+            <div className="container mx-auto p-4 bg-white bg-opacity-10 rounded  backdrop-blur z-100">
               <div className="mb-4 flex justify-between gap-2 items-center flex-wrap">
                 {/* 选择按钮 */}
                 <div className="space-x-2 mb-2 flex justify-between">

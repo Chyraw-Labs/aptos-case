@@ -105,7 +105,7 @@ function Header() {
                         anchor="bottom"
                         static
                         // className="absolute z-1000 mt-2 w-48 p-4 bg-white border rounded shadow-md"
-                        className="absolute z-40 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-40 mt-1 w-48 p-1 bg-black  rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <a
@@ -162,7 +162,7 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-40 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-40 mt-1 w-48 p-1 bg-black rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>
@@ -228,7 +228,7 @@ function Header() {
                         transition
                         anchor="bottom"
                         static
-                        className="absolute z-40 mt-1 w-48 p-1 bg-black border rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
+                        className="absolute z-40 mt-1 w-48 p-1 bg-black rounded shadow-md divide-y divide-white/5 rounded-xl  text-sm/6 transition  ease-in-out  bg-opacity-10 backdrop-blur"
                       >
                         <div className="p-3">
                           <div>

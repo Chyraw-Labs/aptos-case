@@ -208,7 +208,7 @@ const TableView: React.FC<TableViewProps> = ({ data }) => {
             {headers.map((key) => (
               <th
                 key={key}
-                className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                className="px-4 py-3 text-left text-md font-medium text-cyan-200 font-blod uppercase tracking-wider"
               >
                 {keyToChineseMap[key] || key}
               </th>

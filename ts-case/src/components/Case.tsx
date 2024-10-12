@@ -70,7 +70,7 @@ const Case: React.FC<CaseProps> = ({
   }
 
   const baseClasses = twMerge(
-    'bg-white bg-opacity-80 backdrop-blur-sm rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300  transform transition-transform hover:scale-105 hover:bg-opacity-100',
+    'bg-white bg-opacity-10 backdrop-blur-sm rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300  transform transition-transform hover:scale-105 hover:bg-opacity-30',
     sizeClasses[size],
     className
   )
@@ -251,13 +251,15 @@ const Case: React.FC<CaseProps> = ({
                     {tags?.map((tag, index) => (
                       <span
                         key={index}
-                        className="inline-block bg-blue-200 rounded-full px-2 py-1 text-xs font-semibold text-blue-700 mr-1 mb-1"
+                        className="inline-block bg-blue-200 rounded-full px-2 py-1 text-xs font-semibold text-blue-100 bg-opacity-10  mr-1 mb-1"
                       >
                         #{tag}
                       </span>
                     ))}
                   </div>
-                  <h2 className="font-bold text-sm mb-2 text-black">{title}</h2>
+                  <h2 className="font-bold text-sm mb-2 text-blue-200">
+                    {title}
+                  </h2>
                   <p className="text-gray-700 text-sm mb-4">{description}</p>
                   <a className="mt-auto">{children}</a>
                 </div>

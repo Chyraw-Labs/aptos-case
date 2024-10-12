@@ -17,6 +17,7 @@ const EditModal: React.FC<EditModalProps> = ({
   onSave,
 }) => {
   const [editedItem, setEditedItem] = useState<Item>({
+    id:1,
     name: '',
     status: '未开始',
     priority: '中',

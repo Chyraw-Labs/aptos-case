@@ -15,10 +15,15 @@ import { PopoverProvider } from '@/components/PopoverProvider'
 import Safety from '@/components/safety/Safety'
 // import { MoveBook } from '@/components/MoveBook'
 import { Visualization } from '@/components/Visualization'
+import WavingFlagBackground from '@/components/WavingFlagBackground'
+// import WavingFlagBackground from '@/components/WavingFlagBackground'
 // import { Compositions, Strolling } from '@/static/illustrations'
 import mermaid from 'mermaid'
 import Image from 'next/image'
+// import Script from 'next/script'
 import { useEffect } from 'react'
+// import { Tile} from '@/static/tile.js'
+// import { Three } from '@/static/three.min.js'
 
 export default function Home() {
   useEffect(() => {
@@ -29,29 +34,15 @@ export default function Home() {
       logLevel: 'debug',
     })
   }, [])
+
   return (
     <>
       <PopoverProvider>
+        <WavingFlagBackground />
         <AutoHidingHeader />
-        {/* <div className="fixed top-0 left-0 w-full h-20 z-30">
-          <Header />
-        </div> */}
-        {/* 背景 */}
-        <div
-          className="fixed inset-0 z-0"
-          style={{
-            backgroundImage: `
-      radial-gradient(circle, rgba(255, 255, 255, 0.15) 2px, transparent 2px),
-      radial-gradient(circle, rgba(255, 255, 255, 0.15) 2px, transparent 2px)
-    `,
-            backgroundSize: '20px 20px', // 控制间距
-            backgroundPosition: '0 0, 10px 10px', // 调整交错排列
-          }}
-        />
-
-        {/* <div className="bg-black bg-opacity-30 backdrop-blur-md block w-full h-full absolute top-0 left-0 -z-10"></div> */}
 
         <div className="flex flex-col gap-32 mt-64 mb-8 relative z-20 justify-center items-center">
+          {/* 快速开始 */}
           <div className="flex flex-col md:flex-row items-center  gap-4 max-w-6xl w-full">
             <div className="w-full md:w-1/2 flex justify-center">
               <Image
@@ -66,6 +57,7 @@ export default function Home() {
               <GettingStarted />
             </div>
           </div>
+          {/* 可视化 */}
           <div className="flex flex-col md:flex-row items-center gap-4 max-w-6xl w-full">
             <div className="w-full md:w-1/2">
               <Visualization />
@@ -80,6 +72,7 @@ export default function Home() {
               />
             </div>
           </div>
+          {/* 游戏 */}
           <div className="flex flex-col md:flex-row items-center gap-4 max-w-6xl w-full">
             <div className="w-full md:w-1/2 flex justify-center">
               <Image
@@ -94,7 +87,7 @@ export default function Home() {
               <ToGame />
             </div>
           </div>
-          {/*  */}
+          {/* 安全 */}
           <div className="flex flex-col md:flex-row items-center gap-4 max-w-6xl w-full">
             <div className="w-full md:w-1/2">
               <Safety />
@@ -116,7 +109,6 @@ export default function Home() {
           {/* 这个组件的弹出没有页面跳转，需要更改 mt */}
           {/* <div className="mt-10"> */}
           <MoveBook />
-          {/* </div> */}
 
           <Database initialData={DOCSBASE} />
           <Footer />

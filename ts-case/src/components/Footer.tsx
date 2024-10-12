@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
           <div className="md:col-span-8 lg:col-span-7 grid sm:grid-cols-3 gap-8">
             {/* 分类一 */}
             <div className="text-sm">
-              <h2 className="text-black font-bold mb-1">
+              <h2 className="text-white font-bold mb-1">
                 <p>公司</p>
               </h2>
               <ul>
@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
 
             {/* 分类二 */}
             <div className="text-sm">
-              <h2 className="text-black font-bold mb-1">
+              <h2 className="text-white font-bold mb-1">
                 <p>团队</p>
               </h2>
               <ul>
@@ -137,7 +137,7 @@ const Footer: React.FC = () => {
 
             {/* 分类三 */}
             <div className="text-sm">
-              <h2 className="text-black font-bold mb-1">
+              <h2 className="text-white font-bold mb-1">
                 <p>资源</p>
               </h2>
               <ul>
@@ -272,10 +272,7 @@ const Footer: React.FC = () => {
 
           {/* Copyrights note */}
           <div className="text-gray-400 text-sm mr-4">
-            <p>
-              &copy;&nbsp;{new Date().getFullYear()}&nbsp; ©️&nbsp;All rights
-              reserved
-            </p>
+            <p>&copy; {new Date().getFullYear()} Chyraw Labs 版权所有</p>
           </div>
         </div>
       </div>

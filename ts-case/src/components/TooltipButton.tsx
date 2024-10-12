@@ -84,7 +84,7 @@ const TooltipButton: React.FC<TooltipButtonProps> = ({
       </Button>
       <div
         role="tooltip"
-        className={`mt-2 absolute rounded border bg-black border-white  text-white text-sm py-1 px-2 w-64 transition-opacity duration-200 ${
+        className={`mt-2 absolute rounded bg-black bg-opacity-10 backdrop-blur-sm text-white text-sm py-1 px-2 w-64 transition-opacity duration-200 ${
           tooltipVisible ? 'opacity-100' : 'opacity-0 pointer-events-none '
         }`}
         style={{

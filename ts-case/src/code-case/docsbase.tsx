@@ -1,7 +1,8 @@
 import { Item } from '@/components/database/Database'
 
-export const DOCSBASE: Omit<Item, 'id'>[] = [
+export const DOCSBASE: Item[] = [
   {
+    id: 1,
     name: 'Move 语言安全性',
     status: '已实现',
     priority: '高',
@@ -11,9 +12,10 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     relatedTo: [2, 3],
     description:
       'Move 语言的设计注重安全性，通过静态类型系统和形式化验证来防止常见的智能合约漏洞。',
-    url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-62.md',
+    url: 'https://forum.aptosfoundation.org/',
   },
   {
+    id: 2,
     name: 'Aptos 并行执行引擎',
     status: '持续优化',
     priority: '高',
@@ -23,9 +25,10 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     relatedTo: [1, 5],
     description:
       'Aptos 的并行执行引擎 Block-STM 允许多个交易同时执行，显著提高了网络的吞吐量。',
-    url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-12.md',
+    url: 'https://aptos.dev/en',
   },
   {
+    id: 3,
     name: 'Move 模块系统',
     status: '已实现',
     priority: '中',
@@ -35,9 +38,10 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     relatedTo: [1, 4],
     description:
       'Move 的模块系统允许开发者创建可重用的代码库，促进了智能合约的模块化开发。',
-    url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-32.md',
+    url: 'https://learn.aptoslabs.com/en',
   },
   {
+    id: 4,
     name: 'Aptos 代币标准',
     status: '持续改进',
     priority: '中',
@@ -50,6 +54,7 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-42.md',
   },
   {
+    id: 5,
     name: 'Move Prover',
     status: '持续开发',
     priority: '高',
@@ -62,6 +67,7 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-52.md',
   },
   {
+    id: 6,
     name: 'Aptos 共识机制',
     status: '已实现',
     priority: '高',
@@ -73,6 +79,7 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-26.md',
   },
   {
+    id: 7,
     name: 'Move 资源模型',
     status: '已实现',
     priority: '高',
@@ -85,6 +92,7 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-22.md',
   },
   {
+    id: 8,
     name: 'Aptos 账户抽象',
     status: '规划中',
     priority: '中',
@@ -97,6 +105,7 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-25.md',
   },
   {
+    id: 9,
     name: 'Move 标准库',
     status: '持续扩展',
     priority: '中',
@@ -109,6 +118,7 @@ export const DOCSBASE: Omit<Item, 'id'>[] = [
     url: 'https://github.com/caoyang2002/Aptos-Docs/blob/main/AIP/aip-65.md',
   },
   {
+    id: 10,
     name: 'Aptos 跨链桥接',
     status: '开发中',
     priority: '高',
