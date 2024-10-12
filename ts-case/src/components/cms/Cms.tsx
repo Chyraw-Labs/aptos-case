@@ -13,10 +13,10 @@ interface Article {
   tags: string[]
 }
 
-interface SynologyCMSProps {
-  categories: Category[]
-  systems: Category[]
-  packages: Category[]
+interface CMSProps {
+  general: Category[]
+  technology: Category[]
+  financial: Category[]
   articles: Article[]
 }
 
@@ -29,11 +29,11 @@ interface CustomCheckboxProps {
 }
 
 export default function SynologyCMS({
-  categories,
-  systems,
-  packages,
+  general,
+  technology,
+  financial,
   articles,
-}: SynologyCMSProps) {
+}: CMSProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedSystems, setSelectedSystems] = useState<string[]>([])
@@ -235,26 +235,20 @@ export default function SynologyCMS({
 
         <aside className="w-1/4 bg-white bg-opacity-10 p-4 overflow-y-auto scrollbar-hide">
           {renderFilterSection(
-            '公链',
-            categories,
+            '常规',
+            general,
             selectedCategories,
             setSelectedCategories
           )}
           {renderFilterSection(
-            '合约-Move',
-            systems,
+            '技术',
+            technology,
             selectedSystems,
             setSelectedSystems
           )}
           {renderFilterSection(
-            '安全',
-            packages,
-            selectedPackages,
-            setSelectedPackages
-          )}
-          {renderFilterSection(
-            '技术文章',
-            packages,
+            '金融',
+            financial,
             selectedPackages,
             setSelectedPackages
           )}

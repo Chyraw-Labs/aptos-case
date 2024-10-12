@@ -1,6 +1,11 @@
 // NFT 创建教程
 import React, { useState, useEffect, Fragment } from 'react'
-import { CheckCircle2, AlertCircle } from 'lucide-react'
+import {
+  CheckCircle2,
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
 import { Dialog, Transition } from '@headlessui/react'
 import FileStructureTree, { FileStructure } from './FileStructureTree'
 import { useMoveEditor } from './MoveEditorProvider'
@@ -140,24 +145,10 @@ module MyNFT::first_NFT{
     name: 'Move 合约基础开发教程',
     steps: [
       {
-        id: 10,
-        title: '1. 在 hi_aptos.move 中定义 hi_aptos 模块',
-        content: `清空编辑器中刚才输入的命令后，
-💻 输入: 
-module case::hi_aptos{
-
-}
-💡 解析：module 表示这是一个模块，其中 case 是刚才定义的地址别名，nft 是模块名称，应与文件名一致，并使用小写蛇形命名法。
-
-🖊️ 模块的语法：
-module <address>::<identifier> { 
-    (<use> | <friend> | <type> | <function> | <constant>)*
-}
-其中 <address> 是一个有效的名称或字面量地址。`,
-        expectedOutput: `
-module case::hi_aptos{
-
-}`,
+        id: 1,
+        title: '1. 定义模块',
+        content: `敬请期待`,
+        expectedOutput: `aptos`,
         fileStructure: [
           {
             root: [
@@ -170,20 +161,10 @@ module case::hi_aptos{
       },
       // 引入包
       {
-        id: 20,
+        id: 2,
         title: '2. 引入包',
-        content: `保留编辑器中的内容
-💻 输入: 
-module case::hi_aptos{
-    use std::debug;
-}
-💡 解析：aptos。
-
-🖊️ 模块的语法：
-module <address>::<identifier> { 
-    (<use> | <friend> | <type> | <function> | <constant>)*
-}`,
-        expectedOutput: ``,
+        content: `敬请期待`,
+        expectedOutput: `aptos`,
         fileStructure: [
           {
             root: [
@@ -196,8 +177,8 @@ module <address>::<identifier> {
       },
       // 原始类型
       {
-        id: 8,
-        title: '8. 原始类型',
+        id: 3,
+        title: '3. 原始类型',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -212,8 +193,8 @@ module <address>::<identifier> {
       },
       // 局部变量和作用域
       {
-        id: 9,
-        title: '9. 局部变量和作用域',
+        id: 4,
+        title: '4. 局部变量和作用域',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -228,8 +209,8 @@ module <address>::<identifier> {
       },
       // 终止和断言
       {
-        id: 10,
-        title: '10. 终止和断言',
+        id: 5,
+        title: '5. 终止和断言',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -244,8 +225,8 @@ module <address>::<identifier> {
       },
       // 条件语句
       {
-        id: 11,
-        title: '11. 条件语句',
+        id: 6,
+        title: '6. 条件语句',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -260,8 +241,8 @@ module <address>::<identifier> {
       },
       // 循环语句
       {
-        id: 12,
-        title: '12. 循环语句',
+        id: 7,
+        title: '7. 循环语句',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -276,8 +257,8 @@ module <address>::<identifier> {
       },
       // 函数
       {
-        id: 13,
-        title: '13. 函数',
+        id: 8,
+        title: '8. 函数',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -292,8 +273,8 @@ module <address>::<identifier> {
       },
       // 结构体和资源
       {
-        id: 14,
-        title: '14. 结构体和资源',
+        id: 9,
+        title: '9. 结构体和资源',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -308,8 +289,8 @@ module <address>::<identifier> {
       },
       // 常量
       {
-        id: 15,
-        title: '15. 常量',
+        id: 10,
+        title: '10. 常量',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -324,8 +305,8 @@ module <address>::<identifier> {
       },
       // 泛型
       {
-        id: 16,
-        title: '16. 泛型',
+        id: 11,
+        title: '11. 泛型',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -340,8 +321,8 @@ module <address>::<identifier> {
       },
       // 能力
       {
-        id: 17,
-        title: '17. 能力',
+        id: 12,
+        title: '12. 能力',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -356,8 +337,8 @@ module <address>::<identifier> {
       },
       // 别名
       {
-        id: 18,
-        title: '18. 别名',
+        id: 13,
+        title: '13. 别名',
         content: `在 module case::nft 的 {} 中输入：`,
         expectedOutput: `none`,
         fileStructure: [
@@ -556,33 +537,41 @@ module <address>::<identifier> {
   }, [currentStepIndex, project.id, project.steps])
 
   // 完成项目
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
+  // 完成项目
   if (completed) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <div className="w-full max-w-4xl p-6 bg-black rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4 text-white flex justify-center items-center">
-            恭喜完成项目!
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-blue-900">
+        <div className="w-full max-w-4xl p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl">
+          <h2 className="text-4xl font-bold mb-8 text-white text-center">
+            🎉 恭喜完成项目! 🎉
           </h2>
-          <div className="flex flex-col items-center mb-6">
-            <CheckCircle2 className="w-16 h-16 text-green-500 mb-4" />
-            <h3 className="text-xl mb-2 text-white">项目里程碑</h3>
-            {project.steps.map((step) => (
-              <div key={step.id} className="flex items-center mb-2 text-white">
-                <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
-                <span>{step.title}</span>
-              </div>
-            ))}
+          <div className="flex flex-col items-center mb-10">
+            <CheckCircle2 className="w-24 h-24 text-green-400 mb-8" />
+            <h3 className="text-2xl mb-6 text-white">项目里程碑</h3>
+            <div className="space-y-4 w-full max-w-md">
+              {project.steps.map((step) => (
+                <div
+                  key={step.id}
+                  className="flex items-center bg-white bg-opacity-20 rounded-lg p-4 transition-all duration-300 hover:bg-opacity-30"
+                >
+                  <CheckCircle2 className="w-6 h-6 text-green-400 mr-4 flex-shrink-0" />
+                  <span className="text-lg text-white">{step.title}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center space-x-6">
             <button
               onClick={handleConfirm}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+              className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               确认
             </button>
             <button
               onClick={handleSubmit}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+              className="px-8 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             >
               提交
             </button>
@@ -605,7 +594,7 @@ module <address>::<identifier> {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <div className="fixed inset-0 bg-black bg-opacity-25" />
+                {/* <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" /> */}
               </Transition.Child>
 
               <span
@@ -659,69 +648,95 @@ module <address>::<identifier> {
 
   // 主页面
   return (
-    <div className="flex h-full bg-black">
+    <div className="flex h-screen bg-gradient-to-br from-gray-900 to-blue-900 text-white overflow-hidden">
       {/* 左侧：动态增加或删除文件夹 */}
-      <div className="w-80 bg-black p-6 overflow-auto">
-        <FileStructureTree
-          initialFiles={initialFiles}
-          initialFileContents={initialFileContents}
-          onUpdate={handleUpdateFileStructre}
-          allowEdit={false} // or false to disable editing
-        />
-      </div>
+      <Transition
+        show={isSidebarOpen}
+        enter="transition-all duration-300"
+        enterFrom="-ml-80"
+        enterTo="ml-0"
+        leave="transition-all duration-300"
+        leaveFrom="ml-0"
+        leaveTo="-ml-80"
+      >
+        <div className="w-80 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg p-6 overflow-auto border-r border-gray-700">
+          <FileStructureTree
+            initialFiles={initialFiles}
+            initialFileContents={initialFileContents}
+            onUpdate={handleUpdateFileStructre}
+            allowEdit={false}
+          />
+        </div>
+      </Transition>
+
+      {/* 切换侧边栏按钮 */}
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-r-lg focus:outline-none hover:bg-opacity-75 transition-all duration-300"
+      >
+        {isSidebarOpen ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+      </button>
+
       {/* 中间 */}
       <div className="flex-1 p-6 overflow-auto">
-        <h1 className="text-2xl font-bold mb-4 text-white">{project.name}</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center text-white">
+          {project.name}
+        </h1>
         {/* 进度条 */}
-        <div className="w-full bg-gray-400 rounded-full h-2.5 mb-4">
+        <div className="w-full bg-gray-700 rounded-full h-4 mb-8 overflow-hidden">
           <div
-            className="bg-blue-600 h-2.5 rounded-full"
+            className="bg-blue-500 h-4 rounded-full transition-all duration-500 ease-in-out"
             style={{ width: `${progress}%` }}
-          ></div>
+          >
+            <div className="h-full w-full bg-opacity-50 bg-stripes animate-move-stripes"></div>
+          </div>
         </div>
-        <div className="mb-4">
-          <h2 className="text-xl font-bold mb-2 text-white">当前步骤： </h2>
-          <h3 className="text-lg font-bold mb-2 text-white">
+        <div className="mb-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-sm rounded-xl p-6 shadow-lg">
+          <h2 className="text-3xl font-bold mb-4">当前步骤： </h2>
+          <h3 className="text-2xl font-bold mb-4 text-blue-400">
             {project.steps[currentStepIndex].title}
           </h3>
 
-          <pre className="bg-gray-800 m-1 p-2 text-white rounded whitespace-pre-wrap max-h-96 overflow-auto">
+          <pre className="bg-gray-800 bg-opacity-50 p-6 rounded-lg whitespace-pre-wrap max-h-96 overflow-auto text-gray-300 shadow-inner">
             {project.steps[currentStepIndex].content}
           </pre>
         </div>
 
-        <div style={{ height: '30vh', width: '100%' }}>
+        <div className="h-96 w-full mb-8 bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-xl overflow-hidden p-4 m-4 shadow-lg">
           <MoveEditorWrapper initialCode={code} />
         </div>
+
         {error && (
-          <div className="p-4 my-4 mb-4 bg-blue-100 rounded-lg">
+          <div className="p-6 mb-8 bg-red-900 bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-xl shadow-lg">
             <div className="flex items-start">
-              <AlertCircle className="w-5 h-5 text-blue-400 mr-2" />
-              <pre className="text-xs font-medium text-blue-800">{error}</pre>
+              <AlertCircle className="w-6 h-6 text-red-400 mr-3 flex-shrink-0" />
+              <pre className="text-sm font-medium text-red-300">{error}</pre>
             </div>
           </div>
         )}
       </div>
 
       {/* 右侧：步骤列表 */}
-      <div className="w-64 bg-black p-6 overflow-auto">
-        <h2 className="text-xl font-bold mb-4 text-white">步骤预览</h2>
-        <ul>
+      <div className="w-80 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg p-6 overflow-auto border-l border-gray-700">
+        <h2 className="text-2xl font-bold mb-6">步骤预览</h2>
+        <ul className="space-y-3">
           {project.steps.map((step, index) => (
             <li
               key={step.id}
-              className={`mb-2 p-2 rounded  ${
+              className={`p-4 rounded-xl transition-all duration-300 ${
                 index === currentStepIndex
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-blue-600 bg-opacity-70 shadow-lg transform scale-105'
                   : index < currentStepIndex
-                  ? 'bg-green-200 text-black'
-                  : 'bg-gray-400 text-white'
+                  ? 'bg-green-600 bg-opacity-50'
+                  : 'bg-gray-700 bg-opacity-50'
               }`}
             >
-              {step.title}
-              {index < currentStepIndex && (
-                <CheckCircle2 className="inline w-4 h-4 ml-2 text-green-500" />
-              )}
+              <div className="flex items-center">
+                <span className="flex-grow">{step.title}</span>
+                {index < currentStepIndex && (
+                  <CheckCircle2 className="w-5 h-5 text-green-300 ml-2" />
+                )}
+              </div>
             </li>
           ))}
         </ul>

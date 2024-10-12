@@ -10,7 +10,7 @@ import useCompileMove from '@/move-wasm/CompileMove'
 
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
 // import WalletButton from '../WalletButton'
-import { ClipboardList, X } from 'lucide-react'
+import { ClipboardList, Code, Play, Star, Terminal, X, Zap } from 'lucide-react'
 
 import EnhancedWalletButton from '../EnhancedWalletButton'
 interface CompileMoveResult {
@@ -472,24 +472,31 @@ const TaskListButton: React.FC<TaskProps> = ({ task }) => {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center"
+        className="px-4 py-2 bg-indigo-600 bg-opacity-30 text-indigo-200 rounded-lg hover:bg-opacity-50 transition-all duration-300 transform hover:scale-105 flex items-center shadow-lg font-semibold border border-indigo-400"
       >
-        <ClipboardList size={20} className="mr-1" />
-        任务
+        <Star className="w-5 h-5 mr-2 text-yellow-400 animate-pulse" />
+        任务列表
       </button>
       {isOpen && (
-        <div className="fixed top-4 right-4 w-96 bg-white text-black p-4 rounded-lg shadow-lg z-50 border-l-4 border-blue-500">
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="text-xl font-bold">任务列表</h2>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              <X size={24} />
-            </button>
-          </div>
-          <div className="max-h-96 overflow-y-auto">
-            <pre className="text-sm whitespace-pre-wrap">{task}</pre>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="w-full max-w-2xl bg-gray-800 bg-opacity-80 rounded-xl shadow-2xl border border-indigo-500 p-6 transform transition-all duration-300 scale-95 hover:scale-100">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-3xl font-bold text-indigo-400 flex items-center">
+                <ClipboardList className="w-8 h-8 mr-2 z-30" />
+                神秘任务
+              </h2>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-400 hover:text-gray-200 transition-colors duration-300"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="max-h-96 overflow-y-auto pr-2">
+              <pre className="text-lg whitespace-pre-wrap text-gray-300 bg-gray-900 bg-opacity-50 p-4 rounded-xl">
+                {task}
+              </pre>
+            </div>
           </div>
         </div>
       )}
@@ -566,15 +573,15 @@ const GameInterface: React.FC = () => {
   // }
 
   return (
-    <div className="flex h-full w-screen bg-black">
+    <div className="flex h-screen w-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 text-gray-200 overflow-hidden">
       {/* 左侧 */}
-      <div className="w-1/2 h-full flex flex-col overflow-hidden">
-        <div className="p-2 flex justify-between">
+      <div className="w-1/2 h-full flex flex-col overflow-hidden bg-black bg-opacity-30 backdrop-blur-md">
+        <div className="p-4 flex justify-between items-center bg-gray-800 bg-opacity-50 rounded-b-xl shadow-lg">
           <EnhancedWalletButton />
-          {/* <WalletButton /> */}
           <TaskListButton task={task} />
         </div>
-        <div className="flex-grow overflow-hidden">
+        <div className="flex-grow overflow-hidden rounded-xl shadow-2xl m-4 border border-indigo-500 relative">
+          <div className="absolute inset-0 bg-black opacity-20 z-10 rounded-xl"></div>
           <TileMap
             tileSize={tileSize}
             viewportWidth={viewportWidth}
@@ -584,36 +591,41 @@ const GameInterface: React.FC = () => {
       </div>
 
       {/* 右侧 */}
-      <div className="w-1/2 flex flex-col bg-gray-100 overflow-hidden">
+      <div className="w-1/2 flex flex-col bg-black bg-opacity-30 backdrop-blur-md overflow-hidden">
         {/* Code Editor */}
         <div className="flex-1 overflow-hidden flex flex-col">
-          <div className="flex flex-wrap justify-between items-center p-2 sm:p-4">
-            <h2 className="text-lg sm:text-xl font-bold text-black mr-2">
-              编辑器
+          <div className="flex justify-between items-center p-4 bg-gray-800 bg-opacity-50 rounded-b-xl shadow-lg">
+            <h2 className="text-2xl font-bold text-indigo-300 flex items-center">
+              <Code className="w-7 h-7 mr-2" />
+              动作
             </h2>
-            <div className="flex-grow flex justify-end items-center space-x-2">
-              <DocsTable />
-            </div>
+            <DocsTable />
           </div>
-          <div className="flex-1 overflow-hidden">
-            <MoveEditorWrapper initialCode={code} />
+          <div className="flex-1 overflow-hidden p-4">
+            <div className="h-full rounded-xl overflow-hidden shadow-inner border border-indigo-500">
+              <MoveEditorWrapper initialCode={code} />
+            </div>
           </div>
         </div>
         {/* Command Line */}
-        <div className="h-1/3 bg-black text-white flex flex-col overflow-hidden">
-          <div className="flex flex-wrap justify-between items-center p-2 sm:p-4">
-            <h2 className="text-lg sm:text-xl font-bold">输出</h2>
+        <div className="h-1/3 bg-gray-800 bg-opacity-50 text-gray-200 flex flex-col overflow-hidden rounded-t-xl shadow-lg">
+          <div className="flex justify-between items-center p-4">
+            <h2 className="text-2xl font-bold text-indigo-300 flex items-center">
+              <Terminal className="w-7 h-7 mr-2" />
+              检查器
+            </h2>
             <div className="flex items-center space-x-2">
               <MoveWasm />
               <button
                 onClick={handleRunCode}
-                className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm sm:text-base"
+                className="px-6 py-2 bg-indigo-600 bg-opacity-50 text-indigo-200 rounded-lg hover:bg-opacity-70 transition-all duration-300 transform hover:scale-105 flex items-center shadow-lg font-semibold border border-indigo-400"
               >
-                运行
+                <Zap className="w-5 h-5 mr-2 text-yellow-400 animate-pulse" />
+                开始
               </button>
             </div>
           </div>
-          <pre className="flex-1 overflow-y-auto p-2 bg-gray-800 rounded m-2 sm:m-4 text-sm">
+          <pre className="flex-1 overflow-y-auto p-4 bg-gray-900 bg-opacity-70 rounded-xl m-2 text-lg font-mono">
             {output}
           </pre>
         </div>
