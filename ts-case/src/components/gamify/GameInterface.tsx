@@ -10,7 +10,7 @@ import useCompileMove from '@/move-wasm/CompileMove'
 
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
 // import WalletButton from '../WalletButton'
-import { ClipboardList, Code, Play, Star, Terminal, X, Zap } from 'lucide-react'
+import { ClipboardList, Code, Star, Terminal, X, Zap } from 'lucide-react'
 
 import EnhancedWalletButton from '../EnhancedWalletButton'
 interface CompileMoveResult {

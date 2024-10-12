@@ -1,6 +1,6 @@
 # Aptos-Case ![beta](https://img.shields.io/badge/beta-669900)
 
-> 革新区块链学习：全方位区块链学习库
+> 革新区块链学习：全方位区块链学习库，旨在帮助**中国的初学者和开发者**快速掌握区块链编程技术和常见协议。
 
 Choose Language：**[![简体中文](https://img.shields.io/badge/简体中文-00bb99)](./README_zh.md)** [![English](https://img.shields.io/badge/English-ff4411)](../README.md)
 
