@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Item } from './Database'
 import { ChevronDown, ChevronRight, AlertCircle } from 'lucide-react'
 import { Transition } from '@headlessui/react'
+import { UrlCell, UrlPreview } from './UrlCell'
 
 interface TableViewProps {
   data: Item[]
@@ -19,6 +20,7 @@ const keyToChineseMap: Record<keyof Item, string> = {
   progress: '进度',
   description: '描述',
   relatedTo: '相关文章',
+  url: '链接',
 }
 
 const TruncatedCell: React.FC<{ content: string; maxLength?: number }> = ({
@@ -60,9 +62,13 @@ const ExpandableRow: React.FC<{
         </td>
         {headers
           .filter((key) => key !== 'id' && key !== 'description')
-          .map((key) => (
-            <TruncatedCell key={key} content={String(item[key] ?? '')} />
-          ))}
+          .map((key) =>
+            key === 'url' ? (
+              <UrlCell key={key} url={String(item[key] ?? '')} />
+            ) : (
+              <TruncatedCell key={key} content={String(item[key] ?? '')} />
+            )
+          )}
         <td className="px-4 py-3 whitespace-nowrap text-right text-sm">
           <button className="text-yellow-400 hover:text-yellow-300 transition-colors duration-150 ease-in-out">
             <AlertCircle size={20} />
@@ -96,11 +102,73 @@ const ExpandableRow: React.FC<{
           </td>
         </tr>
       </Transition>
+      <UrlPreview />
     </>
   )
 }
 
-const TableView: React.FC<TableViewProps> = ({ data, onEdit, onDelete }) => {
+// const ExpandableRow: React.FC<{
+//   item: Item
+//   headers: (keyof Item)[]
+//   isExpanded: boolean
+//   onToggle: () => void
+// }> = ({ item, headers, isExpanded, onToggle }) => {
+//   return (
+//     <>
+//       <tr
+//         className="cursor-pointer hover:bg-white/5 transition-colors duration-150 ease-in-out"
+//         onClick={onToggle}
+//       >
+//         <td className="px-4 py-3 whitespace-nowrap">
+//           {isExpanded ? (
+//             <ChevronDown size={20} className="text-blue-400" />
+//           ) : (
+//             <ChevronRight size={20} className="text-gray-400" />
+//           )}
+//         </td>
+//         {headers
+//           .filter((key) => key !== 'id' && key !== 'description')
+//           .map((key) => (
+//             <TruncatedCell key={key} content={String(item[key] ?? '')} />
+//           ))}
+//         <td className="px-4 py-3 whitespace-nowrap text-right text-sm">
+//           <button className="text-yellow-400 hover:text-yellow-300 transition-colors duration-150 ease-in-out">
+//             <AlertCircle size={20} />
+//           </button>
+//         </td>
+//       </tr>
+//       <Transition
+//         show={isExpanded}
+//         enter="transition-opacity duration-75"
+//         enterFrom="opacity-0"
+//         enterTo="opacity-100"
+//         leave="transition-opacity duration-150"
+//         leaveFrom="opacity-100"
+//         leaveTo="opacity-0"
+//       >
+//         <tr>
+//           <td
+//             colSpan={headers.length + 2}
+//             className="px-4 py-3 whitespace-pre-wrap bg-white/5 backdrop-blur-sm"
+//           >
+//             <div className="text-sm">
+//               <p>
+//                 <strong className="text-blue-400">ID:</strong>{' '}
+//                 {item.id ?? 'N/A'}
+//               </p>
+//               <p>
+//                 <strong className="text-blue-400">描述:</strong>{' '}
+//                 {item.description ?? 'N/A'}
+//               </p>
+//             </div>
+//           </td>
+//         </tr>
+//       </Transition>
+//     </>
+//   )
+// }
+
+const TableView: React.FC<TableViewProps> = ({ data }) => {
   const [expandedRows, setExpandedRows] = useState<Set<string | number>>(
     new Set()
   )

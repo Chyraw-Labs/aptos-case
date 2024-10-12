@@ -2,7 +2,7 @@ import TooltipButton from '@/components/TooltipButton'
 
 export default function Safety() {
   const openSafety = () => {
-    window.open('/game', '_blank')
+    window.open('/safety', '_blank')
   }
 
   return (

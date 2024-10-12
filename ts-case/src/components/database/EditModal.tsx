@@ -24,6 +24,7 @@ const EditModal: React.FC<EditModalProps> = ({
     assignee: '',
     progress: 0,
     description: 'description',
+    url: 'url',
   })
 
   useEffect(() => {

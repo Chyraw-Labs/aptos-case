@@ -242,7 +242,7 @@ const Footer: React.FC = () => {
               </Link>
             </li>
             {/* 小红书 */}
-            <li className="ml-4">
+            {/* <li className="ml-4">
               <Link
                 href="/"
                 className="flex justify-center items-center text-blue-400 bg-gray-100 hover:text-blue-600 hover:bg-blue-200 rounded-full transition duration-150 ease-in-out"
@@ -267,7 +267,7 @@ const Footer: React.FC = () => {
                   ></path>
                 </svg>
               </Link>
-            </li>
+            </li> */}
           </ul>
 
           {/* Copyrights note */}

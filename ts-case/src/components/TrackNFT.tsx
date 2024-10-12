@@ -46,7 +46,9 @@ const TrackNFT = () => {
   const [initialFiles, setInitialFiles] = useState<FileStructure>([
     { root: ['README.md'] },
   ])
-
+  const [activeTab, setActiveTab] = useState('editor')
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isCompleted, setIsCompleted] = useState(false)
   // 项目文件结构
   const initialFileContents: [string, string][] = [
     [
@@ -548,6 +550,10 @@ aptos init`,
       //       },
     ],
   })
+  useEffect(() => {
+    // Check if all steps are completed
+    setIsCompleted(currentStepIndex >= project.steps.length - 1)
+  }, [currentStepIndex, project.steps.length])
 
   useEffect(() => {
     // 更新 code 状态
@@ -717,14 +723,6 @@ aptos init`,
       </div>
     )
   }
-  const [activeTab, setActiveTab] = useState('editor')
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const [isCompleted, setIsCompleted] = useState(false)
-
-  useEffect(() => {
-    // Check if all steps are completed
-    setIsCompleted(currentStepIndex >= project.steps.length - 1)
-  }, [currentStepIndex, project.steps.length])
 
   const renderContent = () => {
     if (isCompleted) {

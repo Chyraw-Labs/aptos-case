@@ -6,12 +6,11 @@ import React, {
   ElementType,
   useEffect,
 } from 'react'
-import { Menu, Transition, Dialog } from '@headlessui/react'
+import { Menu, Transition } from '@headlessui/react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import {
   ChevronDown,
-  Plus,
   Calendar,
   LayoutGrid,
   List,
@@ -34,11 +33,12 @@ import {
 import 'react-day-picker/dist/style.css'
 import BoardViewWrapper from './BoardViewWrapper'
 import TableView from './TableView'
-import EditModal from './EditModal'
+// import EditModal from './EditModal'
 import { v4 as uuidv4 } from 'uuid'
 import { TimelineView } from './TimelineView'
 import { CalendarView } from './CalendarView'
 import { GalleryView } from './GalleryView'
+import { FilterModal } from './FilterModal'
 
 interface DatabaseProps {
   initialData: Item[]
@@ -53,15 +53,16 @@ export interface Item {
   assignee: string
   progress: number
   description: string
-  relatedTo?: number[] // 新增字段
+  relatedTo?: number[]
+  url: string
 }
 
-interface FilterModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onApply: (filters: Filter[]) => void
-  currentFilters: Filter[]
-}
+// interface FilterModalProps {
+//   isOpen: boolean
+//   onClose: () => void
+//   onApply: (filters: Filter[]) => void
+//   currentFilters: Filter[]
+// }
 
 interface DatabaseProps {
   initialData: Item[]
@@ -242,149 +243,149 @@ const ViewButton: React.FC<ViewButtonProps> = ({
   </button>
 )
 
-interface FilterModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onApply: (filters: Filter[]) => void
-  currentFilters: Filter[]
-}
+// interface FilterModalProps {
+//   isOpen: boolean
+//   onClose: () => void
+//   onApply: (filters: Filter[]) => void
+//   currentFilters: Filter[]
+// }
 
-interface Filter {
+export interface Filter {
   field: keyof Item
   operator: 'equals' | 'contains' | 'greater' | 'less'
   value: string
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({
-  isOpen,
-  onClose,
-  onApply,
-  currentFilters,
-}) => {
-  const [filters, setFilters] = useState(currentFilters)
+// const FilterModal: React.FC<FilterModalProps> = ({
+//   isOpen,
+//   onClose,
+//   onApply,
+//   currentFilters,
+// }) => {
+//   const [filters, setFilters] = useState(currentFilters)
 
-  const handleFilterChange = (
-    index: number,
-    key: keyof Filter,
-    value: string
-  ) => {
-    const newFilters = [...filters]
-    if (key === 'operator') {
-      newFilters[index] = {
-        ...newFilters[index],
-        [key]: value as Filter['operator'],
-      }
-    } else {
-      newFilters[index] = { ...newFilters[index], [key]: value }
-    }
-    setFilters(newFilters)
-  }
+//   const handleFilterChange = (
+//     index: number,
+//     key: keyof Filter,
+//     value: string
+//   ) => {
+//     const newFilters = [...filters]
+//     if (key === 'operator') {
+//       newFilters[index] = {
+//         ...newFilters[index],
+//         [key]: value as Filter['operator'],
+//       }
+//     } else {
+//       newFilters[index] = { ...newFilters[index], [key]: value }
+//     }
+//     setFilters(newFilters)
+//   }
 
-  const addFilter = () => {
-    setFilters([
-      ...filters,
-      { field: 'name', operator: 'equals', value: '' } as Filter,
-    ])
-  }
+//   const addFilter = () => {
+//     setFilters([
+//       ...filters,
+//       { field: 'name', operator: 'equals', value: '' } as Filter,
+//     ])
+//   }
 
-  const removeFilter = (index: number) => {
-    const newFilters = filters.filter((_, i) => i !== index)
-    setFilters(newFilters)
-  }
+//   const removeFilter = (index: number) => {
+//     const newFilters = filters.filter((_, i) => i !== index)
+//     setFilters(newFilters)
+//   }
 
-  return (
-    <Dialog open={isOpen} onClose={onClose} className="relative z-50">
-      {/* 背景遮罩 */}
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+//   return (
+//     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
+//       {/* 背景遮罩 */}
+//       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
-      {/* 对话框定位 */}
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-          <Dialog.Title
-            as="h3"
-            className="text-lg font-medium leading-6 text-gray-900"
-          >
-            高级过滤
-          </Dialog.Title>
-          <div className="mt-2">
-            {filters.map((filter, index) => (
-              <div key={index} className="mb-4 flex items-center">
-                <select
-                  value={filter.field}
-                  onChange={(e) =>
-                    handleFilterChange(
-                      index,
-                      'field',
-                      e.target.value as keyof Item
-                    )
-                  }
-                  className="mr-2 p-2 border rounded"
-                >
-                  <option value="">选择字段</option>
-                  <option value="name">名称</option>
-                  <option value="status">状态</option>
-                  <option value="priority">优先级</option>
-                  <option value="assignee">负责人</option>
-                </select>
-                <select
-                  value={filter.operator}
-                  onChange={(e) =>
-                    handleFilterChange(index, 'operator', e.target.value)
-                  }
-                  className="mr-2 p-2 border rounded"
-                >
-                  <option value="">选择操作符</option>
-                  <option value="equals">等于</option>
-                  <option value="contains">包含</option>
-                  <option value="greater">大于</option>
-                  <option value="less">小于</option>
-                </select>
-                <input
-                  type="text"
-                  value={filter.value}
-                  onChange={(e) =>
-                    handleFilterChange(index, 'value', e.target.value)
-                  }
-                  className="mr-2 p-2 border rounded"
-                  placeholder="值"
-                />
-                <button
-                  onClick={() => removeFilter(index)}
-                  className="text-red-500"
-                >
-                  删除
-                </button>
-              </div>
-            ))}
-            <button onClick={addFilter} className="mt-2 text-blue-500">
-              + 添加过滤条件
-            </button>
-          </div>
+//       {/* 对话框定位 */}
+//       <div className="fixed inset-0 flex items-center justify-center p-4">
+//         <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+//           <Dialog.Title
+//             as="h3"
+//             className="text-lg font-medium leading-6 text-gray-900"
+//           >
+//             高级过滤
+//           </Dialog.Title>
+//           <div className="mt-2">
+//             {filters.map((filter, index) => (
+//               <div key={index} className="mb-4 flex items-center">
+//                 <select
+//                   value={filter.field}
+//                   onChange={(e) =>
+//                     handleFilterChange(
+//                       index,
+//                       'field',
+//                       e.target.value as keyof Item
+//                     )
+//                   }
+//                   className="mr-2 p-2 border rounded"
+//                 >
+//                   <option value="">选择字段</option>
+//                   <option value="name">名称</option>
+//                   <option value="status">状态</option>
+//                   <option value="priority">优先级</option>
+//                   <option value="assignee">负责人</option>
+//                 </select>
+//                 <select
+//                   value={filter.operator}
+//                   onChange={(e) =>
+//                     handleFilterChange(index, 'operator', e.target.value)
+//                   }
+//                   className="mr-2 p-2 border rounded"
+//                 >
+//                   <option value="">选择操作符</option>
+//                   <option value="equals">等于</option>
+//                   <option value="contains">包含</option>
+//                   <option value="greater">大于</option>
+//                   <option value="less">小于</option>
+//                 </select>
+//                 <input
+//                   type="text"
+//                   value={filter.value}
+//                   onChange={(e) =>
+//                     handleFilterChange(index, 'value', e.target.value)
+//                   }
+//                   className="mr-2 p-2 border rounded"
+//                   placeholder="值"
+//                 />
+//                 <button
+//                   onClick={() => removeFilter(index)}
+//                   className="text-red-500"
+//                 >
+//                   删除
+//                 </button>
+//               </div>
+//             ))}
+//             <button onClick={addFilter} className="mt-2 text-blue-500">
+//               + 添加过滤条件
+//             </button>
+//           </div>
 
-          <div className="mt-4">
-            <button
-              type="button"
-              className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              onClick={() => {
-                onApply(filters)
-                onClose()
-              }}
-            >
-              应用
-            </button>
-            <button
-              type="button"
-              className="ml-2 inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
-              onClick={onClose}
-            >
-              取消
-            </button>
-          </div>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
-  )
-}
+//           <div className="mt-4">
+//             <button
+//               type="button"
+//               className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+//               onClick={() => {
+//                 onApply(filters)
+//                 onClose()
+//               }}
+//             >
+//               应用
+//             </button>
+//             <button
+//               type="button"
+//               className="ml-2 inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
+//               onClick={onClose}
+//             >
+//               取消
+//             </button>
+//           </div>
+//         </Dialog.Panel>
+//       </div>
+//     </Dialog>
+//   )
+// }
 
 interface SortConfig {
   key: keyof Item
@@ -394,13 +395,12 @@ interface SortConfig {
 const Database: React.FC<DatabaseProps> = ({ initialData }) => {
   const [data, setData] = useState<Item[]>([])
   const [view, setView] = useState<string>('table')
-
   const [filters, setFilters] = useState<Filter[]>([]) // You may want to define a more specific type for filters
   const [groupBy, setGroupBy] = useState<keyof Item | null>(null)
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false)
-  const [editingItem, setEditingItem] = useState<Item | null>(null)
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false)
+  // const [setEditingItem] = useState<Item | null>(null)
+  // const [setIsEditModalOpen] = useState<boolean>(false)
   const [sortConfig] = useState<SortConfig | null>(null)
 
   const sortedAndFilteredData = useMemo(() => {
@@ -479,22 +479,9 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
     )
   }, [])
 
-  const handleEdit = (item: React.SetStateAction<Item | null>) => {
-    setEditingItem(item)
-    setIsEditModalOpen(true)
-  }
-
-  const handleDelete = (itemId: number | string) => {
-    setData((prevData) => prevData.filter((item) => item.id !== itemId))
-  }
   useEffect(() => {
     setData(initialData.map((item) => ({ ...item, id: uuidv4() })))
   }, [initialData])
-  // const handleSaveEdit = (editedItem: Item) => {
-  //   setData((prevData) =>
-  //     prevData.map((item) => (item.id === editedItem.id ? editedItem : item))
-  //   )
-  // }
 
   // TODO
   const renderView = () => {
@@ -503,8 +490,8 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
         return (
           <TableView
             data={sortedAndFilteredData}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
+            // onEdit={handleEdit}
+            // onDelete={handleDelete}
           />
         )
       case 'board':
@@ -531,23 +518,24 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
     return key in initialData[0] // 假设initialData至少有一个元素
   }
 
-  const createNewItem = (): Item => {
-    return {
-      id: uuidv4(), // 或者使用其他方式生成唯一ID
-      name: '',
-      status: 'New', // 或其他默认状态
-      priority: 'Medium', // 或其他默认优先级
-      dueDate: new Date().toISOString().split('T')[0], // 今天的日期作为默认截止日期
-      assignee: '',
-      progress: 0,
-      description: '',
-    }
-  }
+  // const createNewItem = (): Item => {
+  //   return {
+  //     id: uuidv4(), // 或者使用其他方式生成唯一ID
+  //     name: '',
+  //     status: 'New', // 或其他默认状态
+  //     priority: 'Medium', // 或其他默认优先级
+  //     dueDate: new Date().toISOString().split('T')[0], // 今天的日期作为默认截止日期
+  //     assignee: '',
+  //     progress: 0,
+  //     description: '',
+  //     url: '',
+  //   }
+  // }
 
   return (
     <>
       <div className="flex flex-col items-center mx-4 my-4 z-10">
-        <p className="font-bold text-7xl mb-4">信息看板</p>
+        <p className="font-bold text-7xl mb-4">提案看板</p>
         <div className="text-center mx-auto max-w-prose">
           <span className="text-base mb-4 block">
             你可以在这里查阅关于 Aptos、Move
@@ -567,58 +555,63 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
         <div className="flex flex-row items-center gap-4 my-2">
           <DndProvider backend={HTML5Backend}>
             <div className="container mx-auto p-4 bg-black z-100">
-              <div className="mb-4 flex justify-between items-center flex-wrap">
+              <div className="mb-4 flex justify-between gap-2 items-center flex-wrap">
                 {/* 选择按钮 */}
                 <div className="space-x-2 mb-2 flex justify-between">
                   <ViewButton
                     icon={List}
-                    text="Table"
+                    text="表格"
                     onClick={() => setView('table')}
                     isActive={view === 'table'}
                   />
                   <ViewButton
                     icon={LayoutGrid}
-                    text="Board"
+                    text="面板"
                     onClick={() => setView('board')}
                     isActive={view === 'board'}
                   />
                   <ViewButton
                     icon={Calendar}
-                    text="Calendar"
+                    text="日历"
                     onClick={() => setView('calendar')}
                     isActive={view === 'calendar'}
                   />
                   <ViewButton
                     icon={Clock}
-                    text="Timeline"
+                    text="时间线"
                     onClick={() => setView('timeline')}
                     isActive={view === 'timeline'}
                   />
                   <ViewButton
                     icon={Image}
-                    text="Gallery"
+                    text="画廊"
                     onClick={() => setView('gallery')}
                     isActive={view === 'gallery'}
                   />
                   <ViewButton
                     icon={BarChart2}
-                    text="Chart"
+                    text="图表"
                     onClick={() => setView('chart')}
                     isActive={view === 'chart'}
                   />
                 </div>
-                {/* 搜索框 */}
+
                 <div className="flex items-center space-x-2 mb-2">
+                  {/* 搜索框 */}
                   <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder="搜索..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="px-2 py-1 border rounded"
+                    className="px-2 py-1 rounded bg-white bg-opacity-10 focus:outline-none focus:border-cyan-500 focus:bg-opacity-20 hover:bg-opacity-15"
                   />
-                  <Menu as="div" className="relative inline-block text-left">
-                    <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-                      Group by
+                  {/* 分类框 */}
+                  <Menu
+                    as="div"
+                    className="relative inline-block text-left z-30"
+                  >
+                    <Menu.Button className="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white bg-opacity-10 text-sm font-medium text-gray-400 hover:bg-opacity-20 focus:outline-none hover:text-gray-200">
+                      分类
                       <ChevronDown
                         className="-mr-1 ml-2 h-5 w-5"
                         aria-hidden="true"
@@ -632,18 +625,18 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div className="py-1">
+                      <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white bg-opacity-10 backdrop-blur border-gray-400 ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
+                        <div className="py-2 px-2">
                           {Object.keys(propertyTypes).map((key) => (
                             <Menu.Item key={key}>
                               {({ active }) => (
                                 <a
-                                  href="#"
+                                  href=""
                                   className={`${
                                     active
-                                      ? 'bg-gray-100 text-gray-900'
-                                      : 'text-gray-700'
-                                  } block px-4 py-2 text-sm`}
+                                      ? 'bg-white bg-opacity-10 p-2 text-gray-200 rounded-md border-gray-400 hover:text-gray-100'
+                                      : 'text-gray-400'
+                                  } block px-4 py-2 px-2 text-sm`}
                                   onClick={() => {
                                     if (isKeyOfItem(key)) {
                                       setGroupBy(key)
@@ -663,14 +656,16 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
                       </Menu.Items>
                     </Transition>
                   </Menu>
+                  {/* 筛选框 */}
                   <button
                     onClick={() => setIsFilterModalOpen(true)}
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    // className="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white bg-opacity-10 text-sm font-medium text-gray-400 hover:bg-opacity-20 focus:outline-none hover:text-gray-200"
+                    className="inline-flex items-center px-4 py-2 border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-400 bg-white bg-opacity-10 hover:bg-opacity-15 focus:bg-opacity-20 focus:outline-none"
                   >
                     <Filter className="mr-2 h-5 w-5" />
-                    Filter
+                    筛选
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => {
                       setEditingItem(createNewItem())
                       setIsEditModalOpen(true)
@@ -679,7 +674,7 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
                   >
                     <Plus className="mr-2 h-5 w-5" />
                     Add New
-                  </button>
+                  </button> */}
                 </div>
               </div>
               {/* 渲染内容 */}
@@ -692,7 +687,7 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
                 currentFilters={filters}
               />
               {/* 编辑模式 */}
-              <EditModal
+              {/* <EditModal
                 isOpen={isEditModalOpen}
                 onClose={() => {
                   setIsEditModalOpen(false)
@@ -705,7 +700,7 @@ const Database: React.FC<DatabaseProps> = ({ initialData }) => {
                   setIsEditModalOpen(false)
                   setEditingItem(null)
                 }}
-              />
+              /> */}
             </div>
           </DndProvider>
         </div>
