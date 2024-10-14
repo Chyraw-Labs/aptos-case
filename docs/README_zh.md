@@ -146,14 +146,17 @@ Choose Language：**[![简体中文](https://img.shields.io/badge/简体中文-0
 
 ![move book pop](./images/move_book_pop.png)
 
-## 提案看板
+### 提案看板
 
 ![aip](./images/aip.png)
 
 在线查看： https://aptos-case.vercel.app
 
-访问分析
+### 访问分析
+
 ![access](./images/analytics.png)
+
+https://aptos-case.vercel.app/analytics
 
 ### 文档
 

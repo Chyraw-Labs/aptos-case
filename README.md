@@ -146,13 +146,13 @@ View online: https://aptos-case.vercel.app/game
 
 ![move book pop](./docs/images/move_book_pop.png)
 
-## Proposal Board
+### Proposal Board
 
 ![aip](./docs/images/aip.png)
 
 View online: https://aptos-case.vercel.app#Proposal-Board
 
-## Analytics
+### Analytics
 
 ![access](./docs/images/analytics.png)
 
