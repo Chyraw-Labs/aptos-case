@@ -152,6 +152,10 @@ View online: https://aptos-case.vercel.app/game
 
 View online: https://aptos-case.vercel.app#Proposal-Board
 
+## Analytics
+
+![access](./images/analytics.png)
+
 ### Documentation
 
 ![docs](./docs/images/doc.png)
