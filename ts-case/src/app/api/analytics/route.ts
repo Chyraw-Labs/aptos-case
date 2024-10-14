@@ -105,7 +105,7 @@ export async function GET() {
         .toArray(),
     ])
 
-    console.log('Raw clicks data:', clicks) // 添加这行来查看原始点击数据
+    console.log('Raw clicks data:', clicks)
 
     const pageViews = pageviews.map((pv) => {
       const clickData = clicks.find((c) => c._id === pv._id)
@@ -120,7 +120,7 @@ export async function GET() {
 
     pageViews.sort((a, b) => b.views - a.views)
 
-    console.log('Processed pageViews:', pageViews) // 添加这行来查看处理后的数据
+    console.log('Processed pageViews:', pageViews)
     return NextResponse.json({
       pageViews: pageViews.slice(0, 10),
       allPages: pageViews,
