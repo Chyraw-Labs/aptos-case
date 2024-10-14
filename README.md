@@ -154,7 +154,9 @@ View online: https://aptos-case.vercel.app#Proposal-Board
 
 ## Analytics
 
-![access](./images/analytics.png)
+![access](./docs/images/analytics.png)
+
+View online: https://aptos-case.vercel.app/analytics
 
 ### Documentation
 
