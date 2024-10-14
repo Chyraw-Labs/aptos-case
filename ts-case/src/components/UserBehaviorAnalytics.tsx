@@ -1,9 +1,13 @@
+// src/components/UserBehaviorAnalytics.tsx
 'use client'
-import { useEffect, useRef, useCallback } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+
+import { useEffect, useCallback, useState } from 'react'
+import { usePathname } from 'next/navigation'
+
+type EventType = 'pageview' | 'click' | 'timeSpent'
 
 interface AnalyticsEvent {
-  eventType: 'pageview' | 'click' | 'timeSpent'
+  eventType: EventType
   data: {
     page: string
     timestamp: string
@@ -14,10 +18,7 @@ interface AnalyticsEvent {
 
 const UserBehaviorAnalytics: React.FC = () => {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const pageViewTimeRef = useRef<number>(Date.now())
-  const clicksRef = useRef<number>(0)
-  const lastPathRef = useRef<string | null>(null)
+  const [pageViewTime, setPageViewTime] = useState<number>(Date.now())
 
   const sendAnalytics = useCallback(async (event: AnalyticsEvent) => {
     try {
@@ -31,75 +32,52 @@ const UserBehaviorAnalytics: React.FC = () => {
       if (!response.ok) {
         throw new Error('Failed to send analytics')
       }
-      console.log(`Analytics sent: ${event.eventType}`, event.data)
     } catch (error) {
       console.error('Error sending analytics:', error)
     }
   }, [])
 
-  const recordPageView = useCallback(
-    (page: string) => {
-      if (page !== lastPathRef.current) {
-        sendAnalytics({
-          eventType: 'pageview',
-          data: {
-            page,
-            timestamp: new Date().toISOString(),
-          },
-        })
-        lastPathRef.current = page
-      }
-    },
-    [sendAnalytics]
-  )
-
-  const recordTimeSpent = useCallback(
-    (page: string) => {
-      const timeSpent = (Date.now() - pageViewTimeRef.current) / 1000 // 转换为秒
-      if (timeSpent > 0) {
-        sendAnalytics({
-          eventType: 'timeSpent',
-          data: {
-            page,
-            timestamp: new Date().toISOString(),
-            timeSpent,
-            clicks: clicksRef.current,
-          },
-        })
-      }
-      pageViewTimeRef.current = Date.now()
-      clicksRef.current = 0
-    },
-    [sendAnalytics]
-  )
-
   useEffect(() => {
-    console.log('Page or search params changed')
-    recordTimeSpent(lastPathRef.current || pathname)
-    recordPageView(pathname)
+    // 记录页面浏览
+    sendAnalytics({
+      eventType: 'pageview',
+      data: {
+        page: pathname,
+        timestamp: new Date().toISOString(),
+      },
+    })
+
+    // 重置页面浏览时间
+    setPageViewTime(Date.now())
 
     const handleClick = () => {
-      clicksRef.current += 1
+      sendAnalytics({
+        eventType: 'click',
+        data: {
+          page: pathname,
+          timestamp: new Date().toISOString(),
+          clicks: 1,
+        },
+      })
     }
 
     window.addEventListener('click', handleClick)
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        recordTimeSpent(pathname)
-      } else {
-        pageViewTimeRef.current = Date.now()
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-
     return () => {
       window.removeEventListener('click', handleClick)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      recordTimeSpent(pathname)
+
+      // 发送停留时间
+      const timeSpent = (Date.now() - pageViewTime) / 1000 // 转换为秒
+      sendAnalytics({
+        eventType: 'timeSpent',
+        data: {
+          page: pathname,
+          timestamp: new Date().toISOString(),
+          timeSpent,
+        },
+      })
     }
-  }, [pathname, searchParams, recordPageView, recordTimeSpent])
+  }, [pathname, sendAnalytics, pageViewTime])
 
   return null
 }

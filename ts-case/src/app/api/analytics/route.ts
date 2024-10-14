@@ -42,23 +42,26 @@ async function retry<T>(operation: () => Promise<T>, retries = 3): Promise<T> {
   }
 }
 
-interface AnalyticsEvent {
-  eventType: 'pageview' | 'click' | 'timeSpent'
-  data: {
-    page: string
-    timestamp: string
-    timeSpent?: number
-    clicks?: number
-  }
-}
-
 export async function POST(request: NextRequest) {
-  const event: AnalyticsEvent = await request.json()
-  console.log('Received event:', event.eventType, 'Data:', event.data)
+  const { eventType, data } = await request.json()
+  console.log('Received event:', eventType, 'Data:', data)
   try {
     const database = await retry(connectToDatabase)
     const collection = database.collection('events')
-    await collection.insertOne(event)
+
+    // 确保点击事件正确插入
+    if (eventType === 'click') {
+      await collection.insertOne({
+        eventType,
+        data: {
+          ...data,
+          clicks: 1, // 确保每次点击都记录为 1
+        },
+      })
+    } else {
+      await collection.insertOne({ eventType, data })
+    }
+
     console.log('Event recorded in MongoDB')
     return NextResponse.json({ message: 'Analytics data recorded' })
   } catch (error) {
@@ -85,7 +88,7 @@ export async function GET() {
       collection
         .aggregate([
           { $match: { eventType: 'click' } },
-          { $group: { _id: '$data.page', clicks: { $sum: '$data.clicks' } } },
+          { $group: { _id: '$data.page', clicks: { $sum: 1 } } }, // 修改这里，直接计数点击事件
         ])
         .toArray(),
       collection
@@ -102,6 +105,8 @@ export async function GET() {
         .toArray(),
     ])
 
+    console.log('Raw clicks data:', clicks) // 添加这行来查看原始点击数据
+
     const pageViews = pageviews.map((pv) => {
       const clickData = clicks.find((c) => c._id === pv._id)
       const timeData = timeSpent.find((t) => t._id === pv._id)
@@ -115,7 +120,7 @@ export async function GET() {
 
     pageViews.sort((a, b) => b.views - a.views)
 
-    console.log('Analytics data fetched successfully')
+    console.log('Processed pageViews:', pageViews) // 添加这行来查看处理后的数据
     return NextResponse.json({
       pageViews: pageViews.slice(0, 10),
       allPages: pageViews,
