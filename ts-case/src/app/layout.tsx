@@ -3,6 +3,8 @@ import localFont from 'next/font/local'
 import { WalletProvider } from '@/components/WalletProvider'
 import '../styles/globals.css'
 import { MoveEditorProvider } from '@/components/MoveEditorProvider'
+// import UserBehaviorAnalytics from '@/components/UserBehaviorAnalytics'
+import dynamic from 'next/dynamic'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -21,6 +23,10 @@ export const metadata: Metadata = {
   description:
     'Aptos Case 是一个专注于 Aptos 区块链上 Move 编程的教育平台。加入我们，探索教程、资源和社区讨论，提升你在构建去中心化应用方面的技能。',
 }
+const DynamicUserBehaviorAnalytics = dynamic(
+  () => import('../components/UserBehaviorAnalytics'),
+  { ssr: false }
+)
 
 export default function RootLayout({
   children,
@@ -39,7 +45,7 @@ export default function RootLayout({
             name="keywords"
             content="Aptos, Move, 编程教育, 区块链, 去中心化应用, 智能合约, DApp"
           />
-          <meta name="author" content="Aptos Case Team" />
+          <meta name="author" content="Chyraw Labs" />
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
@@ -74,6 +80,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
         >
+          <DynamicUserBehaviorAnalytics />
           <MoveEditorProvider>
             <WalletProvider>{children}</WalletProvider>
           </MoveEditorProvider>

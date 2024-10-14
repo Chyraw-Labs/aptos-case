@@ -291,6 +291,17 @@ function Header() {
                                 </ul>
                               </p>
                             </a>
+                            <a
+                              className="px-2 py-2 mt-2 bg-opacity-50 backdrop-blur-md block rounded-lg transition hover:bg-black hover:bg-opacity-30 hover:border hover:rounded-xl"
+                              href="/analytics"
+                            >
+                              <p className="font-semibold text-sm text-white">
+                                分析
+                              </p>
+                              <p className="text-white/80 text-xs/4">
+                                访问分析
+                              </p>
+                            </a>
                           </div>
                         </div>
                       </PopoverPanel>
