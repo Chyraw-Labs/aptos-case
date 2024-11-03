@@ -15,7 +15,7 @@ import { PopoverProvider } from '@/components/PopoverProvider'
 import Safety from '@/components/safety/Safety'
 // import { MoveBook } from '@/components/MoveBook'
 import { Visualization } from '@/components/Visualization'
-import WavingFlagBackground from '@/components/WavingFlagBackground'
+// import WavingFlagBackground from '@/components/WavingFlagBackground'
 // import WavingFlagBackground from '@/components/WavingFlagBackground'
 // import { Compositions, Strolling } from '@/static/illustrations'
 import mermaid from 'mermaid'
@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <>
       <PopoverProvider>
-        <WavingFlagBackground />
+        {/* <WavingFlagBackground /> */}
         <AutoHidingHeader />
 
         <div className="flex flex-col gap-32 mt-64 mb-8 relative z-20 justify-center items-center">
