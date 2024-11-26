@@ -124,6 +124,9 @@ export default function Home() {
 
 ![alt text](doc/wallet_button.png)
 
+## 如果不显示钱包列表
+
+可以在 `app/layout.tsx` 中添加 `'use client'` 然后查看前端是否显示钱包列表，如果显示就删除掉 `'use client'`（因为 'use client' 不应该写在这个地方），接着再看看前端是否有显示钱包列表，如果有就可以继续项目的后续开发了。如果没有就重新安装依赖并删除项目缓存，然后重启试试。
 # 二、获取链上数据
 
 1. 查合约 event 的 rpc
